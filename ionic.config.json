@@ -1,5 +1,19 @@
 {
   "name": "Zoltime",
   "app_id": "",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  },
+  "proxies": [
+    {
+      "path": "/mapsDetails",
+      "proxyUrl": "https://maps.googleapis.com/maps/api/place/details"
+    },
+     {
+      "path": "/mapsAutocomplete",
+      "proxyUrl": "https://maps.googleapis.com/maps/api/place/autocomplete"
+    }
+    ]
+  
 }

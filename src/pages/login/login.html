@@ -43,10 +43,7 @@
    <button ion-button block clear (click)="createAccount()">
     Create a new account
   </button>
-   <button ion-button block clear (click)="test()">
-    TEST
-  </button>
-
+  
 <div *ngFor="let todo of todos | async">
     <h1>{{ todo.todoName}}</h1>
     <p>{{ todo.todoContent}}</p>

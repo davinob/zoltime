@@ -1,16 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform} from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TodayMenuPage } from '../pages/today-menu/today-menu';
 import { OrdersTabPage } from '../pages/orders-tab/orders-tab';
 import { LoginPage } from '../pages/login/login';
 
+import { AuthService } from '../providers/auth-service';
+import { UserService } from '../providers/user-service';
 import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
-import { AngularFireAuth } from 'angularfire2/auth';
 
-
+import { Storage } from '@ionic/storage';
+import 'rxjs/add/operator/first';
 
 @Component({
   templateUrl: 'app.html'
@@ -18,26 +18,31 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  rootPage: any;
   activePage: any;
-
+  
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, afAuth: AngularFireAuth, public statusBar: StatusBar, 
-  public splashScreen: SplashScreen ) {
-     const authObserver = afAuth.authState.subscribe( user => {
-      if (user) {
-        this.rootPage = TodayMenuPage;
-        authObserver.unsubscribe();
-      } else {
-        this.rootPage = LoginPage;
-        authObserver.unsubscribe();
-      }
-    });
-    this.initializeApp();
-    
-  
-
+  constructor(public platform: Platform, authService: AuthService, userService: UserService,
+  private storage: Storage ) {
+         
+         
+         authService.isUserLoggedIn().subscribe(user=>
+          {
+          if (user)
+          {
+          console.log("USER IS CONNECTED");
+          this.rootPage = OrdersTabPage;
+          }
+        else
+        {
+          console.log("USER IS NOT CONNECTED");
+          this.rootPage = LoginPage;
+        }
+        
+        });
+     this.initializeApp();
+   
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'TodayMenu', component: TodayMenuPage },
@@ -49,16 +54,18 @@ export class MyApp {
 
   }
 
+
+
+  
   initializeApp() {
     
-   
-    
-    this.platform.ready().then(() => {
+      this.platform.ready().then( () => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
+      console.log("Platform is ready");
+       });
+  
+  
   }
 
   openPage(page) {

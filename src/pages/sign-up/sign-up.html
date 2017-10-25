@@ -27,11 +27,52 @@
     <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid  && signupForm.controls.password.dirty">
       <p>Your password needs more than 6 characters.</p>
     </ion-item>
+    
+     <ion-item>
+      <ion-label stacked>Restaurant Name</ion-label>
+      <ion-input formControlName="name" type="text"  placeholder="Restaurant Name"></ion-input>
+    </ion-item>
+    
+      <ion-item> <ion-label stacked>Address</ion-label>
+      <ion-input formControlName="address" [(ngModel)]="searchAddress" (focus)="showAddresses(true)" (blur)="showAddresses(false)"  placeholder="Address">
+      </ion-input>
+      </ion-item>
+     <div *ngIf="searching" class="spinner-container">
+        <ion-spinner></ion-spinner>
+    </div>
+    <ion-list>
+        <ion-item *ngFor="let address of addresses" (click)="selectAddress(address)">
+            {{address.description}}
+        </ion-item>
+    </ion-list>
+    
+    <ion-item>
+      <ion-label stacked>General Description</ion-label>
+      <ion-input formControlName="description"  #description type="text"  placeholder="General Description"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Picture</ion-label>
+      <ion-input formControlName="picture" type="text"  placeholder="Picture"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Hashgaha</ion-label>
+      <ion-input formControlName="hashgaha" type="text"  placeholder="Hashgaha"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Categories</ion-label>
+      <ion-input formControlName="categories" type="text"  placeholder="Categories"></ion-input>
+    </ion-item>
+    
 
     <button ion-button block type="submit">
-      Create an Account
+    Create an Account
     </button>
 
   </form>
+  
+      
+     
+  
 
 </ion-content>

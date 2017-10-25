@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { AuthService } from './../providers/auth-service';
+import { UserService } from './../providers/user-service';
+import { AddressService } from './../providers/address-service';
 
 import { MyApp } from './app.component';
 import { TodayMenuPage } from '../pages/today-menu/today-menu';
@@ -13,14 +15,17 @@ import { OrdersCompletedPage } from '../pages/orders-completed/orders-completed'
 import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
 import { LoginPage } from '../pages/login/login';
 
-
-
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
+
+import { HttpModule } from '@angular/http';
+
+import { IonicStorageModule } from '@ionic/storage';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyCjWUCqcYx8lGtAKWI8Q-5H8V1rktUQjJc",
@@ -47,7 +52,10 @@ export const firebaseConfig = {
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    HttpModule,
+    IonicStorageModule.forRoot()
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -64,7 +72,9 @@ export const firebaseConfig = {
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService
+    AuthService,
+    UserService,
+    AddressService
   ]
 })
 export class AppModule {}

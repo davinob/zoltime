@@ -17,6 +17,14 @@
 
 
 <ion-content padding>
+  <ion-card>
+    <ion-card-content>
+   <div *ngIf="user$.email | async as user">
+        <h3>Howdy, {{ user.email }}</h3>
+   </div>
+  </ion-card-content>
+
+</ion-card>
   <button ion-item (click)="logoutApp()">
       <!--Add this static button for logout-->
         Log Out

@@ -4,6 +4,8 @@ import { IonicPage, NavController, NavParams,LoadingController,
 import { AuthService } from '../../providers/auth-service';
 
 import { LoginPage } from '../login/login';
+import { UserService, User } from '../../providers/user-service';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Generated class for the ProfileSettingsPage page.
@@ -21,7 +23,10 @@ export class ProfileSettingsPage {
 
   public loading:Loading;
 
-  constructor(public navCtrl: NavController, public authData: AuthService, public navParams: NavParams,public loadingCtrl: LoadingController) {
+  user$:Observable<User>;
+
+  constructor(public navCtrl: NavController, public authData: AuthService, private userService:UserService,  public navParams: NavParams,public loadingCtrl: LoadingController) {
+  this.user$=userService.getCurrentUser();
   }
 
   ionViewDidLoad() {

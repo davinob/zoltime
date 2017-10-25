@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+import { Observable } from 'rxjs/Observable';
+
 @Injectable()
 export class AuthService {
-
   
-  constructor(private afAuth: AngularFireAuth) { }
+  constructor(private afAuth: AngularFireAuth) { 
+   }
+  
+  public isUserLoggedIn():Observable<any>
+  {
+    return this.afAuth.authState;
+  }
   
   loginUser(newEmail: string, newPassword: string): Promise<any> {
   return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword);
@@ -17,16 +24,13 @@ export class AuthService {
   
   logoutUser(): Promise<any> {
   return this.afAuth.auth.signOut();
+  
   }
   
 
   signupUser(newEmail: string, newPassword: string): Promise<any> {
-  console.log("SignUpUser");
-  return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword)
-  .then(authData => {
-    }
-    );
-}
+  return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword);
+  }
 
 
 
