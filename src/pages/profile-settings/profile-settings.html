@@ -19,9 +19,16 @@
   <ion-content padding>
     <ion-card>
       <ion-card-content>
-     <div *ngIf="userService.getCurrentUser()  as user">
+     <div *ngIf="userService.getCurrentUser() as user ">
           <h3>Howdy, {{ user.email }}</h3>
-     </div>
+          <h3>Howdy, {{ user.restaurantName }}</h3>
+          <h3>Howdy, {{ user.address }}</h3>
+          <h3>Howdy, {{ user.description }}</h3>
+          <h3>Howdy, {{ user.pictureURL }}</h3>
+          <h3>Howdy, {{ user.hashgaha }}</h3>
+          <h3>Howdy, {{ user.categories }}</h3>
+      </div>
+     
     </ion-card-content>
   
   </ion-card>
@@ -30,8 +37,5 @@
           Log Out
         </button>
         
-  <div *ngFor="let errorMessage of errorMessages">
-     <p>{{ errorMessage}}</p>
-  </div>
   </ion-content>
   

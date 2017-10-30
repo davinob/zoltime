@@ -47,10 +47,7 @@ export class LoginPage {
          console.log(authData);
          console.log(authData.uid);
          
-        this.userService.initCurrentUser(authData.uid).then
-        ((dataObs)=>
-        {
-          dataObs.subscribe(data=>{
+        this.userService.initCurrentUser(authData.uid).subscribe(data=>{
           console.log("THE DATA");
           console.log(data);
             console.log("IS CURRENT USER ENABLED?");
@@ -65,14 +62,7 @@ export class LoginPage {
             }
           });
           
-        },
-        error=>
-        {
-          this.authService.logoutUser();
-          this.alertAndLoadingService.showAlert(error);
-        });
-        
-      }).catch((error) => {
+        }).catch((error) => {
         this.authService.logoutUser();
         this.alertAndLoadingService.showAlert(error);
         

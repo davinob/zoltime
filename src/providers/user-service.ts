@@ -32,26 +32,30 @@ export class UserService {
 
   constructor(private afs: AngularFirestore) {
     this.usersCollectionRef = this.afs.collection<User>('users');  
-  }
+   }
   
-   public initCurrentUser(userID:string):Promise<any>
+   public initCurrentUser(userID:string):Observable<any>
   {
+    console.log("init with userID:"+userID);
         this.userID=userID;
         this.currentUserObs=this.usersCollectionRef.doc(this.userID).valueChanges();
 
         this.currentUserObs.subscribe(data =>
         { 
           this.currentUser=data;
-          console.log("CURRENT USER DATA");
+          console.log("CURRENT USER DATA SUBSCRIBE FROM INIT");
           console.log(this.currentUser);
         });
      
         console.log("resolving promise");
-        return Promise.resolve(this.currentUserObs.first(data=>data!=null));
+        return this.currentUserObs.first(data=>data!=null);
   }
   
    public getCurrentUser():any
   {
+    console.log("this USER ID: "+this.userID);
+    console.log("this USER: ");
+    console.log(this.currentUser);
     return this.currentUser;
   }
   
