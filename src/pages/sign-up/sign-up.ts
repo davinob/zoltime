@@ -1,14 +1,12 @@
 import { Component,ViewChild } from '@angular/core';
 import { 
   IonicPage, 
-  NavController, 
-  LoadingController, 
-  Loading, 
-  AlertController } from 'ionic-angular';
+  NavController} from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../providers/auth-service';
 import { UserService } from '../../providers/user-service';
 import { AddressService,Address } from '../../providers/address-service';
+import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
 
@@ -25,7 +23,7 @@ export class SignUpPage {
   @ViewChild('address') addressInput ;
   
   public signupForm:FormGroup;
-  public loading:Loading;
+
   
   searchAddress: string = '';
   addresses: any;
@@ -35,11 +33,13 @@ export class SignUpPage {
   addressSelected:boolean=false;
   
   addressJSON:Address;
+  
+   
 
   constructor(public nav: NavController, public authService: AuthService, 
     public userService: UserService,
-    public formBuilder: FormBuilder, public loadingCtrl: LoadingController, 
-    public alertCtrl: AlertController,
+    public formBuilder: FormBuilder,
+    public alertAndLoadingService: AlertAndLoadingService,
     public addressService: AddressService) {
 
     this.signupForm = formBuilder.group({
@@ -54,6 +54,8 @@ export class SignUpPage {
     });
     
     
+    
+    
   }
 
   signupUser(){
@@ -62,41 +64,38 @@ export class SignUpPage {
     } else {
       this.authService.signupUser(this.signupForm.value.email, this.signupForm.value.password)
       .then(user => {
+        console.log("LOGOUT:"+user);
+        this.authService.logoutUser().then(()=>
+        {
         console.log("SIGNUP:"+user);
-        this.userService.createUser(
+         this.userService.createUser(
           user.uid, user.email, this.signupForm.value.name,this.addressJSON,this.signupForm.value.description,
-                    this.signupForm.value.picture,this.signupForm.value.hashgaha,this.signupForm.value.categories);
-        this.authService.logoutUser();
-        
-        this.nav.setRoot(LoginPage);
-      }, (error) => {
-        console.log("SIGNUP ERROR:"+error);
-        this.loading.dismiss().then( () => {
-          var errorMessage: string = error.message;
-            let alert = this.alertCtrl.create({
-              message: errorMessage,
-              buttons: [
-                {
-                  text: "Ok",
-                  role: 'cancel'
-                }
-              ]
-            });
-          alert.present();
+        this.signupForm.value.picture,this.signupForm.value.hashgaha
+        ,this.signupForm.value.categories)
+        .then(()=> {
+          this.nav.setRoot(LoginPage);
+          console.log("Document successfully written!");
+          })
+          .catch((error)=> {
+            this.alertAndLoadingService.showAlert(error);
+          });
         });
+      }).catch((error) => {
+        this.alertAndLoadingService.showAlert(error);
+       
       });
 
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
+   
+      this.alertAndLoadingService.showLoading();
     }
   }
+  
+ 
   
   
    ionViewDidLoad() {
      
-      this.signupForm.controls.address.valueChanges.debounceTime(700).subscribe(search => {
+      this.signupForm.controls.address.valueChanges.debounceTime(400).subscribe(search => {
             this.setFilteredItems();
  
         });
@@ -119,7 +118,7 @@ export class SignUpPage {
  
     }
     
-    
+    addressJustSet:boolean=false;
     
     selectAddress(address:any)
     {
@@ -128,13 +127,15 @@ export class SignUpPage {
       this.searchAddress=address.description;
       this.addressSelected=true;
       
+      
       this.addressService.getPosition(address.place_id).then((addressJSON)=>
       {
           console.log(addressJSON);
           this.addressJSON=addressJSON;
       });
-        
-      this.descriptionInput.setFocus();
+      
+      this.addressJustSet=true;  
+     this.addressInput.setFocus();
       
     }
     
@@ -142,6 +143,11 @@ export class SignUpPage {
     
     showAddresses(toShow:boolean)
     {
+      if (this.addressJustSet)
+      {
+        this.addressJustSet=false;
+        return;
+      }
       console.log("SHOW ADRESS: "+toShow);
      this.shouldShowAddresses=toShow;  
      if (!toShow)

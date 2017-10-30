@@ -5,6 +5,7 @@ import { AuthService } from '../../providers/auth-service';
 
 import { LoginPage } from '../login/login';
 import { UserService, User } from '../../providers/user-service';
+import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Observable } from 'rxjs/Observable';
 
 /**
@@ -23,10 +24,11 @@ export class ProfileSettingsPage {
 
   public loading:Loading;
 
-  user$:Observable<User>;
-
-  constructor(public navCtrl: NavController, public authData: AuthService, private userService:UserService,  public navParams: NavParams,public loadingCtrl: LoadingController) {
-  this.user$=userService.getCurrentUser();
+  
+  constructor(public navCtrl: NavController, public authData: AuthService, 
+  private userService:UserService,  public navParams: NavParams,
+  public alertAndLoadingService: AlertAndLoadingService) {
+  
   }
 
   ionViewDidLoad() {
@@ -41,10 +43,7 @@ export class ProfileSettingsPage {
      this.navCtrl.setRoot(LoginPage);
      });
      
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
+     this.alertAndLoadingService.showLoading();
   }
   
 }

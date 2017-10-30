@@ -20,26 +20,30 @@ export class MyApp {
 
   rootPage: any;
   activePage: any;
+  initTime:boolean=true;
   
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, authService: AuthService, userService: UserService,
+  constructor(public platform: Platform, public authService: AuthService, public userService: UserService,
   private storage: Storage ) {
-         
          
          authService.isUserLoggedIn().subscribe(user=>
           {
           if (user)
           {
           console.log("USER IS CONNECTED");
+           if (this.initTime)
+         {
           this.rootPage = OrdersTabPage;
+          userService.initCurrentUser(user.uid);
           }
+        }
         else
         {
           console.log("USER IS NOT CONNECTED");
-          this.rootPage = LoginPage;
+         this.rootPage = LoginPage;
         }
-        
+        this.initTime=false;
         });
      this.initializeApp();
    
@@ -78,6 +82,11 @@ export class MyApp {
   checkActive(page)
   {
     return page == this.activePage;
+  }
+  
+  logout()
+  {
+    this.authService.logoutUser();
   }
   
  

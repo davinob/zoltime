@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { 
   IonicPage, 
-  NavController, 
-  LoadingController, 
-  Loading, 
-  AlertController } from 'ionic-angular';
+  NavController} from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../providers/auth-service';
+import { UserService } from '../../providers/user-service';
+import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { EmailValidator } from '../../validators/email';
-import { TodayMenuPage } from '../today-menu/today-menu';
+import { OrdersTabPage } from '../orders-tab/orders-tab';
+import { LoginTestPage } from '../login-test/login-test';
 import 'rxjs/add/operator/map';
 
 
@@ -22,18 +22,19 @@ import 'rxjs/add/operator/map';
 export class LoginPage {
   
   public loginForm:FormGroup;
-  public loading:Loading;
   
+  public errorMessages:any[];
   
-  constructor(public navCtrl: NavController, public authData: AuthService, 
-    public formBuilder: FormBuilder, public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public authService: AuthService, 
+    public formBuilder: FormBuilder, 
+    public alertAndLoadingService: AlertAndLoadingService, public userService:UserService) {
     
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
         password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
       });
       
+            
 
   }
   
@@ -41,28 +42,43 @@ export class LoginPage {
     if (!this.loginForm.valid){
       console.log(this.loginForm.value);
     } else {
-      this.authData.loginUser(this.loginForm.value.email, this.loginForm.value.password)
+      this.authService.loginUser(this.loginForm.value.email, this.loginForm.value.password)
       .then( authData => {
-        //this.navCtrl.setRoot(TodayMenuPage);
-      }, error => {
-        this.loading.dismiss().then( () => {
-          let alert = this.alertCtrl.create({
-            message: error.message,
-            buttons: [
-              {
-                text: "Ok",
-                role: 'cancel'
-              }
-            ]
+         console.log(authData);
+         console.log(authData.uid);
+         
+        this.userService.initCurrentUser(authData.uid).then
+        ((dataObs)=>
+        {
+          dataObs.subscribe(data=>{
+          console.log("THE DATA");
+          console.log(data);
+            console.log("IS CURRENT USER ENABLED?");
+            if (this.userService.isCurrentUserEnabled())
+            {
+            this.navCtrl.setRoot(OrdersTabPage);
+            }
+            else
+            {
+              this.authService.logoutUser();
+              this.alertAndLoadingService.showAlert({message:"USER IS NOT ENABLED"});
+            }
           });
-          alert.present();
+          
+        },
+        error=>
+        {
+          this.authService.logoutUser();
+          this.alertAndLoadingService.showAlert(error);
         });
+        
+      }).catch((error) => {
+        this.authService.logoutUser();
+        this.alertAndLoadingService.showAlert(error);
+        
       });
 
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
+    this.alertAndLoadingService.showLoading();
     }
   }
 
@@ -73,6 +89,12 @@ export class LoginPage {
   createAccount(){
     this.navCtrl.push('SignUpPage');
   }
+  
+   createLoginTest(){
+    this.navCtrl.push('LoginTestPage');
+  }
+
+
 
 
 }

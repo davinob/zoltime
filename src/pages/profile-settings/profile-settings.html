@@ -5,28 +5,33 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>ProfileSettings</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-  <ion-card>
-    <ion-card-content>
-   <div *ngIf="user$.email | async as user">
-        <h3>Howdy, {{ user.email }}</h3>
-   </div>
-  </ion-card-content>
-
-</ion-card>
-  <button ion-item (click)="logoutApp()">
-      <!--Add this static button for logout-->
-        Log Out
+  
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
       </button>
-</ion-content>
+      <ion-title>ProfileSettings</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+    <ion-card>
+      <ion-card-content>
+     <div *ngIf="userService.getCurrentUser()  as user">
+          <h3>Howdy, {{ user.email }}</h3>
+     </div>
+    </ion-card-content>
+  
+  </ion-card>
+    <button ion-item (click)="logoutApp()">
+        <!--Add this static button for logout-->
+          Log Out
+        </button>
+        
+  <div *ngFor="let errorMessage of errorMessages">
+     <p>{{ errorMessage}}</p>
+  </div>
+  </ion-content>
+  

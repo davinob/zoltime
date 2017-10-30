@@ -34,7 +34,7 @@
     </ion-item>
     
       <ion-item> <ion-label stacked>Address</ion-label>
-      <ion-input formControlName="address" [(ngModel)]="searchAddress" (focus)="showAddresses(true)" (blur)="showAddresses(false)"  placeholder="Address">
+      <ion-input #address formControlName="address" [(ngModel)]="searchAddress" (ionFocus)="showAddresses(true)" (ionBlur)="showAddresses(false)"  placeholder="Address">
       </ion-input>
       </ion-item>
      <div *ngIf="searching" class="spinner-container">
@@ -48,7 +48,7 @@
     
     <ion-item>
       <ion-label stacked>General Description</ion-label>
-      <ion-input formControlName="description"  #description type="text"  placeholder="General Description"></ion-input>
+      <ion-input formControlName="description"  type="text"  placeholder="General Description"></ion-input>
     </ion-item>
 
     <ion-item>

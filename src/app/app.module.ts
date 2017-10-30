@@ -14,6 +14,7 @@ import { OrdersPendingPage } from '../pages/orders-pending/orders-pending';
 import { OrdersCompletedPage } from '../pages/orders-completed/orders-completed';
 import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
 import { LoginPage } from '../pages/login/login';
+import { LoginTestPage } from '../pages/login-test/login-test';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -26,6 +27,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from '@angular/http';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { AlertAndLoadingService } from '../providers/alert-loading-service';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyCjWUCqcYx8lGtAKWI8Q-5H8V1rktUQjJc",
@@ -74,7 +76,8 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
     UserService,
-    AddressService
+    AddressService,
+    AlertAndLoadingService
   ]
 })
 export class AppModule {}
