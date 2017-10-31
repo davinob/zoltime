@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http  } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 export interface Address{
    lat:number;
@@ -13,44 +15,44 @@ export interface Address{
 @Injectable()
 export class AddressService{
   
-  allAddresses:any;
+ 
 
   constructor( public http: Http) {
   }
   
+  
   key:string="AIzaSyDXH1P9t_7NbM4xKUptwQ47YjNYSosLi_k";
       
-  filterItems(searchTerm:string):Promise<any>
+  filterItems(searchTerm:string):Observable<any>
   {
     let searchUrl:string="/mapsAutocomplete/json?input="+searchTerm+"&types=geocode&components=country:il&language=iw&key="+this.key;
-   
-     return new Promise<any>((resolve, reject) => {
+    let allAddresses:Subject<any>=new Subject<any>();
+
      this.http.get(searchUrl).map(res => res.json()).subscribe(data => {
-      this.allAddresses=data.predictions.filter((address) => {
-            return address.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+      let newAdd=data.predictions.filter((address) => {
+        return address.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
       });
+      console.log("NEW ADDRESS:");
+      console.log(newAdd);
       
-         setTimeout( () => {
-            resolve(this.allAddresses);
-        }, 1500);
+      allAddresses.next({value:newAdd});
      },
     err=>{
     console.log(err);
     }
     );
-  });
+   return allAddresses.asObservable();
 
   }
   
   
-  getPosition(placeID:string):Promise<any>
+  getPosition(placeID:string):Observable<any>
   {
     let searchUrl:string="/mapsDetails/json?placeid="+placeID+"&key="+this.key;
-   
-     return new Promise<any>((resolve, reject) => {
+    let addressPos:Subject<any>=new Subject<any>();
+
      this.http.get(searchUrl).map(res => res.json()).subscribe(data => {
       let address:Address=<Address>{};
-      
       
      for (let addressComp of data.result.address_components) {
        if (addressComp.types[0]=="street_number")
@@ -65,17 +67,17 @@ export class AddressService{
       
       address.lat=data.result.geometry.location.lat;
       address.lng=data.result.geometry.location.lng;
+
+      addressPos.next({value:address});
       
-      setTimeout( () => {
-            resolve(address);
-        }, 1500);
+     
      },
     err=>{
     console.log(err);
     }
     );
-  });
-
+ 
+    return addressPos.asObservable();
   }
 
 }

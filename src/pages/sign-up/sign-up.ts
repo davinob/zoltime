@@ -13,6 +13,9 @@ import { EmailValidator } from '../../validators/email';
 import 'rxjs/add/operator/debounceTime';
 
 
+
+ 
+
 @IonicPage()
 @Component({
   selector: 'page-sign-up',
@@ -34,7 +37,9 @@ export class SignUpPage {
   
   addressJSON:Address;
   
-   
+  hashgahot:string[]=["Kosher","Lemehadrin","No"];
+  categories:string[]=["Italian", "Sandwichs","Israeli", "Boulangerie"];
+ 
 
   constructor(public nav: NavController, public authService: AuthService, 
     public userService: UserService,
@@ -68,10 +73,11 @@ export class SignUpPage {
         this.authService.logoutUser().then(()=>
         {
         console.log("SIGNUP:"+user);
+        let jsonCatego:any=this.jsonCatego(this.signupForm.value.categories);
          this.userService.createUser(
           user.uid, user.email, this.signupForm.value.name,this.addressJSON,this.signupForm.value.description,
         this.signupForm.value.picture,this.signupForm.value.hashgaha
-        ,this.signupForm.value.categories)
+        ,jsonCatego)
         .then(()=> {
           this.nav.setRoot(LoginPage);
           console.log("Document successfully written!");
@@ -91,6 +97,15 @@ export class SignUpPage {
   }
   
  
+  jsonCatego(arr:string[]):any
+  {
+    let myCategos:any=<any>{};
+      arr.forEach(element => {
+        myCategos[element]=true;
+      });
+
+    return myCategos;
+  }
   
   
    ionViewDidLoad() {
@@ -110,10 +125,10 @@ export class SignUpPage {
     }
         this.searching=true;
         this.addressSelected=false;
-        this.addressService.filterItems(this.searchAddress).then((listOfAddresses)=>
+        this.addressService.filterItems(this.searchAddress).first().subscribe((listOfAddresses)=>
         {
            this.searching=false;
-           this.addresses=listOfAddresses;
+           this.addresses=listOfAddresses.value;
         });
  
     }
@@ -128,10 +143,10 @@ export class SignUpPage {
       this.addressSelected=true;
       
       
-      this.addressService.getPosition(address.place_id).then((addressJSON)=>
+      this.addressService.getPosition(address.place_id).first().subscribe((addressJSON)=>
       {
           console.log(addressJSON);
-          this.addressJSON=addressJSON;
+          this.addressJSON=addressJSON.value;
       });
       
       this.addressJustSet=true;  
