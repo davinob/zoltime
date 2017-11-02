@@ -85,6 +85,10 @@ export class LoginPage {
   }
 
 
+  test()
+  {
+    this.alertAndLoadingService.showAlert({message:"BAD ERROR"});
+  }
 
 
 }

@@ -24,6 +24,7 @@ import 'rxjs/add/operator/debounceTime';
 export class SignUpPage {
   @ViewChild('description') descriptionInput ;
   @ViewChild('address') addressInput ;
+  @ViewChild('fileInput') fileInput;
   
   public signupForm:FormGroup;
 
@@ -53,7 +54,7 @@ export class SignUpPage {
       name: ['', Validators.required],
       description: ['', Validators.required],
       address: ['', Validators.required],
-      picture: ['', Validators.required],
+      picture: [''],
       hashgaha: ['', Validators.required],
       categories: ['', Validators.required]
     });
@@ -171,6 +172,40 @@ export class SignUpPage {
      if (!this.addressSelected)
       this.searchAddress=null;
      }
+    }
+
+
+    getPicture() {
+   /*    if (Camera['installed']()) {
+        this.camera.getPicture({
+          destinationType: this.camera.DestinationType.DATA_URL,
+          targetWidth: 96,
+          targetHeight: 96
+        }).then((data) => {
+          this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
+        }, (err) => {
+          alert('Unable to take photo');
+        })
+      } else { */
+        this.fileInput.nativeElement.click();
+      
+    }
+
+    processWebImage(event) {
+      console.log("PROCESS WEB IMAGE");
+      let reader = new FileReader();
+      reader.onload = (readerEvent) => {
+        let imageData = (readerEvent.target as any).result;
+        this.signupForm.patchValue({ 'picture': imageData });
+       };
+      console.log(event);
+      if ((event.target.files!=null)&&(event.target.files[0]!=null))
+       reader.readAsDataURL(event.target.files[0]);
+      
+    }
+  
+    getProfileImageStyle() {
+      return 'url(' + this.signupForm.controls['picture'].value + ')'
     }
     
     

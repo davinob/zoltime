@@ -4,6 +4,8 @@ import 'rxjs/add/operator/map';
 import {AlertController,LoadingController, Loading } from 'ionic-angular';
 import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs/Subject';
 
 /*
   Generated class for the AlertProvider provider.
@@ -16,7 +18,7 @@ export class AlertAndLoadingService {
   
     public loading:Loading;
    
-  constructor(public alertCtrl: AlertController,public loadingCtrl: LoadingController) {
+  constructor(public translateService: TranslateService,public alertCtrl: AlertController,public loadingCtrl: LoadingController) {
     }
   
   showLoading()
@@ -30,21 +32,38 @@ export class AlertAndLoadingService {
  
   showAlert(error:any)
   {
-    this.loading.dismiss().then( () => {
-          var errorMessage: string = error.message;
-            let alert = this.alertCtrl.create({
-              message: errorMessage,
-              buttons: [
-                {
-                  text: "Ok",
-                  role: 'cancel'
-                }
-              ]
-            });
-          alert.present();
-        });
+    this.translateService.get(error.message).subscribe(
+      value => {
+        // value is our translated string
+        error.message=value;
+        if (this.loading!=null)
+        {
+          this.loading.dismiss().then( () => {
+              this.presentAlert(error);
+          });
+      }
+      else
+      {
+        this.presentAlert(error);
+      }
+    }
+    )
   }
   
+  presentAlert(error:any)
+  {
+    var errorMessage: string = error.message;
+    let alert = this.alertCtrl.create({
+      message: errorMessage,
+      buttons: [
+        {
+          text: "Ok",
+          role: 'cancel'
+        }
+      ]
+    });
+  alert.present();
+  }
   
 
 }

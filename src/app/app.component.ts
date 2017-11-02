@@ -12,6 +12,8 @@ import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings'
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/first';
 
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -24,7 +26,7 @@ export class MyApp {
   
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public authService: AuthService, public userService: UserService,
+  constructor(public translate: TranslateService,public platform: Platform, public authService: AuthService, public userService: UserService,
   private storage: Storage ) {
          
          authService.isUserLoggedIn().subscribe(user=>
@@ -45,7 +47,7 @@ export class MyApp {
         }
         this.initTime=false;
         });
-     this.initializeApp();
+    
    
     // used for an example of ngFor and navigation
     this.pages = [
@@ -56,8 +58,23 @@ export class MyApp {
     
     this.activePage=this.pages[0];
 
+    this.initTranslate();
+
+    this.initializeApp();
+
   }
 
+  initTranslate() {
+    // Set the default language for translation strings, and the current language.
+    this.translate.setDefaultLang('he');
+
+//    if (this.translate.getBrowserLang() !== undefined) {
+  //    this.translate.use(this.translate.getBrowserLang());
+    //} else {
+      //this.translate.use('he'); // Set your language here
+    //}
+
+  }
 
 
   
