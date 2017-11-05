@@ -3,6 +3,7 @@ import { Nav, Platform} from 'ionic-angular';
 
 import { TodayMenuPage } from '../pages/today-menu/today-menu';
 import { OrdersTabPage } from '../pages/orders-tab/orders-tab';
+import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
 
 import { AuthService } from '../providers/auth-service';
@@ -26,24 +27,40 @@ export class MyApp {
   
   pages: Array<{title: string, component: any}>;
 
-  constructor(public translate: TranslateService,public platform: Platform, public authService: AuthService, public userService: UserService,
+  constructor(public translate: TranslateService,public platform: Platform, public authService: AuthService, 
+    public userService: UserService,
   private storage: Storage ) {
-         
-         authService.isUserLoggedIn().subscribe(user=>
+    
+         authService.getAuthState().subscribe(user=>
           {
           if (user)
           {
           console.log("USER IS CONNECTED");
            if (this.initTime)
          {
-          this.rootPage = OrdersTabPage;
-          userService.initCurrentUser(user.uid);
+           console.log("REDIRECTING TO SIGNED PAGE")
+             this.userService.initCurrentUser(user.uid).subscribe(data=>
+          {
+            console.log("DATAAA");
+            console.log(data);
+          if (!data.isOK)
+          {
+            this.rootPage=LoginPage;
+          }
+          else
+          {
+            if (data.page=='TutorialPage')
+            this.rootPage=TutorialPage;
+            else
+            this.rootPage=OrdersTabPage;
+          }
+          });
           }
         }
         else
         {
           console.log("USER IS NOT CONNECTED");
-         this.rootPage = LoginPage;
+          this.rootPage=LoginPage;
         }
         this.initTime=false;
         });

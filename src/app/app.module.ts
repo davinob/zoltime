@@ -13,6 +13,7 @@ import { OrdersNewPage } from '../pages/orders-new/orders-new';
 import { OrdersPendingPage } from '../pages/orders-pending/orders-pending';
 import { OrdersCompletedPage } from '../pages/orders-completed/orders-completed';
 import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
+import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
 import { SignUpPage } from '../pages/sign-up/sign-up';
 import { LoginTestPage } from '../pages/login-test/login-test';
@@ -58,7 +59,8 @@ export function createTranslateLoader(http: HttpClient) {
     OrdersCompletedPage,
     ProfileSettingsPage,
     TodayMenuPage,
-    LoginPage
+    LoginPage,
+    TutorialPage
   ],
   imports: [
     BrowserModule,
@@ -87,7 +89,8 @@ export function createTranslateLoader(http: HttpClient) {
     OrdersPendingPage,
     OrdersCompletedPage,
     ProfileSettingsPage,
-    LoginPage
+    LoginPage,
+    TutorialPage
   ],
   providers: [
     StatusBar,

@@ -10,6 +10,9 @@ import {
   AngularFirestoreCollection} from 'angularfire2/firestore';
   import { Address } from './address-service';
 
+  import { Subject } from 'rxjs/Subject';
+
+  import { AuthService } from './auth-service';
 
 export interface User {
   email: string;
@@ -27,10 +30,12 @@ export class UserService {
   
   usersCollectionRef: AngularFirestoreCollection<User>;
   userID: string=null;
-  currentUser:any=null;
+  currentUser:any;
+  userStatus:Subject<any>=new Subject<any>();
+   
   currentUserObs:Observable<any>=null;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore,public authService:AuthService ) {
     this.usersCollectionRef = this.afs.collection<User>('users');  
    }
   
@@ -39,16 +44,44 @@ export class UserService {
     console.log("init with userID:"+userID);
         this.userID=userID;
         this.currentUserObs=this.usersCollectionRef.doc(this.userID).valueChanges();
+        let initTime:boolean=true;
 
         this.currentUserObs.subscribe(data =>
         { 
           this.currentUser=data;
           console.log("CURRENT USER DATA SUBSCRIBE FROM INIT");
           console.log(this.currentUser);
+          if (initTime)
+          {
+            let isOK:boolean=true;
+            console.log("THE DATA");
+            console.log(data);
+              console.log("IS CURRENT USER ENABLED?");
+              let page:string="";
+              if (this.isCurrentUserEnabled())
+              {
+              console.log("USER ENABLED");
+                if (this.isProfileCompleted())
+                {
+                  page="OrdersTabPage";
+                }
+                else
+                {
+                  page="TutorialPage";
+                }
+              
+              }
+              else
+              {
+              this.authService.logoutUser();
+               isOK=false; 
+              }
+            this.userStatus.next({isOK:isOK,page:page});
+            initTime=false;
+          }
         });
-     
-        console.log("resolving promise");
-        return this.currentUserObs.first(data=>data!=null);
+
+        return this.userStatus.asObservable().first(data=>data!=null);
   }
   
    public getCurrentUser():any
@@ -64,6 +97,13 @@ export class UserService {
     if (this.currentUser==null)
      return false;
     return this.currentUser.enabled==true;
+  }
+
+  public isProfileCompleted():boolean
+  {
+    if (this.currentUser==null)
+     return false;
+    return this.currentUser.profileCompleted==true;
   }
   
   public createUser(userUID:string, email:string, restaurantName:string,address:Address,description:string,

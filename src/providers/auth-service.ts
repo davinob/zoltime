@@ -9,7 +9,7 @@ export class AuthService {
   constructor(private afAuth: AngularFireAuth) { 
    }
   
-  public isUserLoggedIn():Observable<any>
+  public getAuthState():Observable<any>
   {
     return this.afAuth.authState;
   }

@@ -9,6 +9,7 @@ import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { EmailValidator } from '../../validators/email';
 import { OrdersTabPage } from '../orders-tab/orders-tab';
 import { LoginTestPage } from '../login-test/login-test';
+import { TutorialPage } from '../tutorial/tutorial';
 import 'rxjs/add/operator/map';
 
 
@@ -39,6 +40,7 @@ export class LoginPage {
   }
   
    loginUser(){
+     console.log("LOGIN CALLLED");
     if (!this.loginForm.valid){
       console.log(this.loginForm.value);
     } else {
@@ -46,22 +48,22 @@ export class LoginPage {
       .then( authData => {
          console.log(authData);
          console.log(authData.uid);
-         
-        this.userService.initCurrentUser(authData.uid).subscribe(data=>{
-          console.log("THE DATA");
-          console.log(data);
-            console.log("IS CURRENT USER ENABLED?");
-            if (this.userService.isCurrentUserEnabled())
-            {
-            this.navCtrl.setRoot(OrdersTabPage);
-            }
+        this.userService.initCurrentUser(authData.uid).subscribe(data=>
+          {
+            console.log(data);
+          if (!data.isOK)
+          {
+            this.alertAndLoadingService.showAlert({message:"USER IS NOT ENABLED"});
+          }
+          else
+          {
+            if (data.page=='TutorialPage')
+            this.navCtrl.setRoot(TutorialPage);
             else
-            {
-              this.authService.logoutUser();
-              this.alertAndLoadingService.showAlert({message:"USER IS NOT ENABLED"});
-            }
+            this.navCtrl.setRoot(OrdersTabPage);
+          }
+
           });
-          
         }).catch((error) => {
         this.authService.logoutUser();
         this.alertAndLoadingService.showAlert(error);
