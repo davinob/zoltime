@@ -5,11 +5,14 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content>
+  <ion-content class="global">
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" [class.activeHighLight]="checkActive(p)" (click)="openPage(p)">
-        {{p.title}}
-      </button>
+        <ion-item *ngFor="let p of pages">
+            <button menuClose clear ion-button  [class.activeHighLight]="checkActive(p)" (click)="openPage(p)">
+                <div class="menuButton">{{p.title}}</div> 
+            </button>
+        </ion-item>
+    
      </ion-list>
   </ion-content>
 

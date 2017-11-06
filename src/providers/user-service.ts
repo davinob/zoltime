@@ -17,12 +17,12 @@ import {
 export interface User {
   email: string;
   restaurantName:string;
-  address:Address;
-  description:string;
-  pictureURL:string;
-  hashgaha:string;
-  categories:string;
-  enabled:boolean
+  address?:Address;
+  description?:string;
+  pictureURL?:string;
+  hashgaha?:string;
+  categories?:string;
+  enabled?:boolean
 }
 
 @Injectable()
@@ -50,7 +50,6 @@ export class UserService {
         { 
           this.currentUser=data;
           console.log("CURRENT USER DATA SUBSCRIBE FROM INIT");
-          console.log(this.currentUser);
           if (initTime)
           {
             let isOK:boolean=true;
@@ -86,9 +85,6 @@ export class UserService {
   
    public getCurrentUser():any
   {
-    console.log("this USER ID: "+this.userID);
-    console.log("this USER: ");
-    console.log(this.currentUser);
     return this.currentUser;
   }
   
@@ -106,24 +102,16 @@ export class UserService {
     return this.currentUser.profileCompleted==true;
   }
   
-  public createUser(userUID:string, email:string, restaurantName:string,address:Address,description:string,
-                    pictureURL:string,hashgaha:string,categories:string):Promise<any>
+  public createUser(userUID:string, email:string, restaurantName:string):Promise<any>
   {
   
    let user:User={
       email: email,
       restaurantName:restaurantName,
-      address:address,
-      description:description,
-      pictureURL:pictureURL,
-      hashgaha:hashgaha,
-      categories:categories,
       enabled:false
     };
    console.log("creating user on UID"+userUID);
-    console.log(user); 
-    this.usersCollectionRef.doc(userUID).set(user);
-
+    
      return new Promise<any>((resolve, reject) => {
       let setUserPromise:Promise<void>=this.usersCollectionRef.doc(userUID).set(user);
       console.log("PROMISE launched");
@@ -143,5 +131,67 @@ export class UserService {
 
 }
 
+
+public updateCurrentUser(address:Address,description:string,
+  pictureURL:string,hashgaha:string,categories:string):Promise<any>
+{
+
+let userUpdate:any={
+address:address,
+description:description,
+pictureURL:pictureURL,
+hashgaha:hashgaha,
+categories:categories,
+profileCompleted:true
+};
+console.log("upadting user on UID"+this.userID);
+console.log(userUpdate); 
+
+return new Promise<any>((resolve, reject) => {
+let setUserPromise:Promise<void>=this.usersCollectionRef.doc(this.userID).update(userUpdate);
+console.log("PROMISE launched");
+setUserPromise.then( ()=>
+{
+console.log("PROMISE DONE");
+}
+).catch( (error)=>
+{
+console.log(error);
+});
+resolve(setUserPromise);
+setTimeout( () => {
+reject(new Error("Error inserting the data"));
+}, 150001);      
+});
+
+}
+
+
+public updateCurrentUserField(fieldName:any,fieldValue:any):Promise<any>
+{
+
+let userUpdate:any={};
+userUpdate[fieldName]=fieldValue;
+console.log("upadting user on UID"+this.userID);
+console.log(userUpdate); 
+
+return new Promise<any>((resolve, reject) => {
+let setUserPromise:Promise<void>=this.usersCollectionRef.doc(this.userID).update(userUpdate);
+console.log("PROMISE launched");
+setUserPromise.then( ()=>
+{
+console.log("PROMISE DONE");
+}
+).catch( (error)=>
+{
+console.log(error);
+});
+resolve(setUserPromise);
+setTimeout( () => {
+reject(new Error("Error inserting the data"));
+}, 150001);      
+});
+
+}
 
 }

@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content class="global" no-bounce>
   <ion-slides pager="true" dir="{{dir}}" (ionSlideWillChange)="onSlideChangeStart($event)">
     <ion-slide *ngFor="let slide of slides">
       <img [src]="slide.image" class="slide-image" />
@@ -14,14 +14,8 @@
       <p [innerHTML]="slide.description"></p>
     </ion-slide>
     <ion-slide>
-      <img src="assets/img/ica-slidebox-img-4.png" class="slide-image" />
-      <h2 class="slide-title">{{ 'TUTORIAL_SLIDE4_TITLE' | translate }}</h2>
-      <button ion-button icon-end large clear (click)="startApp()">
-        {{ 'TUTORIAL_CONTINUE_BUTTON' | translate }}
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button>
-    </ion-slide>
-    <ion-slide>
+    
+    <form [formGroup]="signupForm" (submit)="signupUser()">
     <ion-item> <ion-label stacked>Address</ion-label>
       <ion-input #address formControlName="address" [(ngModel)]="searchAddress" (ionFocus)="showAddresses(true)" (ionBlur)="showAddresses(false)"  placeholder="Address">
       </ion-input>
@@ -53,8 +47,9 @@
      </ion-item> 
 
     <ion-item>
+        
       <ion-label stacked>General Description</ion-label>
-      <ion-input formControlName="description"  type="text"  placeholder="General Description"></ion-input>
+      <ion-textarea formControlName="description"  type="text"  placeholder="General Description"></ion-textarea>
     </ion-item>
     
     
@@ -69,6 +64,10 @@
       <div class="profile-image" *ngIf="signupForm.controls.picture.value" [style.backgroundImage]="getProfileImageStyle()">
       </div>
     </div>
+    <button ion-button block [disabled]="!signupForm.valid" type="submit">
+        {{ 'UPDATE MY PROFILE' | translate }}
+        </button>
+  </form>
   </ion-slide>
   </ion-slides>
 </ion-content>

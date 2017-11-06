@@ -12,6 +12,7 @@ import {
   import * as firebase from 'firebase';
  import {UploadTaskSnapshot} from 'firebase/storage';
   
+ import { UserService } from './user-service';
 
 export class Upload {
   key: string;
@@ -20,31 +21,37 @@ export class Upload {
   url:string;
   progress:number;
   createdAt: Date = new Date();
-  constructor(file:File) {
+  folder:string;
+
+  constructor(file:File,folder:string) {
     this.file = file;
     this.key= (new Date().valueOf()).toString()+Math.random();
+    this.folder=folder;
   }
 }
 
 @Injectable()
 export class UploadService {
-  uploadsCollectionRef: AngularFirestoreCollection<Upload>;
-
-  constructor(public afs: AngularFirestore) { 
-
-    this.uploadsCollectionRef = this.afs.collection<any>('uploads');  
-  }
-
-  private basePath:string = '/uploads';
   
 
-  pushUpload(upload: Upload) {
+  private basePath:string = '/uploads';
+
+  constructor(public afs: AngularFirestore,public userService:UserService) { 
+this.basePath='/uploads/'+userService.userID;
+  }
+
+  
+  
+
+  pushUpload(upload: Upload) :Promise<any>{
     let storageRef = firebase.storage().ref();
     let metadata = {
       customMetadata: {status:'first_upload'}
       };
 
     let uploadTask = storageRef.child(`${this.basePath}/${upload.file.name}`).put(upload.file,metadata);
+    
+    return new Promise<any>((resolve, reject) => {
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot:UploadTaskSnapshot) =>  {
         // upload in progress
@@ -53,36 +60,28 @@ export class UploadService {
       },
       (error) => {
         // upload failed
-        console.log(error)
+        console.log(error);
+        reject(new Error("Error uploading the file"));
       },
       () => {
         // upload success
         upload.url = uploadTask.snapshot.downloadURL;
         upload.name = upload.file.name;
-        this.saveFileData(upload)
+        resolve({url:upload.url,name:upload.name});
       }
     );
+    setTimeout( () => {
+      reject(new Error("Error uploading the file"));
+      }, 150001); 
+    });
   }
-  // Writes the file details to the realtime db
-  private saveFileData(upload: Upload) {
-    let myUpload:any={name:upload.name,
-                      url:upload.url,
-                      createDate:upload.createdAt};
-
-    this.uploadsCollectionRef.doc(upload.key).set(myUpload);
-  }
+  
 
   deleteUpload(upload: Upload) {
-    this.deleteFileData(upload.key)
-    .then( () => {
-      this.deleteFileStorage(upload.name)
-    })
-    .catch(error => console.log(error))
+   this.deleteFileStorage(upload.name)
+    
   }
-  // Deletes the file details from the realtime db
-  private deleteFileData(key: string) {
-    return this.uploadsCollectionRef.doc(key).delete();
-  }
+  
   // Firebase files must have unique names in their respective storage dir
   // So the name serves as a unique key
   private deleteFileStorage(name:string) {

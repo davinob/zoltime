@@ -29,6 +29,10 @@ export class AlertAndLoadingService {
     this.loading.present();
   }
   
+  dismissLoading()
+  {
+    this.loading.dismiss();
+  }
  
   showAlert(error:any)
   {

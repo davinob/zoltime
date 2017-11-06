@@ -16,26 +16,80 @@
   </ion-header>
   
   
-  <ion-content padding>
-    <ion-card>
-      <ion-card-content>
-     <div *ngIf="userService.getCurrentUser() as user ">
-          <h3>Howdy, {{ user.email }}</h3>
-          <h3>Howdy, {{ user.restaurantName }}</h3>
-          <h3>Howdy, {{ user.address }}</h3>
-          <h3>Howdy, {{ user.description }}</h3>
-          <h3>Howdy, {{ user.pictureURL }}</h3>
-          <h3>Howdy, {{ user.hashgaha }}</h3>
-          <h3>Howdy, {{ user.categories }}</h3>
-      </div>
+  <ion-content *ngIf="userService.getCurrentUser() as user " padding class='global'>
+
+      
+            <ion-grid>
+                <ion-row>
+                    
+                    <ion-col align-self-center>
+                        <div class="profile-info">
+                            <img class="profile-image" src='{{user.pictureURL}}'/>
+                            <button class="profilebutton" (click)="getPicture()">
+                                <ion-icon name="create"></ion-icon>
+                            </button>
+                          </div>
+                     
+                     </ion-col>
+                  
+                </ion-row>
+              </ion-grid>
+ 
+  <input type="file" accept="image/*" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
+      <ion-list >
+             <ion-item>
+                <h3> Name</h3>
+                <h1>{{user.restaurantName}}</h1>
+                  <button ion-button icon-only item-end clear (click)='clearInputText($event)'>
+                      <ion-icon name="create"></ion-icon>
+                    </button>
+              </ion-item>
+            </ion-list>
+          
+          
+            <ion-list>
+                <ion-item>
+                    <h3> Address</h3>
+                    <h1>{{ user.address.street }} {{ user.address.streetNumber }},{{ user.address.city }}</h1>
+                      <button ion-button icon-only item-end clear (click)='clearInputText($event)'>
+                          <ion-icon name="create"></ion-icon>
+                        </button>
+                  </ion-item>
+            </ion-list>
+
+            <ion-list>
+                <ion-item>
+                    <h3> Categories</h3>
+                    <h1>{{ user.categories }}</h1>
+                      <button ion-button icon-only item-end clear (click)='clearInputText($event)'>
+                          <ion-icon name="create"></ion-icon>
+                        </button>
+                  </ion-item>
+            </ion-list>
+
+            <ion-list>
+                <ion-item>
+                    <h3> Hashgaha</h3>
+                    <h1>   {{ user.hashgaha }}</h1>
+                      <button ion-button icon-only item-end clear (click)='clearInputText($event)'>
+                          <ion-icon name="create"></ion-icon>
+                        </button>
+                  </ion-item>
+            </ion-list>
+      
+            <ion-list>
+                <ion-item>
+                    <h3> Description</h3>
+                    <h1>    {{ user.description }}</h1>
+                      <button ion-button icon-only item-end clear (click)='clearInputText($event)'>
+                          <ion-icon name="create"></ion-icon>
+                        </button>
+                  </ion-item>
+            </ion-list>
+
      
-    </ion-card-content>
-  
-  </ion-card>
-    <button ion-item (click)="logoutApp()">
-        <!--Add this static button for logout-->
-          Log Out
-        </button>
+
+    
         
   </ion-content>
   
