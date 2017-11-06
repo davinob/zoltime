@@ -7,7 +7,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class='global' padding>
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
 
     <ion-item>
@@ -32,57 +32,7 @@
       <ion-label stacked>Restaurant Name</ion-label>
       <ion-input formControlName="name" type="text"  placeholder="Restaurant Name"></ion-input>
     </ion-item>
-    
-      <ion-item> <ion-label stacked>Address</ion-label>
-      <ion-input #address formControlName="address" [(ngModel)]="searchAddress" (ionFocus)="showAddresses(true)" (ionBlur)="showAddresses(false)"  placeholder="Address">
-      </ion-input>
-      </ion-item>
-     <div *ngIf="searching" class="spinner-container">
-        <ion-spinner></ion-spinner>
-    </div>
-    <ion-list>
-        <ion-item *ngFor="let address of addresses" (click)="selectAddress(address)">
-            {{address.description}}
-        </ion-item>
-    </ion-list>
-    
-    <ion-item>
-      <ion-label stacked>General Description</ion-label>
-      <ion-input formControlName="description"  type="text"  placeholder="General Description"></ion-input>
-    </ion-item>
-
- 
-    <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
-    <div class="profile-image-wrapper" (click)="getPicture()">
-      <div class="profile-image-placeholder" *ngIf="!signupForm.controls.picture.value">
-        <ion-icon name="add"></ion-icon>
-        <div>
-          {{ 'ITEM_CREATE_CHOOSE_IMAGE' | translate }}
-        </div>
-      </div>
-      <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()">
-      </div>
-    </div>
-  
-    
-    <ion-item>
-        <ion-label stacked>Hashgaha</ion-label>
-        <ion-select 
-           formControlName="hashgaha" 
-           multiple="false">
-            <ion-option *ngFor="let hashga of hashgahot" value="{{hashga}}">{{hashga}}</ion-option>
-    </ion-select>
-    </ion-item> 
-    <ion-item>
-            <ion-label stacked>Categories</ion-label>
-            <ion-select 
-               formControlName="categories" 
-               multiple="true">
-                <ion-option *ngFor="let catego of categories" value="{{catego}}">{{catego}}</ion-option>
-        </ion-select>
-     </ion-item> 
-    
-
+   
     <button ion-button block [disabled]="!signupForm.valid" type="submit">
     Create an Account
     </button>

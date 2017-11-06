@@ -1,9 +1,11 @@
-sign-up {
+page-sign-up {
   
+  .global{
+    background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
+
   .profile-image-wrapper {
     text-align: center;
-    margin: 20px 0;
-
+    
     .profile-image {
       width: 96px;
       height: 96px;
@@ -33,4 +35,6 @@ sign-up {
       }
     }
   }
+
+}
 }

@@ -6,9 +6,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../providers/auth-service';
 import { UserService } from '../../providers/user-service';
 import { AddressService,Address } from '../../providers/address-service';
+import { UploadService,Upload } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
+import { Camera } from '@ionic-native/camera';
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -46,13 +48,15 @@ export class SignUpPage {
     public userService: UserService,
     public formBuilder: FormBuilder,
     public alertAndLoadingService: AlertAndLoadingService,
-    public addressService: AddressService) {
+    public addressService: AddressService,
+    public camera: Camera,
+    private upSvc: UploadService) {
 
     this.signupForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
       name: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       address: ['', Validators.required],
       picture: [''],
       hashgaha: ['', Validators.required],
@@ -176,21 +180,24 @@ export class SignUpPage {
 
 
     getPicture() {
-   /*    if (Camera['installed']()) {
+      if (Camera['installed']()) {
         this.camera.getPicture({
           destinationType: this.camera.DestinationType.DATA_URL,
+          mediaType: this.camera.MediaType.PICTURE,
           targetWidth: 96,
           targetHeight: 96
         }).then((data) => {
-          this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
+          this.signupForm.patchValue({ 'picture': 'data:image/jpg;base64,' + data });
         }, (err) => {
           alert('Unable to take photo');
         })
-      } else { */
+      } else { 
         this.fileInput.nativeElement.click();
       
+      }
     }
 
+    previousUpload:Upload=null;
     processWebImage(event) {
       console.log("PROCESS WEB IMAGE");
       let reader = new FileReader();
@@ -200,13 +207,28 @@ export class SignUpPage {
        };
       console.log(event);
       if ((event.target.files!=null)&&(event.target.files[0]!=null))
-       reader.readAsDataURL(event.target.files[0]);
+       { 
+         if(event.target.files[0].type.match('image.*'))
+          {
+            reader.readAsDataURL(event.target.files[0]);
+            if (this.previousUpload!=null)
+            {
+              this.upSvc.deleteUpload(this.previousUpload);
+            }
+            let currentUpload = new Upload(event.target.files[0]);
+            this.previousUpload=currentUpload;
+            this.upSvc.pushUpload(currentUpload);
+          
+          }
+          else
+          this.alertAndLoadingService.showAlert({message:"Please choose an image"});
+       }
       
     }
   
     getProfileImageStyle() {
       return 'url(' + this.signupForm.controls['picture'].value + ')'
     }
-    
+  
     
 }

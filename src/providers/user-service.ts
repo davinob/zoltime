@@ -36,7 +36,7 @@ export class UserService {
   currentUserObs:Observable<any>=null;
 
   constructor(private afs: AngularFirestore,public authService:AuthService ) {
-    this.usersCollectionRef = this.afs.collection<User>('users');  
+    this.usersCollectionRef = this.afs.collection<User>('users'); 
    }
   
    public initCurrentUser(userID:string):Observable<any>
