@@ -104,14 +104,14 @@ export class ProfileSettingsPage {
   
   saveInput(name:string,inputValue:any)
   {
-    this.editInput(name,false);
+   this.editInput(name,false);
     this.alertAndLoadingService.showLoading();
 
     if (name=="categories")
     {
       inputValue=this.jsonCatego(inputValue);
     } 
-    if (name="address")
+    if (name=="address")
     {
       inputValue=this.addressJSON;
     }
