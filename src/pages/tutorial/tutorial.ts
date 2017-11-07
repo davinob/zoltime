@@ -127,7 +127,6 @@ export class TutorialPage {
     
      this.signupForm.controls.address.valueChanges.debounceTime(400).subscribe(search => {
            this.setFilteredItems();
-
        });
    }
 

@@ -13,13 +13,15 @@ import { Camera } from '@ionic-native/camera';
 import { UploadService,Upload } from '../../providers/upload-service';
 import { AddressService,Address } from '../../providers/address-service';
 
+import 'rxjs/add/operator/debounceTime';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
 /**
  * Generated class for the ProfileSettingsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
 @IonicPage()
 @Component({
   selector: 'page-profile-settings',
@@ -28,22 +30,183 @@ import { AddressService,Address } from '../../providers/address-service';
 export class ProfileSettingsPage {
 
   @ViewChild('fileInput') fileInput;
+  @ViewChild('categoriesInput') categoriesInput;
+  @ViewChild('hashgahaInput') hashgahaInput;
 
   public loading:Loading;
 
+  allInputsShows:any={};
+
+  hashgahot:string[]=["Kosher","Lemehadrin","No"];
+  categories:string[]=["Italian", "Sandwichs","Israeli", "Boulangerie"];
   
+  public updateForm:FormGroup;
+
   constructor(public navCtrl: NavController, public authData: AuthService, 
   private userService:UserService,  public navParams: NavParams,
   public alertAndLoadingService: AlertAndLoadingService,
   public addressService: AddressService,
   public camera: Camera,
-  private upSvc: UploadService) {
+  private upSvc: UploadService,
+  public formBuilder: FormBuilder) {
+    
+    this.updateForm = formBuilder.group({
+      address: [''],
+     
+    });
   
+    
+  }
+
+
+ 
+
+
+  jsonCatego(arr:string[]):any
+  {
+    console.log(arr);
+  
+    let myCategos:any=<any>{};
+      arr.forEach(element => {
+        myCategos[element]=true;
+      });
+
+    return myCategos;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfileSettingsPage');
+    this.updateForm.controls.address.valueChanges.debounceTime(400).subscribe(search => {
+      this.setFilteredItems();
+  });
   }
+
+  editInput(input:string,bool:boolean)
+  {
+    this.allInputsShows[input]=bool;
+    switch (input) {
+      case "categories":
+      this.categoriesInput._elementRef.nativeElement.click();
+        break;
+       case "hashgaha":
+      this.hashgahaInput._elementRef.nativeElement.click();
+      break;
+      case "address":
+      if (bool)
+        this.addressSelected=false;
+        break;
+      default:
+        break;
+    }
+
+    
+
+  }
+  
+  saveInput(name:string,inputValue:any)
+  {
+    this.editInput(name,false);
+    this.alertAndLoadingService.showLoading();
+
+    if (name=="categories")
+    {
+      inputValue=this.jsonCatego(inputValue);
+    } 
+    if (name="address")
+    {
+      inputValue=this.addressJSON;
+    }
+    
+    this.updateUser(name,inputValue);
+  }
+
+
+  updateUser(fieldName:string,field:any)
+  {
+    this.userService.updateCurrentUserField(fieldName,field).then
+    (
+      (successEvent)=>
+      {
+        this.alertAndLoadingService.dismissLoading();
+      }
+    )
+    .catch(error=>
+    {
+      this.alertAndLoadingService.showAlert({message:"Plese check your network connection is active."});
+    });
+  }
+
+  
+
+  @ViewChild('address') addressInput ;
+  searchAddress: string = '';
+  addresses: any;
+  shouldShowAddresses:boolean;
+  searching:boolean=false;
+  addressSelected:boolean=false;
+  addressJSON:Address;
+
+
+    
+  showAddresses(toShow:boolean)
+  {
+   this.shouldShowAddresses=toShow;  
+   if (!toShow)
+   {
+   this.searching=false;
+   if (!this.addressSelected)
+    this.searchAddress=null;
+   }
+  }
+
+  lastStringTyped:string="";
+
+  setFilteredItems() {
+    console.log("FILTERING ADDRESSES");
+    console.log(this.lastStringTyped);
+    console.log(this.searchAddress);
+    if ((this.searchAddress==null)||(this.searchAddress.length<2)
+    ||(this.lastStringTyped==this.searchAddress)||(!this.shouldShowAddresses))
+    {
+      this.addresses=null;
+      return;
+    }
+    this.lastStringTyped=this.searchAddress;
+      this.searching=true;
+      this.addressSelected=false;
+      this.addressService.filterItems(this.searchAddress).first().subscribe((listOfAddresses)=>
+      {
+         this.searching=false;
+         this.addresses=listOfAddresses.value;
+      });
+
+  }
+
+
+
+  
+  
+  
+  selectAddress(address:any)
+  {
+    console.log("SELECT ADDRESS" + address.description);
+    this.addresses=null;
+    this.searchAddress=address.description;
+    this.lastStringTyped=this.searchAddress;
+    this.addressSelected=true;
+    
+    
+    this.addressService.getPosition(address.place_id).first().subscribe((addressJSON)=>
+    {
+        console.log(addressJSON);
+        this.addressJSON=addressJSON.value;
+    });
+    
+    this.addressJustSet=true;  
+   this.addressInput.setFocus();
+    
+  }
+  
+ 
 
 
  logoutApp()

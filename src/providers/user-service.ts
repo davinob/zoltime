@@ -22,7 +22,8 @@ export interface User {
   pictureURL?:string;
   hashgaha?:string;
   categories?:string;
-  enabled?:boolean
+  enabled?:boolean;
+  textCategories?:string;
 }
 
 @Injectable()
@@ -48,7 +49,8 @@ export class UserService {
 
         this.currentUserObs.subscribe(data =>
         { 
-          this.currentUser=data;
+          this.setCurrentUserData(data);
+
           console.log("CURRENT USER DATA SUBSCRIBE FROM INIT");
           if (initTime)
           {
@@ -83,6 +85,26 @@ export class UserService {
         return this.userStatus.asObservable().first(data=>data!=null);
   }
   
+
+  public setCurrentUserData(data:any)
+  {
+    this.currentUser=data;
+
+    let str:string="";
+     if (this.currentUser.categories!=null)
+    {
+   
+    let i=0;
+    Object.keys(this.currentUser.categories).forEach(function(key) {
+      if (i!=0)
+      str+=",";
+      str+=key;
+      i++;
+    });
+    }
+    this.currentUser.textCategories=str;
+  }
+
    public getCurrentUser():any
   {
     return this.currentUser;
@@ -172,7 +194,8 @@ public updateCurrentUserField(fieldName:any,fieldValue:any):Promise<any>
 
 let userUpdate:any={};
 userUpdate[fieldName]=fieldValue;
-console.log("upadting user on UID"+this.userID);
+this.currentUser[fieldName]=fieldValue;
+console.log("updating user on UID"+this.userID);
 console.log(userUpdate); 
 
 return new Promise<any>((resolve, reject) => {
@@ -189,7 +212,7 @@ console.log(error);
 resolve(setUserPromise);
 setTimeout( () => {
 reject(new Error("Error inserting the data"));
-}, 150001);      
+}, 15001);      
 });
 
 }
