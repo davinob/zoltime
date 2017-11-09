@@ -167,6 +167,8 @@ export class ProfileSettingsPage {
     if ((this.searchAddress==null)||(this.searchAddress.length<2)
     ||(this.lastStringTyped==this.searchAddress)||(!this.shouldShowAddresses))
     {
+      if ((this.searchAddress==null)||(this.searchAddress.length<2))
+        this.addressSelected=false;
       this.addresses=null;
       return;
     }
@@ -201,7 +203,6 @@ export class ProfileSettingsPage {
         this.addressJSON=addressJSON.value;
     });
     
-    this.addressJustSet=true;  
    this.addressInput.setFocus();
     
   }
@@ -256,6 +257,8 @@ export class ProfileSettingsPage {
           }
           let currentUpload = new Upload(event.target.files[0],"profilePic");
           this.previousUpload=currentUpload;
+          console.log("PREVIOUS UPLOAD:");
+          console.log(this.previousUpload);
           this.alertAndLoadingService.showLoading();
           this.upSvc.pushUpload(currentUpload).then(
             (result)=>

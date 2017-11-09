@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ProfileSettingsPage } from './profile-settings';
+import { CreateProductPage } from './create-product';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
-    ProfileSettingsPage,
+    CreateProductPage,
   ],
   imports: [
-    IonicPageModule.forChild(ProfileSettingsPage),
+    IonicPageModule.forChild(CreateProductPage),
     TranslateModule.forChild()
   ],
 })
-export class ProfileSettingsPageModule {}
+export class CreateProductPageModule {}

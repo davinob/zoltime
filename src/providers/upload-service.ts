@@ -15,7 +15,6 @@ import {
  import { UserService } from './user-service';
 
 export class Upload {
-  key: string;
   file:File;
   name:string;
   url:string;
@@ -24,9 +23,11 @@ export class Upload {
   folder:string;
 
   constructor(file:File,folder:string) {
+    console.log("CONSTRUCTING UPLOAD");
     this.file = file;
-    this.key= (new Date().valueOf()).toString()+Math.random();
+    this.name=new Date().valueOf()+this.file.name;
     this.folder=folder;
+    console.log(this);
   }
 }
 
@@ -44,12 +45,17 @@ this.basePath='/uploads/'+userService.userID;
   
 
   pushUpload(upload: Upload) :Promise<any>{
+    console.log("UPLOAD TO PUSH");
+    console.log(upload);
     let storageRef = firebase.storage().ref();
     let metadata = {
       customMetadata: {status:'first_upload'}
       };
 
-    let uploadTask = storageRef.child(`${this.basePath}/${upload.file.name}`).put(upload.file,metadata);
+      console.log("UPLOAD NAME");
+      console.log(`${upload.name}`);
+      console.log(upload.name);
+    let uploadTask = storageRef.child(`${this.basePath}/${upload.folder}/${upload.name}`).put(upload.file,metadata);
     
     return new Promise<any>((resolve, reject) => {
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
@@ -66,7 +72,6 @@ this.basePath='/uploads/'+userService.userID;
       () => {
         // upload success
         upload.url = uploadTask.snapshot.downloadURL;
-        upload.name = upload.file.name;
         resolve({url:upload.url,name:upload.name});
       }
     );
@@ -78,15 +83,8 @@ this.basePath='/uploads/'+userService.userID;
   
 
   deleteUpload(upload: Upload) {
-   this.deleteFileStorage(upload.name)
-    
-  }
-  
-  // Firebase files must have unique names in their respective storage dir
-  // So the name serves as a unique key
-  private deleteFileStorage(name:string) {
     let storageRef = firebase.storage().ref();
-    storageRef.child(`${this.basePath}/${name}`).delete()
+    storageRef.child(`${this.basePath}/${upload.folder}/${upload.name}`).delete()
   }
 
 }

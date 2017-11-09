@@ -5,10 +5,11 @@ import { TodayMenuPage } from '../pages/today-menu/today-menu';
 import { OrdersTabPage } from '../pages/orders-tab/orders-tab';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
+import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
+
 
 import { AuthService } from '../providers/auth-service';
 import { UserService } from '../providers/user-service';
-import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
 
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/first';

@@ -14,6 +14,7 @@ import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
 import { SignUpPage } from '../pages/sign-up/sign-up';
 import { LoginTestPage } from '../pages/login-test/login-test';
+import { CreateProductPage } from '../pages/create-product/create-product';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -64,7 +65,8 @@ export function createTranslateLoader(http: HttpClient) {
     ProfileSettingsPage,
     TodayMenuPage,
     LoginPage,
-    TutorialPage
+    TutorialPage,
+    CreateProductPage
   ],
   imports: [
     BrowserModule,
@@ -94,7 +96,8 @@ export function createTranslateLoader(http: HttpClient) {
     OrdersCompletedPage,
     ProfileSettingsPage,
     LoginPage,
-    TutorialPage
+    TutorialPage,
+    CreateProductPage
   ],
   providers: [
     StatusBar,

@@ -1,9 +1,10 @@
 page-profile-settings{
-  .toolbar-background {
-    background: transparent;
-    border-color: transparent;
-  }
 
+  .global{
+    background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
+  }
+  
+ 
   .slide-zoom {
     height: 100%;
   }
@@ -33,9 +34,7 @@ page-profile-settings{
     }
   }
 
-  .global{
-    background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
-  }
+  
 
   img{
     border-radius: 25%;

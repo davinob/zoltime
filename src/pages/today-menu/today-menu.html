@@ -16,6 +16,45 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content *ngIf="userService.getCurrentUser() as user " class="global" padding>
+
+         <ion-list>
+            <ion-item >
+                 <h4> Promotion Start</h4>
+                 <h3>{{user.promotionStartTime}}</h3>
+                 <button ion-button icon-only item-end clear (click)='showPromotionStartTime()'>
+                    <ion-icon name="create"></ion-icon>
+                </button>
+               </ion-item>
+               <ion-item >
+                  <h4> Promotion End</h4>
+                  <h3>{{user.promotionEndTime}}</h3>
+                  <button ion-button icon-only item-end clear (click)='showPromotionEndTime()'>
+                     <ion-icon name="create"></ion-icon>
+                 </button>
+                </ion-item>
+            </ion-list> 
+        
+              <button ion-button (click)="addProduct()">
+                  Add product
+                </button>
+
+              <ion-list *ngIf="userService.currentDefaultProducts as products ">
+                      <ion-item *ngFor="let product of products">
+                           <h3>{{product.name}}</h3>
+                             <button ion-button icon-only item-end clear (click)='editInput(p,true)'>
+                                 <ion-icon name="create"></ion-icon>
+                           </button>
+                     </ion-item>
+              </ion-list> 
+   
+    <button [hidden]="user.promotionSet" ion-button (click)="CreateProduct()">
+        Set today promotion
+      </button>
+      
+  <ion-datetime #promotionStartTime [hidden]="true" item-end 
+  minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionStartTime"></ion-datetime>
+  <ion-datetime #promotionEndTime [hidden]="true" item-end 
+  minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionEndTime"></ion-datetime>
 
 </ion-content>

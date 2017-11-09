@@ -24,6 +24,7 @@ export interface User {
   categories?:string;
   enabled?:boolean;
   textCategories?:string;
+  products?:any
 }
 
 @Injectable()
@@ -35,9 +36,14 @@ export class UserService {
   userStatus:Subject<any>=new Subject<any>();
    
   currentUserObs:Observable<any>=null;
+  
+  currentDefaultProducts:any=null;
+  currentDefaultProductsObs:Observable<any>=null;
+  defaultProductsColletionName="defaultProducts";
+  
 
   constructor(private afs: AngularFirestore,public authService:AuthService ) {
-    this.usersCollectionRef = this.afs.collection<User>('users'); 
+    this.usersCollectionRef = this.afs.collection<User>('sellers'); 
    }
   
    public initCurrentUser(userID:string):Observable<any>
@@ -45,6 +51,8 @@ export class UserService {
     console.log("init with userID:"+userID);
         this.userID=userID;
         this.currentUserObs=this.usersCollectionRef.doc(this.userID).valueChanges();
+        this.currentDefaultProductsObs=this.usersCollectionRef.doc(this.userID).collection(this.defaultProductsColletionName).valueChanges();
+
         let initTime:boolean=true;
 
         this.currentUserObs.subscribe(data =>
@@ -82,6 +90,13 @@ export class UserService {
           }
         });
 
+        this.currentDefaultProductsObs.subscribe(data =>
+          { 
+            this.currentDefaultProducts=data;
+            console.log("CURRENT PRODUCTS");
+            console.log(this.currentDefaultProducts);
+          });
+
         return this.userStatus.asObservable().first(data=>data!=null);
   }
   
@@ -91,7 +106,7 @@ export class UserService {
     this.currentUser=data;
 
     let str:string="";
-     if (this.currentUser.categories!=null)
+     if ((this.currentUser!=null)&&(this.currentUser.categories!=null))
     {
    
     let i=0;
@@ -101,8 +116,9 @@ export class UserService {
       str+=key;
       i++;
     });
-    }
+  
     this.currentUser.textCategories=str;
+    }
   }
 
    public getCurrentUser():any
@@ -181,6 +197,44 @@ console.log("PROMISE DONE");
 console.log(error);
 });
 resolve(setUserPromise);
+setTimeout( () => {
+reject(new Error("Error inserting the data"));
+}, 150001);      
+});
+
+}
+
+
+public addDefaultProductToCurrentUser(
+  name:string,description:string,
+  quantity:string,originalPrice:string,reducedPrice:string,picture:string):Promise<any>
+{
+
+  let product:any={
+  name: name,
+  description: description,
+  quantity: quantity,
+  originalPrice: originalPrice,
+  reducedPrice: reducedPrice,
+  picture: picture
+  };
+
+console.log("upadting user on UID"+this.userID);
+console.log(product); 
+let key=new Date().valueOf()+Math.random()+"";
+return new Promise<any>((resolve, reject) => {
+let setUserPromise:Promise<void>=this.usersCollectionRef.doc(this.userID).collection<User>(this.defaultProductsColletionName).doc(key).set(product);
+console.log("PROMISE launched");
+setUserPromise.then( ()=>
+{
+console.log("PROMISE DONE");
+resolve(key);
+}
+).catch( (error)=>
+{
+console.log(error);
+});
+
 setTimeout( () => {
 reject(new Error("Error inserting the data"));
 }, 150001);      
