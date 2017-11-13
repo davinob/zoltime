@@ -6,13 +6,13 @@
   </ion-header>
 
   <ion-content class="global">
-    <ion-list>
-        <ion-item *ngFor="let p of pages">
+    <ion-list class="menuList">
+        <ion-item class="menuItem" *ngFor="let p of pages">
             <button menuClose clear ion-button  [class.activeHighLight]="checkActive(p)" (click)="openPage(p)">
                 <div class="menuButton">{{p.title}}</div> 
             </button>
         </ion-item>
-        <ion-item>
+        <ion-item class="menuItem">
             <button menuClose clear ion-button   (click)="logout()">
                 <div class="menuButton">Logout</div> 
             </button>

@@ -12,7 +12,7 @@ import {
   import * as firebase from 'firebase';
  import {UploadTaskSnapshot} from 'firebase/storage';
   
- import { UserService } from './user-service';
+ import { UserService,Picture } from './user-service';
 
 export class Upload {
   file:File;
@@ -70,9 +70,15 @@ this.basePath='/uploads/'+userService.userID;
         reject(new Error("Error uploading the file"));
       },
       () => {
-        // upload success
+        let pic:Picture=
+        {
+          url:uploadTask.snapshot.downloadURL,
+          folder:upload.folder,
+          name:upload.name
+        };
+
         upload.url = uploadTask.snapshot.downloadURL;
-        resolve({url:upload.url,name:upload.name});
+        resolve(pic);
       }
     );
     setTimeout( () => {
@@ -82,9 +88,9 @@ this.basePath='/uploads/'+userService.userID;
   }
   
 
-  deleteUpload(upload: Upload) {
+  deletePicture(pic: Picture) {
     let storageRef = firebase.storage().ref();
-    storageRef.child(`${this.basePath}/${upload.folder}/${upload.name}`).delete()
+    storageRef.child(`${this.basePath}/${pic.folder}/${pic.name}`).delete()
   }
 
 }

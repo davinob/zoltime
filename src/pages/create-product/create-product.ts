@@ -1,6 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { UserService } from '../../providers/user-service';
+import { UserService,Picture } from '../../providers/user-service';
 import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
@@ -70,8 +70,7 @@ export class CreateProductPage {
     }
   }
 
-  previousUpload:Upload=null;
-  pictureURL:string="";
+  picture:Picture;
   
   processWebImage(event) {
     console.log("PROCESS WEB IMAGE");
@@ -86,18 +85,18 @@ export class CreateProductPage {
        if(event.target.files[0].type.match('image.*'))
         {
           reader.readAsDataURL(event.target.files[0]);
-          if (this.previousUpload!=null)
-          {
-            this.upSvc.deleteUpload(this.previousUpload);
-          }
+       
           let currentUpload = new Upload(event.target.files[0],"products");
-          this.previousUpload=currentUpload;
           this.alertAndLoadingService.showLoading();
           this.upSvc.pushUpload(currentUpload).then(
-            (result)=>
+            (resultPic:Picture)=>
             {
-              this.pictureURL=result.url;      
-               this.alertAndLoadingService.dismissLoading();
+              if (this.picture!=null)
+              {
+              this.upSvc.deletePicture(this.picture);
+              }
+              this.picture=resultPic;
+              this.alertAndLoadingService.dismissLoading();
             }
           )
         
@@ -133,14 +132,14 @@ export class CreateProductPage {
          this.userService.addDefaultProductToCurrentUser(
           this.addProductForm.value.name,this.addProductForm.value.description,
           this.addProductForm.value.quantity,this.addProductForm.value.originalPrice,
-          this.addProductForm.value.reducedPrice,this.pictureURL)
+          this.addProductForm.value.reducedPrice,this.picture)
         .then(()=> {
           console.log("Document successfully written!");
           this.navCtrl.pop();
           }
         ).catch (error=>
         {
-          this.alertAndLoadingService.presentAlert(error);
+          this.alertAndLoadingService.showAlert(error);
         });
         
 

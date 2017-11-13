@@ -68,6 +68,66 @@ export class AlertAndLoadingService {
     });
   alert.present();
   }
+
+  presentConfirm(message:any) {
+
+    return new Promise<any>((resolve, reject) => {
+      let alert = this.alertCtrl.create({
+        message: message,
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+              resolve(false);
+            }
+          },
+          {
+            text: 'OK',
+            handler: () => {
+             resolve(true);
+            }
+          }
+        ]
+      });
+      alert.present();
+ 
+      
+  });
+  }
+
+
+  presentPrompt(fieldName:any,fieldValue:any,description:any) {
+    return new Promise<any>((resolve, reject) => {
+    let alert = this.alertCtrl.create({
+      subTitle: "Update "+description,
+       inputs: [
+        {
+          name: fieldName,
+          placeholder: fieldName,
+          value:fieldValue
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            resolve(data[fieldName]);
+          }
+        }
+      ]
+    });
+    alert.present();
+  });
+}
   
 
 }

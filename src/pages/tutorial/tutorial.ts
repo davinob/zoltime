@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { OrdersTabPage } from '../orders-tab/orders-tab';
 
 import { AuthService } from '../../providers/auth-service';
-import { UserService } from '../../providers/user-service';
+import { UserService,Picture } from '../../providers/user-service';
 import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
@@ -49,7 +49,7 @@ export class TutorialPage {
   hashgahot:string[]=["Kosher","Lemehadrin","No"];
   categories:string[]=["Italian", "Sandwichs","Israeli", "Boulangerie"];
  
-  profilePicURL:string="";
+  profilePic:Picture;
 
 
   constructor(public navCtrl: NavController, 
@@ -210,8 +210,6 @@ export class TutorialPage {
     }
   }
 
-  previousUpload:Upload=null;
-  
   processWebImage(event) {
     console.log("PROCESS WEB IMAGE");
     let reader = new FileReader();
@@ -225,17 +223,16 @@ export class TutorialPage {
        if(event.target.files[0].type.match('image.*'))
         {
           reader.readAsDataURL(event.target.files[0]);
-          if (this.previousUpload!=null)
-          {
-            this.upSvc.deleteUpload(this.previousUpload);
-          }
+        
           let currentUpload = new Upload(event.target.files[0],"profilePic");
-          this.previousUpload=currentUpload;
+          
           this.alertAndLoadingService.showLoading();
           this.upSvc.pushUpload(currentUpload).then(
-            (result)=>
+            (resultPic:Picture)=>
             {
-              this.profilePicURL=result.url;      
+              if (this.profilePic!=null)
+                this.upSvc.deletePicture(this.profilePic);
+              this.profilePic=resultPic;      
                this.alertAndLoadingService.dismissLoading();
             }
           )
@@ -271,7 +268,7 @@ export class TutorialPage {
         let jsonCatego:any=this.jsonCatego(this.signupForm.value.categories);
          this.userService.updateCurrentUser(
           this.addressJSON,this.signupForm.value.description,
-        this.profilePicURL,this.signupForm.value.hashgaha
+        this.profilePic,this.signupForm.value.hashgaha
         ,jsonCatego)
         .then(()=> {
           this.startApp();

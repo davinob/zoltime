@@ -1,11 +1,21 @@
 page-today-menu{
 
-.global{
-    background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
-  }
 
   .item{
     margin-bottom:0px;
+}
+
+.promotions
+{
+  color:white;
+  border-color: white;
+  border: 3px solid;
+  margin-bottom: 13px;
+}
+
+.productUpdate
+{
+padding:0px;
 }
 
 }

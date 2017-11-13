@@ -19,12 +19,20 @@ export interface User {
   restaurantName:string;
   address?:Address;
   description?:string;
-  pictureURL?:string;
+  picture?:Picture;
   hashgaha?:string;
   categories?:string;
   enabled?:boolean;
   textCategories?:string;
   products?:any
+}
+
+export interface Picture{
+  url:string,
+  folder:string,
+  name:string
+
+ 
 }
 
 @Injectable()
@@ -53,16 +61,12 @@ export class UserService {
         this.currentUserObs=this.usersCollectionRef.doc(this.userID).valueChanges();
         this.currentDefaultProductsObs=this.usersCollectionRef.doc(this.userID).collection(this.defaultProductsColletionName).valueChanges();
 
-        let initTime:boolean=true;
-
-        this.currentUserObs.subscribe(data =>
+       this.currentUserObs.subscribe(data =>
         { 
           this.setCurrentUserData(data);
 
           console.log("CURRENT USER DATA SUBSCRIBE FROM INIT");
-          if (initTime)
-          {
-            let isOK:boolean=true;
+              let isOK:boolean=true;
             console.log("THE DATA");
             console.log(data);
               console.log("IS CURRENT USER ENABLED?");
@@ -86,8 +90,8 @@ export class UserService {
                isOK=false; 
               }
             this.userStatus.next({isOK:isOK,page:page});
-            initTime=false;
-          }
+            
+         
         });
 
         this.currentDefaultProductsObs.subscribe(data =>
@@ -171,13 +175,13 @@ export class UserService {
 
 
 public updateCurrentUser(address:Address,description:string,
-  pictureURL:string,hashgaha:string,categories:string):Promise<any>
+  picture:Picture,hashgaha:string,categories:string):Promise<any>
 {
 
 let userUpdate:any={
 address:address,
 description:description,
-pictureURL:pictureURL,
+picture:picture,
 hashgaha:hashgaha,
 categories:categories,
 profileCompleted:true
@@ -207,8 +211,9 @@ reject(new Error("Error inserting the data"));
 
 public addDefaultProductToCurrentUser(
   name:string,description:string,
-  quantity:string,originalPrice:string,reducedPrice:string,picture:string):Promise<any>
+  quantity:string,originalPrice:string,reducedPrice:string,picture:Picture):Promise<any>
 {
+  let key=new Date().valueOf()+Math.random()+"";
 
   let product:any={
   name: name,
@@ -216,12 +221,13 @@ public addDefaultProductToCurrentUser(
   quantity: quantity,
   originalPrice: originalPrice,
   reducedPrice: reducedPrice,
-  picture: picture
+  picture: picture,
+  key:key
   };
 
-console.log("upadting user on UID"+this.userID);
+console.log("adding product on UID"+this.userID);
 console.log(product); 
-let key=new Date().valueOf()+Math.random()+"";
+
 return new Promise<any>((resolve, reject) => {
 let setUserPromise:Promise<void>=this.usersCollectionRef.doc(this.userID).collection<User>(this.defaultProductsColletionName).doc(key).set(product);
 console.log("PROMISE launched");
@@ -233,11 +239,62 @@ resolve(key);
 ).catch( (error)=>
 {
 console.log(error);
+reject(new Error("Error inserting the data"));
 });
 
 setTimeout( () => {
 reject(new Error("Error inserting the data"));
 }, 150001);      
+});
+
+}
+
+
+public removeDefaultProductFromCurrentUser(product:any):Promise<any>
+{
+
+console.log(product); 
+return new Promise<any>((resolve, reject) => {
+let setUserPromise:Promise<void>=this.usersCollectionRef.doc(this.userID).collection<User>(this.defaultProductsColletionName).doc(product.key).delete().then( ()=>
+{
+console.log("PROMISE DONE");
+resolve(setUserPromise);
+}
+).catch( (error)=>
+{
+console.log(error);
+reject(new Error("Error inserting the data"));
+});
+
+setTimeout( () => {
+reject(new Error("Error deleting the data"));
+}, 150001);      
+});
+
+}
+
+public updateCurrentUserDefaultProductField(product:any,fieldName:any,fieldValue:any):Promise<any>
+{
+
+let productUpdate:any={};
+
+productUpdate[fieldName]=fieldValue;
+
+return new Promise<any>((resolve, reject) => {
+  let setUserPromise:Promise<void>=this.usersCollectionRef.doc(this.userID).collection<User>(this.defaultProductsColletionName).doc(product.key).update(productUpdate);
+console.log("PROMISE launched");
+setUserPromise.then( ()=>
+{
+console.log("PROMISE DONE");
+}
+).catch( (error)=>
+{
+console.log(error);
+});
+resolve(setUserPromise);
+setTimeout( () => {
+reject(new Error("Error inserting the data"));
+}, 15001);      
 });
 
 }

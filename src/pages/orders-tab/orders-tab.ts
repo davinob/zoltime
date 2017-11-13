@@ -8,6 +8,7 @@ import { OrdersCompletedPage } from '../orders-completed/orders-completed';
 
 
 @Component({
+  selector: 'page-orders-tab',
   templateUrl: 'orders-tab.html'
 })
 export class OrdersTabPage {

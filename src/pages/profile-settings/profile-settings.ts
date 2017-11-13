@@ -4,7 +4,7 @@ import { IonicPage, NavController, NavParams,LoadingController,
 import { AuthService } from '../../providers/auth-service';
 
 import { LoginPage } from '../login/login';
-import { UserService, User } from '../../providers/user-service';
+import { UserService, User,Picture } from '../../providers/user-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Observable } from 'rxjs/Observable';
 
@@ -221,7 +221,7 @@ export class ProfileSettingsPage {
   }
 
 
-  pictureURL:string="";
+  picture:Picture;
 
   getPicture() {
     if (Camera['installed']()) {
@@ -240,7 +240,6 @@ export class ProfileSettingsPage {
     }
   }
 
-  previousUpload:Upload=null;
   
   processWebImage(event) {
     console.log("PROCESS WEB IMAGE");
@@ -251,21 +250,18 @@ export class ProfileSettingsPage {
        if(event.target.files[0].type.match('image.*'))
         {
           reader.readAsDataURL(event.target.files[0]);
-          if (this.previousUpload!=null)
-          {
-            this.upSvc.deleteUpload(this.previousUpload);
-          }
           let currentUpload = new Upload(event.target.files[0],"profilePic");
-          this.previousUpload=currentUpload;
+         
           console.log("PREVIOUS UPLOAD:");
-          console.log(this.previousUpload);
+         
           this.alertAndLoadingService.showLoading();
           this.upSvc.pushUpload(currentUpload).then(
-            (result)=>
+            (resultPic:Picture)=>
             {
-              this.pictureURL=result.url; 
+              this.picture=resultPic;
               console.log("UPDATING FIELD PROFILE");
-              this.userService.updateCurrentUserField("pictureURL",this.pictureURL);
+              this.upSvc.deletePicture(this.userService.currentUser.picture);
+              this.userService.updateCurrentUserField("picture",this.picture);
                this.alertAndLoadingService.dismissLoading();
             }
           )

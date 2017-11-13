@@ -26,9 +26,17 @@
         background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
     }      
 
+    .menuList{
+        background-color:transparent;
+    }
+    .menuItem
+    {
+        background-color:transparent;
+    }
+
     .menuButton
     {
-        color:blue;
+        color:white;
     }
 
     .toolbar-background {
@@ -51,3 +59,43 @@
      .item{
         margin-bottom:10px;
     }
+
+    .md .tabs .tabbar
+    {
+       background-color:#496cf2
+     
+    }
+
+    .tabs-md .tab-button {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .tabs-md .tab-button .tab-button-icon{
+        color: rgba(255, 255, 255, 0.7);
+        
+    }
+
+    .tabs-md .tab-button[aria-selected=true] .tab-button-icon{
+        color: white;
+        
+    }
+
+    .tabs-md .tab-button[aria-selected=true] {
+        color: white;
+     }
+
+     .has-icon .tab-badge {
+        background-color: red;
+    }
+
+
+    .red
+    {
+    color:red
+    }
+
+    .green
+    {
+      color:green;
+    }
+   

@@ -22,7 +22,6 @@ import { TranslateService } from '@ngx-translate/core';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any;
   activePage: any;
   initTime:boolean=true;
   
@@ -46,14 +45,14 @@ export class MyApp {
             console.log(data);
           if (!data.isOK)
           {
-            this.rootPage=LoginPage;
+            this.nav.setRoot(LoginPage);
           }
           else
           {
             if (data.page=='TutorialPage')
-            this.rootPage=TutorialPage;
+            this.nav.setRoot(TutorialPage);
             else
-            this.rootPage=OrdersTabPage;
+            this.nav.setRoot(OrdersTabPage);
           }
           });
           }
@@ -61,7 +60,8 @@ export class MyApp {
         else
         {
           console.log("USER IS NOT CONNECTED");
-          this.rootPage=LoginPage;
+          this.nav.setRoot(LoginPage);
+          console.log("Changed to root page");
         }
         this.initTime=false;
         });
@@ -69,7 +69,7 @@ export class MyApp {
    
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'TodayMenu', component: TodayMenuPage },
+      { title: 'Today Menu', component: TodayMenuPage },
       { title: 'Orders', component: OrdersTabPage },
       { title: 'Profile Settings', component: ProfileSettingsPage }
     ];

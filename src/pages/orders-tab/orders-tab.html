@@ -1,5 +1,22 @@
-<ion-tabs tabsPlacement="top">
-  <ion-tab [root]="tab1Root" [tabBadge]="01" tabTitle="New Orders" tabIcon="flame"></ion-tab>
-  <ion-tab [root]="tab2Root" [tabBadge]="10" tabTitle="Pending Orders" tabIcon="cloud-done"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Completed Orders" tabIcon="done-all"></ion-tab>
-</ion-tabs>
+
+<ion-header>
+    
+      <ion-navbar>
+        <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Orders</ion-title>
+      </ion-navbar>
+    
+    </ion-header>
+    
+    
+    <ion-content padding class="global">
+      
+      <ion-tabs  tabsPlacement="top" class="global">
+    <ion-tab  [root]="tab1Root" [tabBadge]="01" tabTitle="New Orders" tabIcon="flame"></ion-tab>
+    <ion-tab  [root]="tab2Root" [tabBadge]="10" tabTitle="Pending Orders" tabIcon="cloud-done"></ion-tab>
+    <ion-tab  [root]="tab3Root" tabTitle="Completed Orders" tabIcon="done-all"></ion-tab>
+  </ion-tabs>
+
+</ion-content>

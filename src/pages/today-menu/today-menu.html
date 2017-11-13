@@ -10,43 +10,78 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>TodayMenu</ion-title>
+    <ion-title>Today Menu</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content *ngIf="userService.getCurrentUser() as user " class="global" padding>
-
-         <ion-list>
-            <ion-item >
-                 <h4> Promotion Start</h4>
-                 <h3>{{user.promotionStartTime}}</h3>
-                 <button ion-button icon-only item-end clear (click)='showPromotionStartTime()'>
-                    <ion-icon name="create"></ion-icon>
-                </button>
-               </ion-item>
-               <ion-item >
-                  <h4> Promotion End</h4>
-                  <h3>{{user.promotionEndTime}}</h3>
-                  <button ion-button icon-only item-end clear (click)='showPromotionEndTime()'>
-                     <ion-icon name="create"></ion-icon>
-                 </button>
-                </ion-item>
-            </ion-list> 
-        
+    
+    <div class="promotions">
+  <ion-grid>
+        <ion-row>
+            <ion-col (click)='showPromotionStartTime()' align-self-center>
+                <span > Promotion Start</span>
+                <span>{{user.promotionStartTime}}</span>
+             
+             </ion-col>
+             <ion-col (click)='showPromotionEndTime()' align-self-center>
+                <span > Promotion End</span>
+                <span>{{user.promotionEndTime}}</span>
+             
+             </ion-col>
+          
+        </ion-row>
+      </ion-grid>
+    </div>    
+              
               <button ion-button (click)="addProduct()">
                   Add product
                 </button>
+                
 
-              <ion-list *ngIf="userService.currentDefaultProducts as products ">
-                      <ion-item *ngFor="let product of products">
-                           <h3>{{product.name}}</h3>
-                             <button ion-button icon-only item-end clear (click)='editInput(p,true)'>
-                                 <ion-icon name="create"></ion-icon>
-                           </button>
-                     </ion-item>
+               <ion-list  *ngIf="userService.currentDefaultProducts as products ">
+                  <ion-item-sliding *ngFor="let product of products">
+                    
+                         <ion-item>
+                          <ion-avatar item-start>
+                              <img (click)="updatePicture(product)" src="{{product.picture.url}}">
+                            </ion-avatar>
+                            <ion-grid>
+                                <ion-row >
+                                    <ion-col class="productUpdate">
+                           <span  class="productName" (click)='editField(product,"name",product.name,"product name")'>{{product.name}}</span>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row > 
+                            <ion-col class="productUpdate">
+                           <span class="productDescription" (click)='editField(product,"description",product.description,"product description")'>{{product.description}}</span>
+                          </ion-col>
+                        </ion-row>   
+                        <ion-row >
+                            <ion-col class="productUpdate">
+                           <span class="productQuantity" (click)='editField(product,"quantity",product.quantity,"product quantity")'>Quantity: {{product.quantity}}</span>
+                          </ion-col>
+                        </ion-row>  
+                          <ion-row >
+                              <ion-col class="productUpdate">
+                           <span class="productOriginalPrice" (click)='editField(product,"originalPrice",product.originalPrice,"product original price")'>Original Price: {{product.originalPrice}} ₪</span>
+                          </ion-col>
+                          <ion-col class="productUpdate">
+                           <span class="productReducedPrice" (click)='editField(product,"reducedPrice",product.reducedPrice,"product reduced price")' >Reduced Price: {{product.reducedPrice}} ₪</span>
+                          </ion-col>
+                        </ion-row>  
+                       </ion-grid>
+                          </ion-item>
+                           <ion-item-options  side="right">
+                            <button ion-button clear (click)='removeInput(product)'>
+                                <ion-icon class="red" name="remove-circle"></ion-icon>
+                          </button>
+                            </ion-item-options>
+                     </ion-item-sliding>
               </ion-list> 
+            
    
     <button [hidden]="user.promotionSet" ion-button (click)="CreateProduct()">
         Set today promotion
@@ -56,5 +91,6 @@
   minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionStartTime"></ion-datetime>
   <ion-datetime #promotionEndTime [hidden]="true" item-end 
   minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionEndTime"></ion-datetime>
-
+  <input type="file" #fileInput accept="image/*"  style="visibility: hidden; height: 0px" name="files[]" (change)="processImage($event)" />                      
+  
 </ion-content>
