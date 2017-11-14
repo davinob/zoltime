@@ -4,11 +4,14 @@ import { OrdersTabPage } from './orders-tab';
 
 @NgModule({
   declarations: [
-    OrdersTabPage,
+    OrdersTabPage
   ],
   imports: [
     IonicPageModule.forChild(OrdersTabPage),
   ],
+  exports: [
+    OrdersTabPage
+  ]
 })
 export class OrdersTabPageModule {}
 

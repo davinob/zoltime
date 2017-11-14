@@ -57,10 +57,7 @@ export class LoginPage {
           }
           else
           {
-            if (data.page=='TutorialPage')
-            this.navCtrl.setRoot(TutorialPage);
-            else
-            this.navCtrl.setRoot(OrdersTabPage);
+             this.navCtrl.setRoot(data.page);
           }
 
           });

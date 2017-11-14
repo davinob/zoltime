@@ -2,7 +2,7 @@ import { Component,ViewChild } from '@angular/core';
 import { IonicPage, MenuController, NavController, Platform } from 'ionic-angular';
 
 import { TranslateService } from '@ngx-translate/core';
-import { OrdersTabPage } from '../orders-tab/orders-tab';
+
 
 import { AuthService } from '../../providers/auth-service';
 import { UserService,Picture } from '../../providers/user-service';
@@ -103,7 +103,7 @@ export class TutorialPage {
 
 
   startApp() {
-    this.navCtrl.setRoot(OrdersTabPage, {}, {
+    this.navCtrl.setRoot('OrdersTabPage', {}, {
       animate: true,
       direction: 'forward'
     });
@@ -197,10 +197,10 @@ export class TutorialPage {
       this.camera.getPicture({
         destinationType: this.camera.DestinationType.DATA_URL,
         mediaType: this.camera.MediaType.PICTURE,
-        targetWidth: 96,
-        targetHeight: 96
+        targetHeight: 200
       }).then((data) => {
         this.signupForm.patchValue({ 'picture': 'data:image/jpg;base64,' + data });
+        this.uploadPicture(data,false);
       }, (err) => {
         alert('Unable to take photo');
       })
@@ -210,33 +210,34 @@ export class TutorialPage {
     }
   }
 
+
+  uploadPicture(picture:any,isFile:boolean)
+  {
+    let currentUpload = new Upload(picture,"profilePic",isFile);
+    
+    this.alertAndLoadingService.showLoading();
+    this.upSvc.pushUpload(currentUpload).then(
+      (resultPic:Picture)=>
+      {
+        if (this.profilePic!=null)
+          this.upSvc.deletePicture(this.profilePic);
+        this.profilePic=resultPic;      
+         this.alertAndLoadingService.dismissLoading();
+      }
+    )
+  }
+
   processWebImage(event) {
     console.log("PROCESS WEB IMAGE");
     let reader = new FileReader();
-    reader.onload = (readerEvent) => {
-      let imageData = (readerEvent.target as any).result;
-      this.signupForm.patchValue({ 'picture': imageData });
-     };
+ 
     console.log(event);
     if ((event.target.files!=null)&&(event.target.files[0]!=null))
      { 
        if(event.target.files[0].type.match('image.*'))
         {
           reader.readAsDataURL(event.target.files[0]);
-        
-          let currentUpload = new Upload(event.target.files[0],"profilePic");
-          
-          this.alertAndLoadingService.showLoading();
-          this.upSvc.pushUpload(currentUpload).then(
-            (resultPic:Picture)=>
-            {
-              if (this.profilePic!=null)
-                this.upSvc.deletePicture(this.profilePic);
-              this.profilePic=resultPic;      
-               this.alertAndLoadingService.dismissLoading();
-            }
-          )
-        
+          this.uploadPicture(event.target.files[0],true);
         }
         else
         this.alertAndLoadingService.showAlert({message:"Please choose an image"});

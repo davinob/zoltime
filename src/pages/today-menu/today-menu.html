@@ -16,9 +16,9 @@
 </ion-header>
 
 
-<ion-content *ngIf="userService.getCurrentUser() as user " class="global" padding>
-    
-    <div class="promotions">
+<ion-content  class="global" padding>
+    <div *ngIf="userService.getCurrentUser() as user ">
+    <div class="promotions" >
   <ion-grid>
         <ion-row>
             <ion-col (click)='showPromotionStartTime()' align-self-center>
@@ -41,9 +41,9 @@
                 </button>
                 
 
-               <ion-list  *ngIf="userService.currentDefaultProducts as products ">
-                  <ion-item-sliding *ngFor="let product of products">
-                    
+               <ion-list  *ngIf="userService.getCurrentDefaultProducts() as products ">
+            
+                <ion-item-sliding *ngFor="let product of products">
                          <ion-item>
                           <ion-avatar item-start>
                               <img (click)="updatePicture(product)" src="{{product.picture.url}}">
@@ -51,40 +51,44 @@
                             <ion-grid>
                                 <ion-row >
                                     <ion-col class="productUpdate">
-                           <span  class="productName" (click)='editField(product,"name",product.name,"product name")'>{{product.name}}</span>
+                           <span  class="productName" >{{product.name}}</span>
                           </ion-col>
                         </ion-row>
                         <ion-row > 
                             <ion-col class="productUpdate">
-                           <span class="productDescription" (click)='editField(product,"description",product.description,"product description")'>{{product.description}}</span>
+                           <span class="productDescription" >{{product.description}}</span>
                           </ion-col>
                         </ion-row>   
                         <ion-row >
-                            <ion-col class="productUpdate">
-                           <span class="productQuantity" (click)='editField(product,"quantity",product.quantity,"product quantity")'>Quantity: {{product.quantity}}</span>
+                          <ion-col class="productUpdate">
+                            <span class="productQuantity" >Quantity: {{product.quantity}}</span>
                           </ion-col>
                         </ion-row>  
                           <ion-row >
                               <ion-col class="productUpdate">
-                           <span class="productOriginalPrice" (click)='editField(product,"originalPrice",product.originalPrice,"product original price")'>Original Price: {{product.originalPrice}} ₪</span>
+                           <span class="productOriginalPrice" >Original Price: {{product.originalPrice}} ₪</span>
                           </ion-col>
                           <ion-col class="productUpdate">
-                           <span class="productReducedPrice" (click)='editField(product,"reducedPrice",product.reducedPrice,"product reduced price")' >Reduced Price: {{product.reducedPrice}} ₪</span>
+                           <span class="productReducedPrice" >Reduced Price: {{product.reducedPrice}} ₪</span>
                           </ion-col>
                         </ion-row>  
                        </ion-grid>
                           </ion-item>
-                           <ion-item-options  side="right">
-                            <button ion-button clear (click)='removeInput(product)'>
-                                <ion-icon class="red" name="remove-circle"></ion-icon>
+                           <ion-item-options  (ionSwipe)="removeInput(product)" side="right" icon-start>
+                            <button ion-button expandable clear (click)='removeInput(product)'>
+                                <ion-icon class="red" name="trash"></ion-icon>
                           </button>
+                          <button ion-button clear (click)='editProduct(product)'>
+                              <ion-icon name="create"></ion-icon>
+                        </button>
                             </ion-item-options>
                      </ion-item-sliding>
+
               </ion-list> 
             
    
-    <button [hidden]="user.promotionSet" ion-button (click)="CreateProduct()">
-        Set today promotion
+    <button [hidden]="user.promotionSet" [disabled]="isPublishDisabled()" ion-button (click)="publishTodayPromotion()">
+        Publish today promotion
       </button>
       
   <ion-datetime #promotionStartTime [hidden]="true" item-end 
@@ -92,5 +96,6 @@
   <ion-datetime #promotionEndTime [hidden]="true" item-end 
   minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionEndTime"></ion-datetime>
   <input type="file" #fileInput accept="image/*"  style="visibility: hidden; height: 0px" name="files[]" (change)="processImage($event)" />                      
-  
+</div>
+
 </ion-content>

@@ -3,18 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MyApp } from './app.component';
-import { TodayMenuPage } from '../pages/today-menu/today-menu';
 
-import { OrdersTabPage } from '../pages/orders-tab/orders-tab';
-import { OrdersNewPage } from '../pages/orders-new/orders-new';
-import { OrdersPendingPage } from '../pages/orders-pending/orders-pending';
-import { OrdersCompletedPage } from '../pages/orders-completed/orders-completed';
-import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
-import { TutorialPage } from '../pages/tutorial/tutorial';
-import { LoginPage } from '../pages/login/login';
-import { SignUpPage } from '../pages/sign-up/sign-up';
-import { LoginTestPage } from '../pages/login-test/login-test';
-import { CreateProductPage } from '../pages/create-product/create-product';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -57,20 +46,10 @@ export function createTranslateLoader(http: HttpClient) {
   
 @NgModule({
   declarations: [
-    MyApp,
-    OrdersTabPage,
-    OrdersNewPage,
-    OrdersPendingPage,
-    OrdersCompletedPage,
-    ProfileSettingsPage,
-    TodayMenuPage,
-    LoginPage,
-    TutorialPage,
-    CreateProductPage
+    MyApp
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
@@ -84,20 +63,12 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    IonicModule.forRoot(MyApp)
     
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    TodayMenuPage,
-    OrdersTabPage,
-    OrdersNewPage,
-    OrdersPendingPage,
-    OrdersCompletedPage,
-    ProfileSettingsPage,
-    LoginPage,
-    TutorialPage,
-    CreateProductPage
+    MyApp
   ],
   providers: [
     StatusBar,

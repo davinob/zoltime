@@ -5,7 +5,7 @@ import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Camera } from '@ionic-native/camera';
-
+import {TodayMenuPage} from '../today-menu/today-menu';
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -57,10 +57,10 @@ export class CreateProductPage {
       this.camera.getPicture({
         destinationType: this.camera.DestinationType.DATA_URL,
         mediaType: this.camera.MediaType.PICTURE,
-        targetWidth: 96,
-        targetHeight: 96
+        targetHeight: 200
       }).then((data) => {
         this.addProductForm.patchValue({ 'picture': 'data:image/jpg;base64,' + data });
+        this.uploadPicture(data,false);
       }, (err) => {
         alert('Unable to take photo');
       })
@@ -71,6 +71,22 @@ export class CreateProductPage {
   }
 
   picture:Picture;
+
+  uploadPicture(picture:any,isFile:boolean)
+  {
+    let currentUpload = new Upload(picture,"products",isFile);
+    
+    this.alertAndLoadingService.showLoading();
+    this.upSvc.pushUpload(currentUpload).then(
+      (resultPic:Picture)=>
+      {
+        if (this.picture!=null)
+          this.upSvc.deletePicture(this.picture);
+        this.picture=resultPic;      
+         this.alertAndLoadingService.dismissLoading();
+      }
+    )
+  }
   
   processWebImage(event) {
     console.log("PROCESS WEB IMAGE");
@@ -85,20 +101,7 @@ export class CreateProductPage {
        if(event.target.files[0].type.match('image.*'))
         {
           reader.readAsDataURL(event.target.files[0]);
-       
-          let currentUpload = new Upload(event.target.files[0],"products");
-          this.alertAndLoadingService.showLoading();
-          this.upSvc.pushUpload(currentUpload).then(
-            (resultPic:Picture)=>
-            {
-              if (this.picture!=null)
-              {
-              this.upSvc.deletePicture(this.picture);
-              }
-              this.picture=resultPic;
-              this.alertAndLoadingService.dismissLoading();
-            }
-          )
+          this.uploadPicture(event.target.files[0],true);
         
         }
         else
@@ -135,7 +138,7 @@ export class CreateProductPage {
           this.addProductForm.value.reducedPrice,this.picture)
         .then(()=> {
           console.log("Document successfully written!");
-          this.navCtrl.pop();
+          this.navCtrl.setRoot(TodayMenuPage);
           }
         ).catch (error=>
         {

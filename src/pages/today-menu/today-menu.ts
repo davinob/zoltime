@@ -1,7 +1,6 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController  } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { CreateProductPage } from '../create-product/create-product';
 import { UserService, User,Picture } from '../../providers/user-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { UploadService,Upload } from '../../providers/upload-service';
@@ -30,6 +29,7 @@ export class TodayMenuPage {
   
     
   
+ 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private userService:UserService, public alertAndLoadingService: AlertAndLoadingService
@@ -38,6 +38,9 @@ export class TodayMenuPage {
     private upSvc: UploadService,
     private elRef:ElementRef,
     public toastCtrl: ToastController) {
+
+        
+      
 
      
   }
@@ -48,7 +51,7 @@ export class TodayMenuPage {
 
 
   addProduct(){
-    this.navCtrl.push(CreateProductPage);
+    this.navCtrl.push('CreateProductPage');
   }
 
   showPromotionStartTime()
@@ -61,10 +64,7 @@ export class TodayMenuPage {
     this.promotionEndTime._elementRef.nativeElement.click();
   }
 
-  editInput(product:any)
-  {
-    this.navCtrl.push(CreateProductPage);
-  }
+  
 
   removeInput(product:any)
   {
@@ -98,24 +98,41 @@ export class TodayMenuPage {
   }
 
 
+  isPublishDisabled():boolean
+  {
+   return this.userService.getCurrentUser().promotionStartTime==null || 
+   this.userService.getCurrentUser().promotionEndTime==null || 
+   this.userService.getCurrentDefaultProducts()==null||
+   (<Array<any>>this.userService.getCurrentDefaultProducts()).length<=0;
+  }
+  publishTodayPromotion()
+  {
+    console.log(this.promotionStartTime);
+    console.log(this.promotionEndTime);
+  }
   
-  
+  editProduct(product:any)
+  {
+    this.navCtrl.push('UpdateProductPage',{product:product});
+  }
 
-  imageURI=null;
+  fileOrBase64String=null;
   productClicked=null;
 
   updatePicture(product:any) {
     this.productClicked=product;
     if (Camera['installed']()) {
     const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+      targetHeight: 200,
+      targetWidth: 200,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      correctOrientation: true
     }
    
     this.camera.getPicture(options).then((imageData) => {
-      this.imageURI = imageData;
-      this.uploadImage();
+      this.fileOrBase64String = imageData;
+      this.uploadImage(false);
     }, (err) => {
       console.log(err);
     });
@@ -126,27 +143,12 @@ export class TodayMenuPage {
   }
   }
 
-  processImage(event:any)
-  {
-    console.log("IMAGE PROCESS");
-    console.log(event);
-    let reader = new FileReader();
-     if ((event.target.files!=null)&&(event.target.files[0]!=null))
-     { 
-       if(event.target.files[0].type.match('image.*'))
-        {
-          reader.readAsDataURL(event.target.files[0]);
-          this.imageURI=event.target.files[0];
-          this.uploadImage();
-        }
-       }
-  }
 
-  uploadImage()
+  uploadImage(isFile:boolean)
   {
     console.log("UPLOAD IMAGE");
     console.log(this.productClicked);
-         let currentUpload = new Upload(this.imageURI,"products");
+         let currentUpload = new Upload(this.fileOrBase64String,"products",isFile);
      
           this.alertAndLoadingService.showLoading();
           this.upSvc.pushUpload(currentUpload).then(
@@ -160,6 +162,29 @@ export class TodayMenuPage {
           )
         
      }
+
+
+
+  processImage(event:any)
+  {
+    console.log("IMAGE PROCESS");
+    console.log(event);
+    let reader = new FileReader();
+     if ((event.target.files!=null)&&(event.target.files[0]!=null))
+     { 
+       if(event.target.files[0].type.match('image.*'))
+        {
+          reader.readAsDataURL(event.target.files[0]);
+          this.fileOrBase64String=event.target.files[0];
+          this.uploadImage(true);
+        }
+       }
+  }
+
+  
+
+
+
     
   
 

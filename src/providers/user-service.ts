@@ -45,7 +45,7 @@ export class UserService {
    
   currentUserObs:Observable<any>=null;
   
-  currentDefaultProducts:any=null;
+  currentDefaultProducts=null;
   currentDefaultProductsObs:Observable<any>=null;
   defaultProductsColletionName="defaultProducts";
   
@@ -97,6 +97,8 @@ export class UserService {
         this.currentDefaultProductsObs.subscribe(data =>
           { 
             this.currentDefaultProducts=data;
+            (<Array<any>>this.currentDefaultProducts).length
+
             console.log("CURRENT PRODUCTS");
             console.log(this.currentDefaultProducts);
           });
@@ -128,6 +130,11 @@ export class UserService {
    public getCurrentUser():any
   {
     return this.currentUser;
+  }
+
+  public getCurrentDefaultProducts():any
+  {
+    return this.currentDefaultProducts;
   }
   
   public isCurrentUserEnabled():boolean
@@ -181,11 +188,19 @@ public updateCurrentUser(address:Address,description:string,
 let userUpdate:any={
 address:address,
 description:description,
-picture:picture,
 hashgaha:hashgaha,
 categories:categories,
 profileCompleted:true
 };
+
+if (picture!=null)
+userUpdate.picture=picture;
+else
+userUpdate.picture=
+{
+url:"/assets/icon/favicon.ico"
+};
+
 console.log("upadting user on UID"+this.userID);
 console.log(userUpdate); 
 
@@ -221,8 +236,15 @@ public addDefaultProductToCurrentUser(
   quantity: quantity,
   originalPrice: originalPrice,
   reducedPrice: reducedPrice,
-  picture: picture,
   key:key
+  };
+
+  if (picture!=null)
+    product.picture=picture;
+  else
+  product.picture=
+  {
+    url:"/assets/icon/favicon.ico"
   };
 
 console.log("adding product on UID"+this.userID);
@@ -235,6 +257,45 @@ setUserPromise.then( ()=>
 {
 console.log("PROMISE DONE");
 resolve(key);
+}
+).catch( (error)=>
+{
+console.log(error);
+reject(new Error("Error inserting the data"));
+});
+
+setTimeout( () => {
+reject(new Error("Error inserting the data"));
+}, 150001);      
+});
+
+}
+
+
+public updateDefaultProductToCurrentUser(myProduct:any,
+  name:string,description:string,
+  quantity:string,originalPrice:string,reducedPrice:string):Promise<any>
+{
+  let product:any={
+  name: name,
+  description: description,
+  quantity: quantity,
+  originalPrice: originalPrice,
+  reducedPrice: reducedPrice,
+  key:myProduct.key,
+  picture:myProduct.key
+  };
+
+console.log("adding product on UID"+this.userID);
+console.log(product); 
+
+return new Promise<any>((resolve, reject) => {
+let setUserPromise:Promise<void>=this.usersCollectionRef.doc(this.userID).collection<User>(this.defaultProductsColletionName).doc(myProduct.key).update(product);
+console.log("PROMISE launched");
+setUserPromise.then( ()=>
+{
+console.log("PROMISE DONE");
+resolve(myProduct.key);
 }
 ).catch( (error)=>
 {

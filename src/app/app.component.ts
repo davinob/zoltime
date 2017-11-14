@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform} from 'ionic-angular';
 
+
 import { TodayMenuPage } from '../pages/today-menu/today-menu';
 import { OrdersTabPage } from '../pages/orders-tab/orders-tab';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
 import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
-
 
 import { AuthService } from '../providers/auth-service';
 import { UserService } from '../providers/user-service';
@@ -45,14 +45,11 @@ export class MyApp {
             console.log(data);
           if (!data.isOK)
           {
-            this.nav.setRoot(LoginPage);
+            this.nav.setRoot('LoginPage');
           }
           else
           {
-            if (data.page=='TutorialPage')
-            this.nav.setRoot(TutorialPage);
-            else
-            this.nav.setRoot(OrdersTabPage);
+            this.nav.setRoot(data.page);
           }
           });
           }
@@ -60,7 +57,7 @@ export class MyApp {
         else
         {
           console.log("USER IS NOT CONNECTED");
-          this.nav.setRoot(LoginPage);
+          this.nav.setRoot('LoginPage');
           console.log("Changed to root page");
         }
         this.initTime=false;
@@ -69,9 +66,9 @@ export class MyApp {
    
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Today Menu', component: TodayMenuPage },
-      { title: 'Orders', component: OrdersTabPage },
-      { title: 'Profile Settings', component: ProfileSettingsPage }
+      { title: 'Today Menu', component: 'TodayMenuPage' },
+      { title: 'Orders', component: 'OrdersTabPage' },
+      { title: 'Profile Settings', component: 'ProfileSettingsPage' }
     ];
     
     this.activePage=this.pages[0];

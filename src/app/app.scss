@@ -39,8 +39,8 @@
         color:white;
     }
 
-    .toolbar-background {
-        background: transparent;
+    .toolbar-background-md {
+        background-color: #486ff1;
       }
     
       .toolbar-title-md {
@@ -99,3 +99,11 @@
       color:green;
     }
    
+
+    .item-md ion-avatar ion-img, .item-md ion-avatar img {
+        /* border-radius: 50%; */
+        overflow: hidden;
+        width: 100px;
+        height: 100px;
+    }
+

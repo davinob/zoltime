@@ -25,7 +25,7 @@ export class AddressService{
       
   filterItems(searchTerm:string):Observable<any>
   {
-    let searchUrl:string="/mapsAutocomplete/json?input="+searchTerm+"&types=geocode&components=country:il&language=iw&key="+this.key;
+    let searchUrl:string="https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+searchTerm+"&types=geocode&components=country:il&language=iw&key="+this.key;
     let allAddresses:Subject<any>=new Subject<any>();
 
      this.http.get(searchUrl).map(res => res.json()).subscribe(data => {
@@ -48,7 +48,7 @@ export class AddressService{
   
   getPosition(placeID:string):Observable<any>
   {
-    let searchUrl:string="/mapsDetails/json?placeid="+placeID+"&key="+this.key;
+    let searchUrl:string="https://maps.googleapis.com/maps/api/place/details/json?placeid="+placeID+"&key="+this.key;
     let addressPos:Subject<any>=new Subject<any>();
 
      this.http.get(searchUrl).map(res => res.json()).subscribe(data => {

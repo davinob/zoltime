@@ -15,20 +15,35 @@ import {
  import { UserService,Picture } from './user-service';
 
 export class Upload {
-  file:File;
+  file:File=null;
   name:string;
   url:string;
   progress:number;
   createdAt: Date = new Date();
   folder:string;
+  base64String:string=null;
+  isFile:boolean;
 
-  constructor(file:File,folder:string) {
+  constructor(fileOrBase64String:any,folder:string,isFile:boolean) {
+    this.isFile=isFile;
     console.log("CONSTRUCTING UPLOAD");
-    this.file = file;
+    if (isFile)
+    {
+    this.file = fileOrBase64String;
     this.name=new Date().valueOf()+this.file.name;
+    }
+     else
+      {
+    this.base64String=fileOrBase64String;
+    this.name=new Date().valueOf()+Math.random()+".jpg";
+     }
+    
     this.folder=folder;
     console.log(this);
   }
+
+
+ 
 }
 
 @Injectable()
@@ -55,7 +70,13 @@ this.basePath='/uploads/'+userService.userID;
       console.log("UPLOAD NAME");
       console.log(`${upload.name}`);
       console.log(upload.name);
-    let uploadTask = storageRef.child(`${this.basePath}/${upload.folder}/${upload.name}`).put(upload.file,metadata);
+
+    let uploadTask;
+    
+    if (upload.isFile)
+    uploadTask= storageRef.child(`${this.basePath}/${upload.folder}/${upload.name}`).put(upload.file,metadata);
+    else
+    uploadTask= storageRef.child(`${this.basePath}/${upload.folder}/${upload.name}`).putString(upload.base64String,"base64",metadata);
     
     return new Promise<any>((resolve, reject) => {
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
@@ -89,8 +110,11 @@ this.basePath='/uploads/'+userService.userID;
   
 
   deletePicture(pic: Picture) {
+    if ((pic.name!=null)&&(pic.folder!=null))
+    {
     let storageRef = firebase.storage().ref();
     storageRef.child(`${this.basePath}/${pic.folder}/${pic.name}`).delete()
+    }
   }
 
 }

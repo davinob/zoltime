@@ -221,16 +221,17 @@ export class ProfileSettingsPage {
   }
 
 
-  picture:Picture;
+  profilePic:Picture;
 
   getPicture() {
     if (Camera['installed']()) {
       this.camera.getPicture({
         destinationType: this.camera.DestinationType.DATA_URL,
         mediaType: this.camera.MediaType.PICTURE,
-        targetWidth: 96,
-        targetHeight: 96
+        targetWidth: 200,
+        targetHeight: 200
       }).then((data) => {
+        this.uploadPicture(data,false);
       }, (err) => {
         alert('Unable to take photo');
       })
@@ -238,6 +239,23 @@ export class ProfileSettingsPage {
       this.fileInput.nativeElement.click();
     
     }
+  }
+
+  uploadPicture(picture:any,isFile:boolean)
+  {
+    let currentUpload = new Upload(picture,"profilePic",isFile);
+    
+    this.alertAndLoadingService.showLoading();
+    this.upSvc.pushUpload(currentUpload).then(
+      (resultPic:Picture)=>
+      {
+        this.profilePic=resultPic;
+        console.log("UPDATING FIELD PROFILE");
+        this.upSvc.deletePicture(this.userService.currentUser.picture);
+        this.userService.updateCurrentUserField("picture",this.profilePic);    
+         this.alertAndLoadingService.dismissLoading();
+      }
+    )
   }
 
   
@@ -250,22 +268,7 @@ export class ProfileSettingsPage {
        if(event.target.files[0].type.match('image.*'))
         {
           reader.readAsDataURL(event.target.files[0]);
-          let currentUpload = new Upload(event.target.files[0],"profilePic");
-         
-          console.log("PREVIOUS UPLOAD:");
-         
-          this.alertAndLoadingService.showLoading();
-          this.upSvc.pushUpload(currentUpload).then(
-            (resultPic:Picture)=>
-            {
-              this.picture=resultPic;
-              console.log("UPDATING FIELD PROFILE");
-              this.upSvc.deletePicture(this.userService.currentUser.picture);
-              this.userService.updateCurrentUserField("picture",this.picture);
-               this.alertAndLoadingService.dismissLoading();
-            }
-          )
-        
+          this.uploadPicture(event.target.files[0],true);
         }
         else
         this.alertAndLoadingService.showAlert({message:"Please choose an image"});

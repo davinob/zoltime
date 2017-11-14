@@ -1,0 +1,57 @@
+<!--
+  Generated template for the UpdateProductPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Update Product</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="global">
+
+    
+    <form [formGroup]="updateProductForm" (submit)="updateProduct()">
+    <ion-item>
+        
+      <ion-label stacked>Name</ion-label>
+      <ion-input formControlName="name"   type="text"  placeholder="Name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        
+      <ion-label stacked>General Description</ion-label>
+      <ion-input formControlName="description"  type="text"  placeholder="General Description"></ion-input>
+    </ion-item>
+         
+    
+    <ion-item>
+        
+      <ion-label stacked>Default Quantity</ion-label>
+      <ion-input formControlName="quantity"   type="text"  placeholder="Default Quantity"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        
+      <ion-label stacked>Original Price</ion-label>
+      <ion-input formControlName="originalPrice"  type="text"  placeholder="Original Price"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        
+      <ion-label stacked>Default Reduced Price</ion-label>
+      <ion-input formControlName="reducedPrice"  type="text"  placeholder="Reduced Price"></ion-input>
+    </ion-item>
+        
+    <button ion-button block [disabled]="!updateProductForm.valid" type="submit">
+        {{ 'Update Product' | translate }}
+        </button>
+      </form>
+     
+
+</ion-content>
