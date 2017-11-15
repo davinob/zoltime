@@ -24,7 +24,12 @@ export interface User {
   categories?:string;
   enabled?:boolean;
   textCategories?:string;
-  products?:any
+  products?:any;
+  promotionStartTime?:string;
+  promotionEndTime?:string;
+  profileCompleted?:boolean;
+  promotionStartDateTime?:number;
+  promotionEndDateTime?:number;
 }
 
 export interface Picture{
@@ -40,7 +45,7 @@ export class UserService {
   
   usersCollectionRef: AngularFirestoreCollection<User>;
   userID: string=null;
-  currentUser:any;
+  currentUser:User;
   userStatus:Subject<any>=new Subject<any>();
    
   currentUserObs:Observable<any>=null;
@@ -127,7 +132,7 @@ export class UserService {
     }
   }
 
-   public getCurrentUser():any
+   public getCurrentUser():User
   {
     return this.currentUser;
   }
@@ -190,7 +195,9 @@ address:address,
 description:description,
 hashgaha:hashgaha,
 categories:categories,
-profileCompleted:true
+profileCompleted:true,
+promotionStartTime:"18:00",
+promotionEndTime:"20:00"
 };
 
 if (picture!=null)

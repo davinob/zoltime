@@ -16,10 +16,11 @@
 </ion-header>
 
 
-<ion-content  class="global" padding>
-    <div *ngIf="userService.getCurrentUser() as user ">
+<ion-content  class="global" padding *ngIf="userService.getCurrentUser() as user ">
+ 
+
     <div class="promotions" >
-  <ion-grid>
+  <ion-grid *ngIf="!shouldShowCurrentPromotion()">
         <ion-row>
             <ion-col (click)='showPromotionStartTime()' align-self-center>
                 <span > Promotion Start</span>
@@ -34,7 +35,12 @@
           
         </ion-row>
       </ion-grid>
+      <div *ngIf="shouldShowCurrentPromotion()">
+        {{getCurrentPromotionTimerMessage()}}
+      </div> 
     </div>    
+
+    
               
               <button ion-button (click)="addProduct()">
                   Add product
@@ -48,32 +54,24 @@
                       <ion-item text-wrap>
                           <ion-grid>
                               <ion-row >
-                                  <ion-col (click)="updatePicture(product)">
-                                      <img  class="productImg" src="{{product.picture.url}}"/>
+                                  <ion-col (click)="updatePicture(product)" col-5>
+                                      <img  src="{{product.picture.url}}"/>
                                       </ion-col>
-                                      <ion-col>
+                                      <ion-col (click)='editProduct(product)'>
                                           <ion-row >
                                           <span  class="productName" >{{product.name}}</span>
                                         </ion-row> 
                                         <ion-row >
-                                          <span   class="productDescription" >{{product.description}}</span>
-                                        </ion-row>
+                                          <span class="productQuantity" >Quantity: {{product.quantity}}</span>
+                                        </ion-row >
+                                        <ion-row >
+                                            <span  class="productName" >  Price: <del>{{product.originalPrice}}  </del>  {{product.reducedPrice}} ₪ </span>
+                                          </ion-row >
                                       </ion-col>
                                     </ion-row >
                                    <ion-row (click)='editProduct(product)'>
                                    <ion-col>
-                                      <ion-row >
-                                               <span class="productQuantity" >Quantity: {{product.quantity}}</span>
-                                      </ion-row >
-                                      <ion-row >
-                                            <ion-col>
-                                                <span class="productOriginalPrice" >Original Price: {{product.originalPrice}} ₪</span>
-                                            </ion-col>
-                                            <ion-col>
-                                                <span class="productReducedPrice" >Reduced Price: {{product.reducedPrice}} ₪</span>
-                                            </ion-col>
-                                        </ion-row >
-                                  
+                                     <span   class="productDescription" >{{product.description}}</span>
                                   </ion-col>
                                </ion-row >
                               </ion-grid>
@@ -86,15 +84,18 @@
               </ion-list> 
             
    
-    <button [hidden]="user.promotionSet" [disabled]="isPublishDisabled()" ion-button (click)="publishTodayPromotion()">
+    <button [hidden]="shouldShowCurrentPromotion()" [disabled]="isPublishDisabled()" ion-button (click)="publishTodayPromotion()">
         Publish today promotion
       </button>
+    <button [hidden]="!shouldShowCurrentPromotion()" ion-button (click)="stopTodayPromotion()">
+         Stop promotion
+     </button>
       
   <ion-datetime #promotionStartTime [hidden]="true" item-end 
   minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionStartTime"></ion-datetime>
   <ion-datetime #promotionEndTime [hidden]="true" item-end 
   minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionEndTime"></ion-datetime>
   <input type="file" #fileInput accept="image/*"  style="visibility: hidden; height: 0px" name="files[]" (change)="processImage($event)" />                      
-</div>
+
 
 </ion-content>
