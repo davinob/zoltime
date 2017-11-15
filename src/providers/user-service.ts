@@ -283,8 +283,10 @@ public updateDefaultProductToCurrentUser(myProduct:any,
   originalPrice: originalPrice,
   reducedPrice: reducedPrice,
   key:myProduct.key,
-  picture:myProduct.key
+  picture:myProduct.picture
   };
+
+  
 
 console.log("adding product on UID"+this.userID);
 console.log(product); 

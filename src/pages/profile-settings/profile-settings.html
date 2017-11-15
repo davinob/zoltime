@@ -36,14 +36,10 @@
               </ion-grid>
  
   <input type="file" accept="image/*" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
-      <ion-list >
-             <ion-item *ngIf="!allInputsShows.restaurantName">
-               
-                <h4> Name</h4>
+      
+             <ion-item (click)='editInput("restaurantName",true)' *ngIf="!allInputsShows.restaurantName">
+                <h4 class="h4"> Name</h4>
                 <h3>{{user.restaurantName}}</h3>
-                  <button ion-button icon-only item-end clear (click)='editInput("restaurantName",true)'>
-                      <ion-icon name="create"></ion-icon>
-                </button>
               </ion-item>
               <ion-item *ngIf="allInputsShows.restaurantName">
                   <ion-input type="text" [(ngModel)]="user.restaurantName" #restaurantName placeholder="Restaurant Name" ></ion-input>
@@ -54,17 +50,14 @@
                       <ion-icon class="green" name="checkmark"></ion-icon>
                 </button>
               </ion-item>
-            </ion-list>
+          
           
             <form [formGroup]="updateForm">
-            <ion-list>
-                 <ion-item *ngIf="!allInputsShows.address">
+           
+                 <ion-item (click)='editInput("address",true)' *ngIf="!allInputsShows.address">
                    
-                       <h4> Address</h4>
+                       <h4 class="h4"> Address</h4>
                        <h3>{{ user.address.street }} {{ user.address.streetNumber }},{{ user.address.city }}</h3>
-                         <button ion-button icon-only item-end clear (click)='editInput("address",true)'>
-                             <ion-icon name="create"></ion-icon>
-                       </button>
                      </ion-item>
                     
                      <ion-item [hidden]="!allInputsShows.address">
@@ -89,52 +82,41 @@
                         {{address.description}}
                       </ion-item>
                     </ion-list>
-            </ion-list>
+          
           </form>
 
 
 
-            <ion-list>
-                <ion-item>
+         
+                <ion-item (click)='editInput("categories",true)'>
                     
-                     <h5> Categories</h5>
+                     <h4 class="h4"> Categories</h4>
                      <h3>{{user.textCategories}}</h3>
-                       <button ion-button icon-only item-end clear (click)='editInput("categories",true)'>
-                           <ion-icon name="create"></ion-icon>
-                     </button>
                    </ion-item>
                   
                       <ion-select [hidden]="true" #categoriesInput  multiple="true" (ionChange)='saveInput("categories",$event)'>
                        <ion-option *ngFor="let category of categories"  (value)="category">{{category}}</ion-option>
                       </ion-select>
          
-          </ion-list>
-
-            <ion-list>
-                <ion-item>
+          
+                <ion-item (click)='editInput("hashgaha",true)'>
                     
-                     <h5> Hashgaha</h5>
+                     <h4 class="h4"> Hashgaha</h4>
                      <h3>{{user.hashgaha}}</h3>
-                       <button ion-button icon-only item-end clear (click)='editInput("hashgaha",true)'>
-                           <ion-icon name="create"></ion-icon>
-                     </button>
                    </ion-item>
                    <ion-item [hidden]="true">
                       <ion-select #hashgahaInput  multiple="false" (ionChange)='saveInput("hashgaha",$event)'>
                        <ion-option *ngFor="let hashga of hashgahot"  (value)="hashga">{{hashga}}</ion-option>
                       </ion-select>
                    </ion-item>
-          </ion-list>
+          
 
       
-            <ion-list>
-                  <ion-item text-wrap *ngIf="!allInputsShows.description">
+         
+                  <ion-item text-wrap *ngIf="!allInputsShows.description" (click)='editInput("description",true)'>
                       
-                       <h5> Description</h5>
+                       <h4 class="h4"> Description</h4>
                        <h3>{{user.description}}</h3>
-                         <button ion-button icon-only item-end clear (click)='editInput("description",true)'>
-                             <ion-icon name="create"></ion-icon>
-                       </button>
                      </ion-item>
                      <ion-item *ngIf="allInputsShows.description">
                      <ion-textarea  [(ngModel)]="user.description"  type="text"  placeholder="General Description"></ion-textarea>  
@@ -145,7 +127,7 @@
                              <ion-icon class="green" name="checkmark"></ion-icon>
                        </button>
                      </ion-item>
-            </ion-list>
+           
 
      
 

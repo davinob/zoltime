@@ -52,6 +52,7 @@ export class ProfileSettingsPage {
     
     this.updateForm = formBuilder.group({
       address: [''],
+      name: [''],
      
     });
   

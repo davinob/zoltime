@@ -42,47 +42,46 @@
                 
 
                <ion-list  *ngIf="userService.getCurrentDefaultProducts() as products ">
-            
-                <ion-item-sliding *ngFor="let product of products">
-                         <ion-item>
-                          <ion-avatar item-start>
-                              <img (click)="updatePicture(product)" src="{{product.picture.url}}">
-                            </ion-avatar>
-                            <ion-grid>
-                                <ion-row >
-                                    <ion-col class="productUpdate">
-                           <span  class="productName" >{{product.name}}</span>
-                          </ion-col>
-                        </ion-row>
-                        <ion-row > 
-                            <ion-col class="productUpdate">
-                           <span class="productDescription" >{{product.description}}</span>
-                          </ion-col>
-                        </ion-row>   
-                        <ion-row >
-                          <ion-col class="productUpdate">
-                            <span class="productQuantity" >Quantity: {{product.quantity}}</span>
-                          </ion-col>
-                        </ion-row>  
-                          <ion-row >
-                              <ion-col class="productUpdate">
-                           <span class="productOriginalPrice" >Original Price: {{product.originalPrice}} ₪</span>
-                          </ion-col>
-                          <ion-col class="productUpdate">
-                           <span class="productReducedPrice" >Reduced Price: {{product.reducedPrice}} ₪</span>
-                          </ion-col>
-                        </ion-row>  
-                       </ion-grid>
-                          </ion-item>
+                  <ion-card  *ngFor="let product of products">
+                      <ion-item-sliding>
+                       
+                      <ion-item text-wrap>
+                          <ion-grid>
+                              <ion-row >
+                                  <ion-col (click)="updatePicture(product)">
+                                      <img  class="productImg" src="{{product.picture.url}}"/>
+                                      </ion-col>
+                                      <ion-col>
+                                          <ion-row >
+                                          <span  class="productName" >{{product.name}}</span>
+                                        </ion-row> 
+                                        <ion-row >
+                                          <span   class="productDescription" >{{product.description}}</span>
+                                        </ion-row>
+                                      </ion-col>
+                                    </ion-row >
+                                   <ion-row (click)='editProduct(product)'>
+                                   <ion-col>
+                                      <ion-row >
+                                               <span class="productQuantity" >Quantity: {{product.quantity}}</span>
+                                      </ion-row >
+                                      <ion-row >
+                                            <ion-col>
+                                                <span class="productOriginalPrice" >Original Price: {{product.originalPrice}} ₪</span>
+                                            </ion-col>
+                                            <ion-col>
+                                                <span class="productReducedPrice" >Reduced Price: {{product.reducedPrice}} ₪</span>
+                                            </ion-col>
+                                        </ion-row >
+                                  
+                                  </ion-col>
+                               </ion-row >
+                              </ion-grid>
                            <ion-item-options  (ionSwipe)="removeInput(product)" side="right" icon-start>
-                            <button ion-button expandable clear (click)='removeInput(product)'>
-                                <ion-icon class="red" name="trash"></ion-icon>
-                          </button>
-                          <button ion-button clear (click)='editProduct(product)'>
-                              <ion-icon name="create"></ion-icon>
-                        </button>
-                            </ion-item-options>
-                     </ion-item-sliding>
+                           </ion-item-options>
+                      </ion-item> 
+                  </ion-item-sliding>
+                    </ion-card>
 
               </ion-list> 
             
