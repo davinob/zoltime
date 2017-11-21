@@ -16,38 +16,53 @@
 </ion-header>
 
 
-<ion-content  class="global" padding *ngIf="userService.getCurrentUser() as user ">
+<ion-content  class="global" padding *ngIf="sellerService.getCurrentSeller() as user ">
+    <ion-grid  class="buttonPromotion" >
+        <ion-row >
+            <ion-col  align-self-center>
  
+    <button [hidden]="shouldShowCurrentPromotion()" class="publishPromo" [disabled]="isPublishDisabled()" ion-button (click)="publishTodayPromotion()">
+        Publish today promotion
+      </button>
+    <button [hidden]="!shouldShowCurrentPromotion()" class="stopPromo"  ion-button (click)="stopTodayPromotion()">
+         Stop promotion
+     </button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 
+ 
     <div class="promotions" >
-  <ion-grid *ngIf="!shouldShowCurrentPromotion()">
-        <ion-row>
+  <ion-grid >
+        <ion-row [hidden]="shouldShowCurrentPromotion()">
             <ion-col (click)='showPromotionStartTime()' align-self-center>
-                <span > Promotion Start</span>
+                <span > Promotion Start:</span>
                 <span>{{user.promotionStartTime}}</span>
              
              </ion-col>
              <ion-col (click)='showPromotionEndTime()' align-self-center>
-                <span > Promotion End</span>
+                <span > Promotion End:</span>
                 <span>{{user.promotionEndTime}}</span>
              
              </ion-col>
           
         </ion-row>
+        <ion-row [hidden]="!shouldShowCurrentPromotion()">
+             <ion-col align-self-center>
+                <span >{{getCurrentPromotionTimerMessage()}}</span>
+             </ion-col>
+        </ion-row>
       </ion-grid>
-      <div *ngIf="shouldShowCurrentPromotion()">
-        {{getCurrentPromotionTimerMessage()}}
-      </div> 
     </div>    
 
     
-              
+    <div [ngClass]="shouldShowCurrentPromotion() ? 'products_disabled' : 'products_enabled'">
               <button ion-button (click)="addProduct()">
                   Add product
                 </button>
                 
 
-               <ion-list  *ngIf="userService.getCurrentDefaultProducts() as products ">
+               <ion-list  *ngIf="sellerService.getCurrentDefaultProducts() as products ">
                   <ion-card  *ngFor="let product of products">
                       <ion-item-sliding>
                        
@@ -75,26 +90,23 @@
                                   </ion-col>
                                </ion-row >
                               </ion-grid>
+                            </ion-item>
                            <ion-item-options  (ionSwipe)="removeInput(product)" side="right" icon-start>
                            </ion-item-options>
-                      </ion-item> 
+                     
                   </ion-item-sliding>
                     </ion-card>
 
               </ion-list> 
-            
+         </div>  
    
-    <button [hidden]="shouldShowCurrentPromotion()" [disabled]="isPublishDisabled()" ion-button (click)="publishTodayPromotion()">
-        Publish today promotion
-      </button>
-    <button [hidden]="!shouldShowCurrentPromotion()" ion-button (click)="stopTodayPromotion()">
-         Stop promotion
-     </button>
-      
-  <ion-datetime #promotionStartTime [hidden]="true" item-end 
-  minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionStartTime"></ion-datetime>
-  <ion-datetime #promotionEndTime [hidden]="true" item-end 
-  minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionEndTime"></ion-datetime>
+ 
+         <ion-datetime #promotionStartTime [hidden]="true" item-end 
+         minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionStartTime" (ionChange)="updateUserField('promotionStartTime',user.promotionStartTime)"></ion-datetime>
+         <ion-datetime #promotionEndTime [hidden]="true" item-end 
+         minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionEndTime" (ionChange)="updateUserField('promotionEndTime',user.promotionEndTime)"></ion-datetime>
+         
+     
   <input type="file" #fileInput accept="image/*"  style="visibility: hidden; height: 0px" name="files[]" (change)="processImage($event)" />                      
 
 

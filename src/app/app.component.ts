@@ -9,7 +9,7 @@ import { LoginPage } from '../pages/login/login';
 import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
 
 import { AuthService } from '../providers/auth-service';
-import { UserService } from '../providers/user-service';
+import { SellerService } from '../providers/seller-service';
 
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/first';
@@ -28,7 +28,7 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(public translate: TranslateService,public platform: Platform, public authService: AuthService, 
-    public userService: UserService,
+    public sellerService: SellerService,
   private storage: Storage ) {
     
          authService.getAuthState().subscribe(user=>
@@ -39,7 +39,7 @@ export class MyApp {
            if (this.initTime)
          {
            console.log("REDIRECTING TO SIGNED PAGE")
-             this.userService.initCurrentUser(user.uid).subscribe(data=>
+             this.sellerService.initCurrentUser(user.uid).subscribe(data=>
           {
             console.log("DATAAA");
             console.log(data);

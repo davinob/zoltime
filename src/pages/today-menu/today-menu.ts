@@ -1,13 +1,13 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController  } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserService, User,Picture } from '../../providers/user-service';
+import { SellerService, Seller,Picture } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { UploadService,Upload } from '../../providers/upload-service';
 import { Camera,CameraOptions  } from '@ionic-native/camera';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+
 import 'rxjs/Rx';
 /**
  * Generated class for the TodayMenuPage page.
@@ -35,20 +35,48 @@ export class TodayMenuPage {
   
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private userService:UserService, public alertAndLoadingService: AlertAndLoadingService
+    private sellerService:SellerService, public alertAndLoadingService: AlertAndLoadingService
     , public formBuilder: FormBuilder,
     public camera: Camera,
     private upSvc: UploadService,
     private elRef:ElementRef,
-    public toastCtrl: ToastController) {
+    public toastCtrl: ToastController ) {
   }
+
+  
+  
+  
+  
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TodayMenuPage');
   }
 
 
+
+
+  updateUserField(fieldName:string,field:any)
+  {
+    this.alertAndLoadingService.showLoading();
+
+    this.sellerService.updateCurrentUserField(fieldName,field).then
+    (
+      (successEvent)=>
+      {
+        this.alertAndLoadingService.dismissLoading();
+      }
+    )
+    .catch(error=>
+    {
+      this.alertAndLoadingService.showAlert({message:"Plese check your network connection is active."});
+    });
+  }
+
+
+
   addProduct(){
+    if (this.shouldShowCurrentPromotion())
+    return;
     this.navCtrl.push('CreateProductPage');
   }
 
@@ -66,6 +94,9 @@ export class TodayMenuPage {
 
   removeInput(product:any)
   {
+    if (this.shouldShowCurrentPromotion())
+    return;
+
     this.alertAndLoadingService.
     presentConfirm("Are you sure you want to remove this product?").then(
       (response)=>
@@ -74,7 +105,7 @@ export class TodayMenuPage {
         {
           console.log("Deleting product");
           console.log(product);
-          this.userService.removeDefaultProductFromCurrentUser(product);
+          this.sellerService.removeDefaultProductFromCurrentUser(product);
         }
       }
     )
@@ -89,7 +120,7 @@ export class TodayMenuPage {
         console.log(response);
           console.log("Setting product value: "+fieldName+" "+response);
 
-          this.userService.updateCurrentUserDefaultProductField(product,fieldName,response);
+          this.sellerService.updateCurrentUserDefaultProductField(product,fieldName,response);
         
       }
     )
@@ -98,10 +129,10 @@ export class TodayMenuPage {
 
   isPublishDisabled():boolean
   {
-   return this.userService.getCurrentUser().promotionStartTime==null || 
-   this.userService.getCurrentUser().promotionEndTime==null || 
-   this.userService.getCurrentDefaultProducts()==null||
-   (<Array<any>>this.userService.getCurrentDefaultProducts()).length<=0;
+   return this.sellerService.getCurrentSeller().promotionStartTime==null || 
+   this.sellerService.getCurrentSeller().promotionEndTime==null || 
+   this.sellerService.getCurrentDefaultProducts()==null||
+   (<Array<any>>this.sellerService.getCurrentDefaultProducts()).length<=0;
   }
 
 
@@ -110,33 +141,39 @@ export class TodayMenuPage {
 
   shouldShowCurrentPromotion():boolean
   {
-   return (this.userService.getCurrentUser().promotionStartDateTime!=null && this.userService.getCurrentUser().promotionEndDateTime!=null)
+   return (this.sellerService.getCurrentSeller().promotionStartDateTime!=null && this.sellerService.getCurrentSeller().promotionEndDateTime!=null)
   }
 
   stopTodayPromotion()
   {
-    this.userService.getCurrentUser().promotionStartDateTime=null;
-    this.userService.getCurrentUser().promotionEndDateTime=null;
-    this.timerSubscription.unsubscribe();
+    this.alertAndLoadingService.showLoading();
+    this.sellerService.stopTodayPromotion().then
+    (stopPromo=>
+    {
+      this.alertAndLoadingService.dismissLoading();
+    })
   }
 
 
 
   publishTodayPromotion()
   {
+    this.alertAndLoadingService.showLoading();
    
-    if (this.userService.getCurrentUser().promotionStartTime==null)
+    if (this.sellerService.getCurrentSeller().promotionStartTime==null)
     return;
-    if (this.userService.getCurrentUser().promotionEndTime==null)
+    if (this.sellerService.getCurrentSeller().promotionEndTime==null)
     return;
 
-    let startTime=(this.userService.getCurrentUser().promotionStartTime.split(":",2));
-    let minuteStart=Number.parseInt(startTime[1]);
+    let startTime=(this.sellerService.getCurrentSeller().promotionStartTime.split(":",2));
     let hourStart=Number.parseInt(startTime[0]);
+    let minuteStart=Number.parseInt(startTime[1]);
+    
 
-    let endTime=this.userService.getCurrentUser().promotionStartTime.split(":",2)
-    let minuteEnd=Number.parseInt(endTime[1]);
+    let endTime=this.sellerService.getCurrentSeller().promotionEndTime.split(":",2)
     let hourEnd=Number.parseInt(endTime[0]);
+    let minuteEnd=Number.parseInt(endTime[1]);
+    
 
     let date=new Date();
     let nowHour=date.getHours();
@@ -156,86 +193,43 @@ export class TodayMenuPage {
     date.setMinutes(minuteStart);
     date.setSeconds(0);
 
-    this.userService.getCurrentUser().promotionStartDateTime=date.valueOf();
+    this.sellerService.getCurrentSeller().promotionStartDateTime=date.valueOf();
 
-    date.setHours(hourEnd);
-    date.setMinutes(minuteEnd);
-    this.userService.getCurrentUser().promotionEndDateTime=date.valueOf();
-
+    
+    
     if ((hourStart>hourEnd)||((hourStart==hourEnd)&&((minuteStart>minuteEnd)))) //promotion not in same day
     {
-      this.userService.getCurrentUser().promotionEndDateTime=this.userService.getCurrentUser().promotionEndDateTime+(1000 * 60 * 60 * 24);
+      date=new Date(date.valueOf()+(1000 * 60 * 60 * 24));
     }
+    
+    date.setHours(hourEnd);
+    date.setMinutes(minuteEnd);
 
-   this.timerSubscription=Observable.timer(0,1000).
-    subscribe(
-      ()=>
-      {
-      let nowDate=new Date();
-        let promotionHasStarted=false;
-        
 
-        let timeDiffInSecBeforeStart=Math.round(new Date(this.userService.getCurrentUser().promotionStartDateTime-nowDate.valueOf()).valueOf()/1000);
-        let timeDiffInSec=timeDiffInSecBeforeStart;
-        if (timeDiffInSecBeforeStart<=0)
-        {
-          promotionHasStarted=true;
-          timeDiffInSec=Math.round(new Date(this.userService.getCurrentUser().promotionEndDateTime-nowDate.valueOf()).valueOf()/1000);
-          if (timeDiffInSec<0)
-          {
-            this.stopTodayPromotion();
-            return;
-          }
-            
-        }
+  this.sellerService.getCurrentSeller().promotionEndDateTime=date.valueOf();
+    console.log("ENDs"+date.getHours()+":"+date.getMinutes());
 
-        console.log("TIME DIFF:"+timeDiffInSec);
-        let secondsDiff=timeDiffInSec%(60);
-        timeDiffInSec-=secondsDiff;
-        
-        let timeDiffInMin=timeDiffInSec/60;
-        let minutesDiff=(timeDiffInMin)%60;
-        timeDiffInMin-=minutesDiff;
-        let hoursDiff=timeDiffInMin/60;
-
-      
-        if (promotionHasStarted)
-        {
-          this.promotionMessage= "Promotion ends in: "+this.formT(hoursDiff)+":"+this.formT(minutesDiff)+":"+this.formT(secondsDiff);
-        }
-        else
-        {
-          this.promotionMessage= "Promotion starts in: "+this.formT(hoursDiff)+":"+this.formT(minutesDiff)+":"+this.formT(secondsDiff);
-        }
-        
-      
-    }
-    );
+    this.sellerService.startTodayPromotion().then
+    (startPromo=>
+    {
+      this.alertAndLoadingService.dismissLoading();
+    })
+   
   }
-
-  formT(num:number):string
-  {
-     if (num.toString().length==1)
-      return "0"+num;
-    return num+"";
-  }
-
- 
-
   
-
-  timerSubscription:Subscription;
-  promotionMessage:string;
 
 
   getCurrentPromotionTimerMessage():string
   {
-    return this.promotionMessage;
+    return this.sellerService.promotionMessage;
     
   }
   
   editProduct(product:any)
   {
+    if (this.shouldShowCurrentPromotion())
+    return;
+
     this.navCtrl.push('UpdateProductPage',{product:product});
   }
 
@@ -243,6 +237,9 @@ export class TodayMenuPage {
   productClicked=null;
 
   updatePicture(product:any) {
+    if (this.shouldShowCurrentPromotion())
+    return;
+    
     this.productClicked=product;
     if (Camera['installed']()) {
     const options: CameraOptions = {
@@ -279,7 +276,7 @@ export class TodayMenuPage {
             {
               //this.upSvc.deletePicture(product.picture);
               let picture=resultPic;
-              this.userService.updateCurrentUserDefaultProductField(this.productClicked,"picture",picture);
+              this.sellerService.updateCurrentUserDefaultProductField(this.productClicked,"picture",picture);
               this.alertAndLoadingService.dismissLoading();
               }
           )

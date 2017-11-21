@@ -4,7 +4,7 @@ import {
   NavController} from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../providers/auth-service';
-import { UserService } from '../../providers/user-service';
+import { SellerService } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { EmailValidator } from '../../validators/email';
 import { OrdersTabPage } from '../orders-tab/orders-tab';
@@ -28,7 +28,7 @@ export class LoginPage {
   
   constructor(public navCtrl: NavController, public authService: AuthService, 
     public formBuilder: FormBuilder, 
-    public alertAndLoadingService: AlertAndLoadingService, public userService:UserService) {
+    public alertAndLoadingService: AlertAndLoadingService, public sellerService:SellerService) {
     
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
@@ -48,7 +48,7 @@ export class LoginPage {
       .then( authData => {
          console.log(authData);
          console.log(authData.uid);
-        this.userService.initCurrentUser(authData.uid).subscribe(data=>
+        this.sellerService.initCurrentUser(authData.uid).subscribe(data=>
           {
             console.log(data);
           if (!data.isOK)

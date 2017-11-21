@@ -4,7 +4,7 @@ import { IonicPage, NavController, NavParams,LoadingController,
 import { AuthService } from '../../providers/auth-service';
 
 import { LoginPage } from '../login/login';
-import { UserService, User,Picture } from '../../providers/user-service';
+import { SellerService, Seller,Picture } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Observable } from 'rxjs/Observable';
 
@@ -43,7 +43,7 @@ export class ProfileSettingsPage {
   public updateForm:FormGroup;
 
   constructor(public navCtrl: NavController, public authData: AuthService, 
-  private userService:UserService,  public navParams: NavParams,
+  private sellerService:SellerService,  public navParams: NavParams,
   public alertAndLoadingService: AlertAndLoadingService,
   public addressService: AddressService,
   public camera: Camera,
@@ -123,7 +123,7 @@ export class ProfileSettingsPage {
 
   updateUser(fieldName:string,field:any)
   {
-    this.userService.updateCurrentUserField(fieldName,field).then
+    this.sellerService.updateCurrentUserField(fieldName,field).then
     (
       (successEvent)=>
       {
@@ -252,8 +252,8 @@ export class ProfileSettingsPage {
       {
         this.profilePic=resultPic;
         console.log("UPDATING FIELD PROFILE");
-        this.upSvc.deletePicture(this.userService.currentUser.picture);
-        this.userService.updateCurrentUserField("picture",this.profilePic);    
+        this.upSvc.deletePicture(this.sellerService.currentSeller.picture);
+        this.sellerService.updateCurrentUserField("picture",this.profilePic);    
          this.alertAndLoadingService.dismissLoading();
       }
     )

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 
 import { AuthService } from '../../providers/auth-service';
-import { UserService,Picture } from '../../providers/user-service';
+import { SellerService,Picture } from '../../providers/seller-service';
 import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
@@ -58,7 +58,7 @@ export class TutorialPage {
     public formBuilder: FormBuilder,
     public alertAndLoadingService: AlertAndLoadingService,
     public addressService: AddressService,
-    public userService: UserService,
+    public sellerService: SellerService,
     public camera: Camera,
     private upSvc: UploadService) 
   {
@@ -264,10 +264,10 @@ export class TutorialPage {
     if (!this.signupForm.valid){
       console.log("FORM INVALID"+this.signupForm.value);
     } else {
-        let user=this.userService.getCurrentUser();
+        let user=this.sellerService.getCurrentSeller();
         console.log("SIGNUP:"+user);
         let jsonCatego:any=this.jsonCatego(this.signupForm.value.categories);
-         this.userService.updateCurrentUser(
+         this.sellerService.updateCurrentUser(
           this.addressJSON,this.signupForm.value.description,
         this.profilePic,this.signupForm.value.hashgaha
         ,jsonCatego)

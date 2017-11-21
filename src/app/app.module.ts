@@ -21,7 +21,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { AlertAndLoadingService } from '../providers/alert-loading-service';
 import { AuthService } from './../providers/auth-service';
-import { UserService } from './../providers/user-service';
+import { SellerService } from './../providers/seller-service';
 import { AddressService } from './../providers/address-service';
 import { UploadService } from './../providers/upload-service';
 
@@ -75,7 +75,7 @@ export function createTranslateLoader(http: HttpClient) {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
-    UserService,
+    SellerService,
     AddressService,
     AlertAndLoadingService,
     Camera,

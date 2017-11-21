@@ -7,10 +7,12 @@ page-today-menu{
 
 .promotions
 {
-  color:white;
-  border-color: white;
-  border: 3px solid;
-  margin-bottom: 13px;
+    color: white;
+    border-color: white;
+    border: 3px solid;
+    margin-bottom: 13px;
+    border-radius: 15px;
+    font-size: larger;
 }
 
 .productName
@@ -22,4 +24,34 @@ page-today-menu{
   line-height: 0px;
 }
 
+.products_disabled{
+  opacity:0.5;
+}
+
+.products_enabled{
+  opacity:1;
+}
+
+
+.buttonPromotion
+{
+  align-items: center;
+}
+
+.publishPromo
+{
+  background-color: green;
+}
+
+.stopPromo
+{
+  background-color: red;
+}
+
+.card-md {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left:0px;
+  border-radius: 10px;
+}
 }

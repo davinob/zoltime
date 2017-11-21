@@ -1,6 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { UserService,Picture } from '../../providers/user-service';
+import { SellerService,Picture } from '../../providers/seller-service';
 import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
@@ -30,7 +30,7 @@ export class UpdateProductPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder,
     public alertAndLoadingService: AlertAndLoadingService,
-    public userService: UserService,
+    public sellerService: SellerService,
    )  {
 
       this.myProduct=navParams.get('product');
@@ -56,10 +56,10 @@ export class UpdateProductPage {
     if (!this.updateProductForm.valid){
       console.log("FORM INVALID"+this.updateProductForm.value);
     } else {
-        let user=this.userService.getCurrentUser();
+        let user=this.sellerService.getCurrentSeller();
         console.log("SIGNUP:"+user);
         
-         this.userService.updateDefaultProductToCurrentUser(this.myProduct,
+         this.sellerService.updateDefaultProductToCurrentUser(this.myProduct,
           this.updateProductForm.value.name,this.updateProductForm.value.description,
           this.updateProductForm.value.quantity,this.updateProductForm.value.originalPrice,
           this.updateProductForm.value.reducedPrice)

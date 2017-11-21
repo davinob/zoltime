@@ -7,7 +7,7 @@ import { AuthService } from '../../providers/auth-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
-import { UserService } from '../../providers/user-service';
+import { SellerService } from '../../providers/seller-service';
 
  
 
@@ -23,7 +23,7 @@ export class SignUpPage {
 
   constructor(public nav: NavController, public authService: AuthService, 
     public formBuilder: FormBuilder,
-    public userService: UserService,
+    public sellerService: SellerService,
     public alertAndLoadingService: AlertAndLoadingService,
 
     ) {
@@ -50,7 +50,7 @@ export class SignUpPage {
         {
         console.log("SIGNUP:"+user);
         
-         this.userService.createUser(
+         this.sellerService.createUser(
           user.uid, user.email, this.signupForm.value.name)
         .then(()=> {
           this.nav.setRoot(LoginPage);

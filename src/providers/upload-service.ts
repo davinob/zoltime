@@ -12,7 +12,7 @@ import {
   import * as firebase from 'firebase';
  import {UploadTaskSnapshot} from 'firebase/storage';
   
- import { UserService,Picture } from './user-service';
+ import { SellerService,Picture } from './seller-service';
 
 export class Upload {
   file:File=null;
@@ -52,8 +52,8 @@ export class UploadService {
 
   private basePath:string = '/uploads';
 
-  constructor(public afs: AngularFirestore,public userService:UserService) { 
-this.basePath='/uploads/'+userService.userID;
+  constructor(public afs: AngularFirestore,public sellerService:SellerService) { 
+this.basePath='/uploads/'+sellerService.userID;
   }
 
   
