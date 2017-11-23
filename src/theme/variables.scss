@@ -45,15 +45,15 @@ $colors: (
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
-
-
+$loading-ios-background: transparent;
+$loading-ios-spinner-color:white;
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-
-
+$loading-md-background: $loading-ios-background;
+$loading-md-box-shadow: none;
+$loading-md-spinner-color:$loading-ios-spinner-color;
 
 
 // App Windows Variables

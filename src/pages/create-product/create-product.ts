@@ -104,7 +104,7 @@ export class CreateProductPage {
       }
     ).catch(error=>
       {
-       this.alertAndLoadingService.showToast(error);
+      this.alertAndLoadingService.showToast(error);
       })
   }
   

@@ -35,7 +35,7 @@ export class AlertAndLoadingService {
   showLoading()
   {
     this.loading = this.loadingCtrl.create({
-      dismissOnPageChange: true,
+      dismissOnPageChange: true      
     });
     this.loading.present();
   }
