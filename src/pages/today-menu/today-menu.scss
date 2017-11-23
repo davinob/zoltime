@@ -17,11 +17,25 @@ page-today-menu{
 
 .productName
 {
-  font:bolder;
+  font-weight: bolder;
+  font-size: larger;
 }
 
 .productDescription {
   line-height: 0px;
+  font-style: italic;
+ 
+}
+
+.productQuantity
+{
+  font-weight:bold;
+}
+
+.productPrice
+{
+  color:red;
+  font-weight:bold;
 }
 
 .products_disabled{
@@ -31,6 +45,8 @@ page-today-menu{
 .products_enabled{
   opacity:1;
 }
+
+
 
 
 .buttonPromotion

@@ -58,8 +58,8 @@
     <input type="file" accept="image/*" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
     <div class="profile-image-wrapper" (click)="getPicture()">
       <div class="profile-image-placeholder" *ngIf="!signupForm.controls.picture.value">
-        <ion-icon name="add-circle"></ion-icon>
-        <div>
+        <ion-icon class="basic"  name="add-circle"></ion-icon>
+        <div class="whiteBig">
           {{ 'ITEM_CREATE_CHOOSE_IMAGE' | translate }}
         </div>
       </div>

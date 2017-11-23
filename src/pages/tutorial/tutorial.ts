@@ -5,9 +5,9 @@ import { TranslateService } from '@ngx-translate/core';
 
 
 import { AuthService } from '../../providers/auth-service';
-import { SellerService,Picture } from '../../providers/seller-service';
+import { SellerService } from '../../providers/seller-service';
 import { AddressService,Address } from '../../providers/address-service';
-import { UploadService,Upload } from '../../providers/upload-service';
+import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Camera } from '@ionic-native/camera';
 
@@ -194,21 +194,37 @@ export class TutorialPage {
 
   getPicture() {
     if (Camera['installed']()) {
-      this.camera.getPicture({
-        destinationType: this.camera.DestinationType.DATA_URL,
-        mediaType: this.camera.MediaType.PICTURE,
-        targetHeight: 200
-      }).then((data) => {
-        this.signupForm.patchValue({ 'picture': 'data:image/jpg;base64,' + data });
-        this.uploadPicture(data,false);
-      }, (err) => {
-        alert('Unable to take photo');
-      })
-    } else { 
-      this.fileInput.nativeElement.click();
-    
+      let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+      this.alertAndLoadingService.
+      showChoice("Take a picture from:","Gallery","Camera").then(
+        (response)=>
+        {
+          if (response)
+          {
+            sourceType=this.camera.PictureSourceType.CAMERA
+          }
+
+          this.takePicture(sourceType);
+        });
+      }
+
+      else { 
+        this.fileInput.nativeElement.click();
+      
+      }
+
     }
-  }
+
+
+    takePicture(srcType:number)
+    {
+     this.upSvc.takePicture(srcType).then((data) => {
+      this.uploadPicture(data,false);
+    }, (err) => {
+      //alert('Unable to take photo');
+    })
+  } 
+
 
 
   uploadPicture(picture:any,isFile:boolean)
@@ -224,7 +240,10 @@ export class TutorialPage {
         this.profilePic=resultPic;      
          this.alertAndLoadingService.dismissLoading();
       }
-    )
+    ).catch(error=>
+      {
+       this.alertAndLoadingService.showToast(error);
+      })
   }
 
   processWebImage(event) {
@@ -240,7 +259,7 @@ export class TutorialPage {
           this.uploadPicture(event.target.files[0],true);
         }
         else
-        this.alertAndLoadingService.showAlert({message:"Please choose an image"});
+        this.alertAndLoadingService.showToast({message:"Please choose an image"});
      }
     
   }

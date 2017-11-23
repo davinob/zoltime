@@ -1,6 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { SellerService } from '../../providers/seller-service';
+import { SellerService, Product } from '../../providers/seller-service';
 import { AddressService,Address } from '../../providers/address-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Camera } from '@ionic-native/camera';
@@ -9,7 +9,7 @@ import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 /**
- * Generated class for the UpdateProductPage page.
+ * Generated class for the UpdateQuantityPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -17,13 +17,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-update-product',
-  templateUrl: 'update-product.html',
+  selector: 'page-update-quantity',
+  templateUrl: 'update-quantity.html',
 })
-export class UpdateProductPage {
+export class UpdateQuantityPage {
 
   
-  public updateProductForm:FormGroup;
+  public updateQuantityForm:FormGroup;
   myProduct:any;
   
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -33,35 +33,28 @@ export class UpdateProductPage {
    )  {
 
       this.myProduct=navParams.get('product');
-      this.updateProductForm = formBuilder.group({
-        name: [this.myProduct.name, Validators.required],
-        description: [this.myProduct.description, Validators.required],
-        quantity: [this.myProduct.quantity, Validators.required],
-        originalPrice: [this.myProduct.originalPrice, Validators.required],
-        reducedPrice: [this.myProduct.reducedPrice, Validators.required],
-        picture: [this.myProduct.picture]
+      this.updateQuantityForm = formBuilder.group({
+        quantity: [this.myProduct.currentQuantity, Validators.required],
       });
 
       
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UpdateProductPage');
+    console.log('ionViewDidLoad UpdateQuantityPage');
   }
 
 
 
-  updateProduct(){
-    if (!this.updateProductForm.valid){
-      console.log("FORM INVALID"+this.updateProductForm.value);
+  updateQuantity(){
+    if (!this.updateQuantityForm.valid){
+      console.log("FORM INVALID"+this.updateQuantityForm.value);
     } else {
         let user=this.sellerService.getCurrentSeller();
         console.log("SIGNUP:"+user);
         
-         this.sellerService.updateDefaultProductToCurrentUser(this.myProduct,
-          this.updateProductForm.value.name,this.updateProductForm.value.description,
-          this.updateProductForm.value.quantity,this.updateProductForm.value.originalPrice,
-          this.updateProductForm.value.reducedPrice)
+         this.sellerService.updateCurrentProductQuantity(this.myProduct,
+          this.updateQuantityForm.value.quantity)
         .then(()=> {
           console.log("Document successfully written!");
           this.navCtrl.setRoot(TodayMenuPage);

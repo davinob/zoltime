@@ -57,11 +57,11 @@ export class SignUpPage {
           console.log("Document successfully written!");
           })
           .catch((error)=> {
-            this.alertAndLoadingService.showAlert(error);
+            this.alertAndLoadingService.showToast(error);
           });
         });
       }).catch((error) => {
-        this.alertAndLoadingService.showAlert(error);
+        this.alertAndLoadingService.showToast(error);
        
       });
 

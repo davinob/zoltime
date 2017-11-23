@@ -1,4 +1,4 @@
-page-create-product {
+page-update-quantity {
 
     .global{
         background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
@@ -58,6 +58,8 @@ page-create-product {
 
     .profile-image-placeholder {
       display: inline-block;
+
+      background-color: #eee;
       width: 96px;
       height: 96px;
       /*border-radius: 50%;*/

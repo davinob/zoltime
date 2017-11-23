@@ -9,12 +9,15 @@ import 'rxjs/add/observable/of';
 import { Subscription } from 'rxjs/Subscription';
 import {
   AngularFirestore,
-  AngularFirestoreCollection} from 'angularfire2/firestore';
+  AngularFirestoreCollection,
+  AngularFirestoreDocument} from 'angularfire2/firestore';
   import { Address } from './address-service';
 
   import { Subject } from 'rxjs/Subject';
 
   import { AuthService } from './auth-service';
+  import { UploadService,Picture } from './upload-service';
+  import { GlobalService } from './global-service';
 
   import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -36,19 +39,24 @@ export interface Seller {
   promotionEndDateTime?:number;
 }
 
-export interface Picture{
-  url:string,
-  folder:string,
-  name:string
 
- 
+
+export interface Product{
+  name: string,
+  description: string,
+  quantity: string,
+  currentQuantity:string,
+  originalPrice: string,
+  reducedPrice: string,
+  key:string,
+  picture?:Picture
 }
 
 @Injectable()
 export class SellerService {
   
   sellersCollectionRef: AngularFirestoreCollection<Seller>;
-  userID: string=null;
+  defaultProductsCollectionRef:AngularFirestoreCollection<Product>
   currentSeller:Seller;
   userStatus:Subject<any>=new Subject<any>();
    
@@ -56,19 +64,25 @@ export class SellerService {
   
   currentDefaultProducts=null;
   currentDefaultProductsObs:Observable<any>=null;
+
   defaultProductsColletionName="defaultProducts";
   
 
-  constructor(private afs: AngularFirestore,public authService:AuthService,private http: HttpClient ) {
+  constructor(private afs: AngularFirestore,public authService:AuthService,
+    private uploadService:UploadService,private http: HttpClient,
+    private globalService:GlobalService) {
     this.sellersCollectionRef = this.afs.collection<Seller>('sellers'); 
    }
   
    public initCurrentUser(userID:string):Observable<any>
   {
     console.log("init with userID:"+userID);
-        this.userID=userID;
-        this.currentUserObs=this.sellersCollectionRef.doc(this.userID).valueChanges();
-        this.currentDefaultProductsObs=this.sellersCollectionRef.doc(this.userID).collection(this.defaultProductsColletionName).valueChanges();
+        this.globalService.userID=userID;
+        this.uploadService.initBasePath();
+        this.currentUserObs=this.sellersCollectionRef.doc(this.globalService.userID).valueChanges();
+        this.defaultProductsCollectionRef=this.sellersCollectionRef.doc(this.globalService.userID).collection(this.defaultProductsColletionName);
+        this.currentDefaultProductsObs=this.defaultProductsCollectionRef.valueChanges();
+      
 
        this.currentUserObs.subscribe(data =>
         { 
@@ -212,11 +226,11 @@ userUpdate.picture=
 url:"/assets/icon/favicon.ico"
 };
 
-console.log("upadting user on UID"+this.userID);
+console.log("upadting user on UID"+this.globalService.userID);
 console.log(userUpdate); 
 
 return new Promise<any>((resolve, reject) => {
-let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.userID).update(userUpdate);
+let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).update(userUpdate);
 console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
@@ -241,10 +255,11 @@ public addDefaultProductToCurrentUser(
 {
   let key=new Date().valueOf()+Math.random()+"";
 
-  let product:any={
+  let product:Product={
   name: name,
   description: description,
   quantity: quantity,
+  currentQuantity:quantity,
   originalPrice: originalPrice,
   reducedPrice: reducedPrice,
   key:key
@@ -255,14 +270,14 @@ public addDefaultProductToCurrentUser(
   else
   product.picture=
   {
-    url:"/assets/icon/favicon.ico"
+    url:"/assets/icon/favicon.ico",
   };
 
-console.log("adding product on UID"+this.userID);
+console.log("adding product on UID"+this.globalService.userID);
 console.log(product); 
 
 return new Promise<any>((resolve, reject) => {
-let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.userID).collection<Seller>(this.defaultProductsColletionName).doc(key).set(product);
+let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(key).set(product);
 console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
@@ -283,27 +298,14 @@ reject(new Error("Error inserting the data"));
 }
 
 
-public updateDefaultProductToCurrentUser(myProduct:any,
-  name:string,description:string,
-  quantity:string,originalPrice:string,reducedPrice:string):Promise<any>
+public updateCurrentProductQuantity(myProduct:Product,
+  quantity:string):Promise<any>
 {
-  let product:any={
-  name: name,
-  description: description,
-  quantity: quantity,
-  originalPrice: originalPrice,
-  reducedPrice: reducedPrice,
-  key:myProduct.key,
-  picture:myProduct.picture
-  };
-
-  
-
-console.log("adding product on UID"+this.userID);
-console.log(product); 
+  let productUpdate:any={};
+  productUpdate["currentQuantity"]=quantity;
 
 return new Promise<any>((resolve, reject) => {
-let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.userID).collection<Seller>(this.defaultProductsColletionName).doc(myProduct.key).update(product);
+let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(myProduct.key).update(productUpdate);
 console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
@@ -324,12 +326,56 @@ reject(new Error("Error inserting the data"));
 }
 
 
-public removeDefaultProductFromCurrentUser(product:any):Promise<any>
+public updateDefaultProductToCurrentUser(myProduct:Product,
+  name:string,description:string,
+  quantity:string,originalPrice:string,reducedPrice:string):Promise<any>
+{
+  let product:Product={
+  name: name,
+  description: description,
+  quantity: quantity,
+  currentQuantity:quantity,
+  originalPrice: originalPrice,
+  reducedPrice: reducedPrice,
+  key:myProduct.key,
+  picture:myProduct.picture
+  };
+
+  
+
+console.log("editing product on UID"+this.globalService.userID);
+console.log(product); 
+
+return new Promise<any>((resolve, reject) => {
+let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(myProduct.key).update(product);
+console.log("PROMISE launched");
+setUserPromise.then( ()=>
+{
+console.log("PROMISE DONE");
+resolve(myProduct.key);
+}
+).catch( (error)=>
+{
+console.log(error);
+reject(new Error("Error inserting the data"));
+});
+
+setTimeout( () => {
+reject(new Error("Error inserting the data"));
+}, 150001);      
+});
+
+}
+
+
+public removeDefaultProductFromCurrentUser(product:Product):Promise<any>
 {
 
 console.log(product); 
 return new Promise<any>((resolve, reject) => {
-let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.userID).collection<Seller>(this.defaultProductsColletionName).doc(product.key).delete().then( ()=>
+this.uploadService.deletePicture(product.picture);
+
+let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(product.key).delete().then( ()=>
 {
 console.log("PROMISE DONE");
 resolve(setUserPromise);
@@ -347,7 +393,7 @@ reject(new Error("Error deleting the data"));
 
 }
 
-public updateCurrentUserDefaultProductField(product:any,fieldName:any,fieldValue:any):Promise<any>
+public updateCurrentUserDefaultProductField(product:Product,fieldName:any,fieldValue:any):Promise<any>
 {
 
 let productUpdate:any={};
@@ -355,7 +401,11 @@ let productUpdate:any={};
 productUpdate[fieldName]=fieldValue;
 
 return new Promise<any>((resolve, reject) => {
-  let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.userID).collection<Seller>(this.defaultProductsColletionName).doc(product.key).update(productUpdate);
+  let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(product.key).update(productUpdate);
+  if (fieldName=="picture")
+  {
+    this.uploadService.deletePicture(product.picture);
+  }
 console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
@@ -380,11 +430,11 @@ public updateCurrentUserField(fieldName:any,fieldValue:any):Promise<any>
 let userUpdate:any={};
 userUpdate[fieldName]=fieldValue;
 this.currentSeller[fieldName]=fieldValue;
-console.log("updating user on UID"+this.userID);
+console.log("updating user on UID"+this.globalService.userID);
 console.log(userUpdate); 
 
 return new Promise<any>((resolve, reject) => {
-let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.userID).update(userUpdate);
+let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).update(userUpdate);
 console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
@@ -402,12 +452,65 @@ reject(new Error("Error inserting the data"));
 
 }
 
-readonly START_PROMOTION_URL = 'https://us-central1-zoltime-77973.cloudfunctions.net/startPromotion';
-readonly STOP_PROMOTION_URL = 'https://us-central1-zoltime-77973.cloudfunctions.net/stopPromotion';
-timerSubscription:Subscription;
+
+timerSubscription:Subscription=null;
 promotionMessage:string;
 
 
+
+
+
+
+public updateTodayPromotion():Promise<any>
+{
+  let userUpdate:any={};
+  userUpdate["promotionStartDateTime"]=this.currentSeller.promotionStartDateTime;
+  userUpdate["promotionEndDateTime"]=this.currentSeller.promotionEndDateTime;
+  
+
+  console.log("updating user on UID"+this.globalService.userID);
+  console.log(userUpdate); 
+  
+  return new Promise<any>((resolve, reject) => {
+  
+    let batch=this.afs.firestore.batch(); 
+    let docRef=this.sellersCollectionRef.doc(this.globalService.userID).ref;
+    batch.update(docRef,userUpdate);
+
+    this.currentDefaultProducts.forEach(product => {
+      console.log("Updating product:");
+      console.log(product);
+      docRef=this.defaultProductsCollectionRef.doc(product.key).ref;
+      let prodUpdate:any={};
+      prodUpdate["currentQuantity"]=product.quantity;
+      console.log(product);
+      batch.update(docRef,prodUpdate);
+    });
+    
+    let commit=batch.commit();
+
+    commit.then( ()=>
+  {
+  console.log("PROMISE DONE");
+  }
+  ).catch( (error)=>
+  {
+  console.log(error);
+  });
+  
+  resolve(commit);
+  setTimeout( () => {
+  reject(new Error("Error inserting the data"));
+  }, 15001);      
+  });
+}
+
+public startTodayPromotion():Promise<any>
+{
+  console.log("START PROMOTION");
+  this.startPromotionTimer();
+  return this.updateTodayPromotion();
+}
 
 public stopTodayPromotion():Promise<any>
 {
@@ -415,32 +518,17 @@ public stopTodayPromotion():Promise<any>
   this.currentSeller.promotionStartDateTime=null;
   this.currentSeller.promotionEndDateTime=null;
   this.timerSubscription.unsubscribe();
-
-  return new Promise<any>((resolve, reject) => {
-    
-        let myHeaders = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-       let message={userID:this.userID};
-        console.log("STOP PROMOTION!!");
-        console.log(message);
-        let obsPost=this.http.post(this.STOP_PROMOTION_URL,message,{headers:myHeaders}).subscribe(
-          data => {
-          //  alert('ok');
-          },
-          error => {
-            console.log(error);
-          }
-        );
-    
-        resolve(obsPost);
-     
-      });
-
-
+  this.timerSubscription=null;
+  return this.updateTodayPromotion();
 }
 
 
 startPromotionTimer()
 {
+  console.log("starting timer");
+  if (this.timerSubscription!=null)
+  return;
+
   this.timerSubscription=Observable.timer(0,1000).
   subscribe(
     ()=>
@@ -486,6 +574,52 @@ startPromotionTimer()
   );
 }
 
+
+
+
+formT(num:number):string
+{
+   if (num.toString().length==1)
+    return "0"+num;
+  return num+"";
+}
+
+
+
+
+
+/*
+//readonly START_PROMOTION_URL = 'https://us-central1-zoltime-77973.cloudfunctions.net/startPromotion';
+//readonly STOP_PROMOTION_URL = 'https://us-central1-zoltime-77973.cloudfunctions.net/stopPromotion';
+public stopTodayPromotion():Promise<any>
+{
+
+  this.currentSeller.promotionStartDateTime=null;
+  this.currentSeller.promotionEndDateTime=null;
+  this.timerSubscription.unsubscribe();
+
+  return new Promise<any>((resolve, reject) => {
+    
+        let myHeaders = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+       let message={userID:this.globalService.userID};
+        console.log("STOP PROMOTION!!");
+        console.log(message);
+        let obsPost=this.http.post(this.STOP_PROMOTION_URL,message,{headers:myHeaders}).subscribe(
+          data => {
+          //  alert('ok');
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    
+        resolve(obsPost);
+     
+      });
+
+
+}
+
 public startTodayPromotion():Promise<any>
 {
   console.log("START PROMOTION");
@@ -498,7 +632,7 @@ public startTodayPromotion():Promise<any>
     console.log(this.currentSeller.promotionStartDateTime);
     console.log(this.currentSeller.promotionEndDateTime);
     
-    let message={userID:this.userID,
+    let message={userID:this.globalService.userID,
                 startDateTime: this.currentSeller.promotionStartDateTime+"",
                  endDateTime: this.currentSeller.promotionEndDateTime+"" };
     console.log("START PROMOTION!!");
@@ -515,15 +649,5 @@ public startTodayPromotion():Promise<any>
     resolve(obsPost);
  
   });
-}
-
-
-formT(num:number):string
-{
-   if (num.toString().length==1)
-    return "0"+num;
-  return num+"";
-}
-
-
+}*/
 }

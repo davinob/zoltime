@@ -1,9 +1,9 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController  } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { SellerService, Seller,Picture } from '../../providers/seller-service';
+import { SellerService, Seller } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
-import { UploadService,Upload } from '../../providers/upload-service';
+import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { Camera,CameraOptions  } from '@ionic-native/camera';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -41,6 +41,13 @@ export class TodayMenuPage {
     private upSvc: UploadService,
     private elRef:ElementRef,
     public toastCtrl: ToastController ) {
+
+      if (this.shouldShowCurrentPromotion())
+      {
+        console.log("starting timer?");
+        this.sellerService.startPromotionTimer();
+      }
+      
   }
 
   
@@ -68,7 +75,7 @@ export class TodayMenuPage {
     )
     .catch(error=>
     {
-      this.alertAndLoadingService.showAlert({message:"Plese check your network connection is active."});
+      this.alertAndLoadingService.showToast({message:"Plese check your network connection is active."});
     });
   }
 
@@ -138,6 +145,13 @@ export class TodayMenuPage {
 
 
    
+  getQuantity(product:any)
+  {
+    if (this.shouldShowCurrentPromotion())
+    return "Quantity: "+product.currentQuantity;
+    else
+    return "Initial Quantity: "+product.quantity;
+  }
 
   shouldShowCurrentPromotion():boolean
   {
@@ -227,41 +241,57 @@ export class TodayMenuPage {
   
   editProduct(product:any)
   {
+    console.log("HALLO");
     if (this.shouldShowCurrentPromotion())
-    return;
-
+    this.navCtrl.push('UpdateQuantityPage',{product:product});
+    else
     this.navCtrl.push('UpdateProductPage',{product:product});
   }
 
   fileOrBase64String=null;
   productClicked=null;
 
+
+
   updatePicture(product:any) {
     if (this.shouldShowCurrentPromotion())
     return;
     
     this.productClicked=product;
+
     if (Camera['installed']()) {
-    const options: CameraOptions = {
-      targetHeight: 200,
-      targetWidth: 200,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      correctOrientation: true
+      let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+      this.alertAndLoadingService.
+      showChoice("Take a picture from:","Gallery","Camera").then(
+        (response)=>
+        {
+          if (response)
+          {
+            sourceType=this.camera.PictureSourceType.CAMERA
+          }
+
+          this.takePicture(sourceType);
+        });
+      }
+
+      else { 
+        this.fileInput.nativeElement.click();
+      
+      }
+
     }
-   
-    this.camera.getPicture(options).then((imageData) => {
-      this.fileOrBase64String = imageData;
+
+      takePicture(srcType:number)
+      {
+       this.upSvc.takePicture(srcType).then((data) => {
+       this.fileOrBase64String = data;
       this.uploadImage(false);
-    }, (err) => {
-      console.log(err);
-    });
-  }
-  else
-  {
-    this.fileInput.nativeElement.click();
-  }
-  }
+      }, (err) => {
+        //alert('Unable to take photo');
+      })
+    } 
+
+
 
 
   uploadImage(isFile:boolean)
@@ -274,12 +304,14 @@ export class TodayMenuPage {
           this.upSvc.pushUpload(currentUpload).then(
             (resultPic:Picture)=>
             {
-              //this.upSvc.deletePicture(product.picture);
               let picture=resultPic;
               this.sellerService.updateCurrentUserDefaultProductField(this.productClicked,"picture",picture);
               this.alertAndLoadingService.dismissLoading();
               }
-          )
+          ).catch(error=>
+           {
+            this.alertAndLoadingService.showToast(error);
+           })
         
      }
 

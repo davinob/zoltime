@@ -1,8 +1,8 @@
 import { Component,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { SellerService,Picture } from '../../providers/seller-service';
+import { SellerService } from '../../providers/seller-service';
 import { AddressService,Address } from '../../providers/address-service';
-import { UploadService,Upload } from '../../providers/upload-service';
+import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Camera } from '@ionic-native/camera';
 import {TodayMenuPage} from '../today-menu/today-menu';
@@ -54,21 +54,38 @@ export class CreateProductPage {
 
   getPicture() {
     if (Camera['installed']()) {
-      this.camera.getPicture({
-        destinationType: this.camera.DestinationType.DATA_URL,
-        mediaType: this.camera.MediaType.PICTURE,
-        targetHeight: 200
-      }).then((data) => {
+      console.log("GETPICTURE");
+      let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+      this.alertAndLoadingService.
+      showChoice("Take a picture from:","Gallery","Camera").then(
+        (response)=>
+        {
+          if (response)
+          {
+            sourceType=this.camera.PictureSourceType.CAMERA
+          }
+
+          this.takePicture(sourceType);
+        });
+      }
+
+      else { 
+        this.fileInput.nativeElement.click();
+      
+      }
+
+    }
+
+      takePicture(srcType:number)
+      {
+       this.upSvc.takePicture(srcType).then((data) => {
         this.addProductForm.patchValue({ 'picture': 'data:image/jpg;base64,' + data });
         this.uploadPicture(data,false);
       }, (err) => {
-        alert('Unable to take photo');
+        //alert('Unable to take photo');
       })
-    } else { 
-      this.fileInput.nativeElement.click();
-    
-    }
-  }
+    } 
+ 
 
   picture:Picture;
 
@@ -85,7 +102,10 @@ export class CreateProductPage {
         this.picture=resultPic;      
          this.alertAndLoadingService.dismissLoading();
       }
-    )
+    ).catch(error=>
+      {
+       this.alertAndLoadingService.showToast(error);
+      })
   }
   
   processWebImage(event) {
@@ -105,7 +125,7 @@ export class CreateProductPage {
         
         }
         else
-        this.alertAndLoadingService.showAlert({message:"Please choose an image"});
+        this.alertAndLoadingService.showToast({message:"Please choose an image"});
      }
     
   }
@@ -142,7 +162,7 @@ export class CreateProductPage {
           }
         ).catch (error=>
         {
-          this.alertAndLoadingService.showAlert(error);
+          this.alertAndLoadingService.showToast(error);
         });
         
 

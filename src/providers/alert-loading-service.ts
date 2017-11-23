@@ -6,6 +6,8 @@ import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
+import { ToastController } from 'ionic-angular/components/toast/toast-controller';
+
 
 /*
   Generated class for the AlertProvider provider.
@@ -18,9 +20,18 @@ export class AlertAndLoadingService {
   
     public loading:Loading;
    
-  constructor(public translateService: TranslateService,public alertCtrl: AlertController,public loadingCtrl: LoadingController) {
-    }
+  constructor(public translateService: TranslateService,public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,public toastCtrl:ToastController
+     ) {  }
   
+
+   
+    
+   
+    
+ 
+
+
   showLoading()
   {
     this.loading = this.loadingCtrl.create({
@@ -69,7 +80,103 @@ export class AlertAndLoadingService {
   alert.present();
   }
 
-  presentConfirm(message:any) {
+
+  showToast(error:any)
+  {
+    this.translateService.get(error.message).subscribe(
+      value => {
+        // value is our translated string
+        error.message=value;
+        if (this.loading!=null)
+        {
+          this.loading.dismiss().then( () => {
+              this.presentToast(error);
+          });
+      }
+      else
+      {
+        this.presentToast(error);
+      }
+    }
+    )
+  }
+  
+  presentToast(error:any)
+  {
+    var errorMessage: string = error.message;
+    let toast = this.toastCtrl.create({
+      message: errorMessage,
+      duration: 3000,
+      position: 'bottom'
+    });
+    toast.present();
+  }
+
+ 
+
+  showChoice(message:any,choice1:string,choice2:string):Promise<any>
+  {
+    return new Promise<any>((resolve, reject) => {
+
+    let sus1=this.translateService.get(message).take(1).subscribe(
+      (value) => {
+        message=value
+        let sus2= this.translateService.get(choice1).subscribe(
+            value => {
+            choice1=value;
+            let sus3=this.translateService.get(choice2).subscribe(
+                 value => {
+                 choice2=value;
+        if (this.loading!=null)
+        {
+          this.loading.dismiss().then( () => {
+              resolve(this.presentChoice(message,choice1,choice2));
+          });
+      }
+      else
+      {
+        resolve(this.presentChoice(message,choice1,choice2));
+      }
+            });
+        });
+    });
+
+  });
+
+ 
+
+}
+
+
+  presentChoice(message:any,choice1:string,choice2:string):Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+       let alert = this.alertCtrl.create({
+            message: message,
+            buttons: [
+              {
+                text: choice1,
+                role: 'cancel',
+                handler: () => {
+                  console.log('Cancel clicked');
+                  resolve(false);
+                }
+              },
+              {
+                text: choice2,
+                handler: () => {
+                 resolve(true);
+                }
+              }
+            ]
+          });
+
+          alert.present();
+        });
+      }
+
+
+
+  presentConfirm(message:any):Promise<any> {
 
     return new Promise<any>((resolve, reject) => {
       let alert = this.alertCtrl.create({
@@ -129,5 +236,6 @@ export class AlertAndLoadingService {
   });
 }
   
-
+   
 }
+

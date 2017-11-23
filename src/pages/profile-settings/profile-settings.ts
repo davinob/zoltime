@@ -4,13 +4,13 @@ import { IonicPage, NavController, NavParams,LoadingController,
 import { AuthService } from '../../providers/auth-service';
 
 import { LoginPage } from '../login/login';
-import { SellerService, Seller,Picture } from '../../providers/seller-service';
+import { SellerService, Seller } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Observable } from 'rxjs/Observable';
 
 import { Camera } from '@ionic-native/camera';
 
-import { UploadService,Upload } from '../../providers/upload-service';
+import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { AddressService,Address } from '../../providers/address-service';
 
 import 'rxjs/add/operator/debounceTime';
@@ -132,7 +132,7 @@ export class ProfileSettingsPage {
     )
     .catch(error=>
     {
-      this.alertAndLoadingService.showAlert({message:"Plese check your network connection is active."});
+      this.alertAndLoadingService.showToast({message:"Plese check your network connection is active."});
     });
   }
 
@@ -224,23 +224,38 @@ export class ProfileSettingsPage {
 
   profilePic:Picture;
 
+
   getPicture() {
     if (Camera['installed']()) {
-      this.camera.getPicture({
-        destinationType: this.camera.DestinationType.DATA_URL,
-        mediaType: this.camera.MediaType.PICTURE,
-        targetWidth: 200,
-        targetHeight: 200
-      }).then((data) => {
-        this.uploadPicture(data,false);
-      }, (err) => {
-        alert('Unable to take photo');
-      })
-    } else { 
-      this.fileInput.nativeElement.click();
-    
+      let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+      this.alertAndLoadingService.
+      showChoice("Take a picture from:","Gallery","Camera").then(
+        (response)=>
+        {
+          if (response)
+          {
+            sourceType=this.camera.PictureSourceType.CAMERA
+          }
+
+          this.takePicture(sourceType);
+        });
+      }
+
+      else { 
+        this.fileInput.nativeElement.click();
+      
+      }
+
     }
-  }
+
+    takePicture(srcType:number)
+    {
+     this.upSvc.takePicture(srcType).then((data) => {
+      this.uploadPicture(data,false);
+    }, (err) => {
+      //alert('Unable to take photo');
+    })
+  } 
 
   uploadPicture(picture:any,isFile:boolean)
   {
@@ -256,7 +271,10 @@ export class ProfileSettingsPage {
         this.sellerService.updateCurrentUserField("picture",this.profilePic);    
          this.alertAndLoadingService.dismissLoading();
       }
-    )
+    ).catch(error=>
+      {
+       this.alertAndLoadingService.showToast(error);
+      })
   }
 
   
@@ -272,7 +290,7 @@ export class ProfileSettingsPage {
           this.uploadPicture(event.target.files[0],true);
         }
         else
-        this.alertAndLoadingService.showAlert({message:"Please choose an image"});
+        this.alertAndLoadingService.showToast({message:"Please choose an image"});
      }
     
   }

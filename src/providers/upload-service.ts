@@ -12,7 +12,15 @@ import {
   import * as firebase from 'firebase';
  import {UploadTaskSnapshot} from 'firebase/storage';
   
- import { SellerService,Picture } from './seller-service';
+ import { Camera } from '@ionic-native/camera';
+ import { GlobalService } from './global-service';
+
+ 
+export interface Picture{
+  url:string,
+  folder?:string,
+  name?:string
+}
 
 export class Upload {
   file:File=null;
@@ -52,14 +60,34 @@ export class UploadService {
 
   private basePath:string = '/uploads';
 
-  constructor(public afs: AngularFirestore,public sellerService:SellerService) { 
-this.basePath='/uploads/'+sellerService.userID;
+  constructor(private afs: AngularFirestore,public globalService:GlobalService,
+      public camera: Camera) { 
   }
 
+  initBasePath()
+  {
+    this.basePath='/uploads/'+this.globalService.userID;
+  }
   
   
+  takePicture(srcType:number):Promise<any>
+  {
+    return this.camera.getPicture({
+      destinationType: this.camera.DestinationType.DATA_URL,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType:srcType,
+      allowEdit: true,
+      encodingType: this.camera.EncodingType.JPEG,
+      correctOrientation:true,
+      targetWidth: 200,
+      targetHeight: 200,
+      quality:100
+
+    });
+  }
 
   pushUpload(upload: Upload) :Promise<any>{
+   
     console.log("UPLOAD TO PUSH");
     console.log(upload);
     let storageRef = firebase.storage().ref();
@@ -79,6 +107,7 @@ this.basePath='/uploads/'+sellerService.userID;
     uploadTask= storageRef.child(`${this.basePath}/${upload.folder}/${upload.name}`).putString(upload.base64String,"base64",metadata);
     
     return new Promise<any>((resolve, reject) => {
+      
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot:UploadTaskSnapshot) =>  {
         // upload in progress
@@ -104,12 +133,13 @@ this.basePath='/uploads/'+sellerService.userID;
     );
     setTimeout( () => {
       reject(new Error("Error uploading the file"));
-      }, 150001); 
+      }, 10000); 
     });
   }
   
 
   deletePicture(pic: Picture) {
+  
     if ((pic.name!=null)&&(pic.folder!=null))
     {
     let storageRef = firebase.storage().ref();

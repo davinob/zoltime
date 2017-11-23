@@ -107,3 +107,49 @@
         height: 100px;
     }
 
+.alert-md .alert-wrapper
+{
+    background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
+    border-radius: 20%;
+    
+}
+
+.alert-md .alert-message
+{
+    color:white;
+    font-size: 20px;
+}
+
+.alert-md .alert-button
+{
+    color:white
+}
+
+.alert-md .alert-radio-label
+{
+    color:white 
+}
+
+.alert-md .alert-checkbox-label
+{
+    color:white 
+}
+
+.blankTextSimpleButton
+{
+    color:white;
+    font-size: small;
+    font-weight: 400;
+}
+
+.whiteBig
+{
+    color:white;
+    font-size: large;
+    font-weight: bold;
+}
+
+.basic
+{
+    color:#4B64F3;
+}

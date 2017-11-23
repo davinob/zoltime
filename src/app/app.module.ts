@@ -24,6 +24,7 @@ import { AuthService } from './../providers/auth-service';
 import { SellerService } from './../providers/seller-service';
 import { AddressService } from './../providers/address-service';
 import { UploadService } from './../providers/upload-service';
+import { GlobalService } from './../providers/global-service';
 
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -79,7 +80,8 @@ export function createTranslateLoader(http: HttpClient) {
     AddressService,
     AlertAndLoadingService,
     Camera,
-    UploadService
+    UploadService,
+    GlobalService
   ]
 })
 export class AppModule {}
