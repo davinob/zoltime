@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ProfileSettingsPage } from './profile-settings';
 import { TranslateModule } from '@ngx-translate/core';
+import { IonicImageLoader } from 'ionic-image-loader';
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   imports: [
     IonicPageModule.forChild(ProfileSettingsPage),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    IonicImageLoader
   ],
 })
 export class ProfileSettingsPageModule {}

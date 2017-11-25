@@ -17,6 +17,19 @@
 
     
     <form [formGroup]="addProductForm" (submit)="addProduct()">
+      <input type="file" accept="image/*" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
+      <div class="profile-image-wrapper" (click)="getPicture()">
+        <div class="profile-image-placeholder" *ngIf="!addProductForm.controls.picture.value">
+          <ion-icon class="basic" name="add-circle"></ion-icon>
+          <div class="whiteBig">
+            {{ 'ITEM_CREATE_CHOOSE_IMAGE' | translate }}
+          </div>
+        </div>
+        <div class="profile-image" *ngIf="addProductForm.controls.picture.value" [style.backgroundImage]="getProfileImageStyle()">
+        </div>
+      </div>
+    
+    
     <ion-item>
         
       <ion-label stacked>Name</ion-label>
@@ -49,17 +62,7 @@
     </ion-item>
         
         
-    <input type="file" accept="image/*" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
-    <div class="profile-image-wrapper" (click)="getPicture()">
-      <div class="profile-image-placeholder" *ngIf="!addProductForm.controls.picture.value">
-        <ion-icon class="basic" name="add-circle"></ion-icon>
-        <div class="whiteBig">
-          {{ 'ITEM_CREATE_CHOOSE_IMAGE' | translate }}
-        </div>
-      </div>
-      <div class="profile-image" *ngIf="addProductForm.controls.picture.value" [style.backgroundImage]="getProfileImageStyle()">
-      </div>
-    </div>
+    
     <button ion-button block [disabled]="!addProductForm.valid" type="submit">
         {{ 'Create A New Product' | translate }}
         </button>

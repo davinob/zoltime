@@ -158,16 +158,11 @@ export class CreateProductPage {
           this.addProductForm.value.reducedPrice,this.picture)
         .then(()=> {
           console.log("Document successfully written!");
-          this.navCtrl.setRoot(TodayMenuPage);
-          }
-        ).catch (error=>
-        {
-          this.alertAndLoadingService.showToast(error);
-        });
         
-
+          }
+        )
    
-      this.alertAndLoadingService.showLoading();
+      this.navCtrl.setRoot(TodayMenuPage);
     }
   }
 

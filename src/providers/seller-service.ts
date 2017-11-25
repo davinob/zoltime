@@ -20,6 +20,7 @@ import {
   import { GlobalService } from './global-service';
 
   import { HttpClient, HttpParams } from '@angular/common/http';
+import { provideSettings } from '../../../myTest/src/app/app.module';
 
 export interface Seller {
   email: string;
@@ -71,7 +72,7 @@ export class SellerService {
   constructor(private afs: AngularFirestore,public authService:AuthService,
     private uploadService:UploadService,private http: HttpClient,
     private globalService:GlobalService) {
-    this.sellersCollectionRef = this.afs.collection<Seller>('sellers'); 
+        this.sellersCollectionRef = this.afs.collection<Seller>('sellers'); 
    }
   
    public initCurrentUser(userID:string):Observable<any>
@@ -198,7 +199,7 @@ export class SellerService {
        resolve(setUserPromise);
        setTimeout( () => {
         reject(new Error("Error inserting the data"));
-        }, 150001);      
+        }, 15001);      
   });
 
 }
@@ -243,7 +244,7 @@ console.log(error);
 resolve(setUserPromise);
 setTimeout( () => {
 reject(new Error("Error inserting the data"));
-}, 150001);      
+}, 15001);      
 });
 
 }
@@ -292,7 +293,7 @@ reject(new Error("Error inserting the data"));
 
 setTimeout( () => {
 reject(new Error("Error inserting the data"));
-}, 150001);      
+}, 15001);      
 });
 
 }
@@ -501,7 +502,7 @@ public updateTodayPromotion():Promise<any>
   resolve(commit);
   setTimeout( () => {
   reject(new Error("Error inserting the data"));
-  }, 15001);      
+  }, 150001);      
   });
 }
 

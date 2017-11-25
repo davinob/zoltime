@@ -57,16 +57,15 @@ export class UpdateQuantityPage {
           this.updateQuantityForm.value.quantity)
         .then(()=> {
           console.log("Document successfully written!");
-          this.navCtrl.setRoot(TodayMenuPage);
           }
         ).catch (error=>
         {
-          this.alertAndLoadingService.showToast(error);
+        //  this.alertAndLoadingService.showToast(error);
         });
         
 
-   
-      this.alertAndLoadingService.showLoading();
+        this.navCtrl.setRoot(TodayMenuPage);
+    //  this.alertAndLoadingService.showLoading();
     }
   }
 

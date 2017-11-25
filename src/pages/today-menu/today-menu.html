@@ -70,7 +70,7 @@
                           <ion-grid>
                               <ion-row >
                                   <ion-col (click)="updatePicture(product)" col-5>
-                                      <img  src="{{product.picture.url}}"/>
+                                      <img-loader class="profile-image" src="{{product.picture.url}}" useImg></img-loader>
                                       </ion-col>
                                       <ion-col (click)='editProduct(product)'>
                                           <ion-row >

@@ -64,16 +64,16 @@ export class UpdateProductPage {
           this.updateProductForm.value.reducedPrice)
         .then(()=> {
           console.log("Document successfully written!");
-          this.navCtrl.setRoot(TodayMenuPage);
+       
           }
         ).catch (error=>
         {
-          this.alertAndLoadingService.showToast(error);
+       //   this.alertAndLoadingService.showToast(error);
         });
         
 
-   
-      this.alertAndLoadingService.showLoading();
+        this.navCtrl.setRoot(TodayMenuPage);
+     // this.alertAndLoadingService.showLoading();
     }
   }
 

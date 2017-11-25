@@ -15,6 +15,7 @@ import { AddressService,Address } from '../../providers/address-service';
 
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ImageLoader } from 'ionic-image-loader';
 
 /**
  * Generated class for the ProfileSettingsPage page.
@@ -48,13 +49,16 @@ export class ProfileSettingsPage {
   public addressService: AddressService,
   public camera: Camera,
   private upSvc: UploadService,
-  public formBuilder: FormBuilder) {
+  public formBuilder: FormBuilder,
+  imageLoader: ImageLoader) {
     
     this.updateForm = formBuilder.group({
       address: [''],
       name: [''],
      
     });
+
+    imageLoader.preload(sellerService.getCurrentSeller().picture.url);
   
     
   }
@@ -106,7 +110,7 @@ export class ProfileSettingsPage {
   saveInput(name:string,inputValue:any)
   {
    this.editInput(name,false);
-    this.alertAndLoadingService.showLoading();
+  //  this.alertAndLoadingService.showLoading();
 
     if (name=="categories")
     {
@@ -127,12 +131,12 @@ export class ProfileSettingsPage {
     (
       (successEvent)=>
       {
-        this.alertAndLoadingService.dismissLoading();
+      //  this.alertAndLoadingService.dismissLoading();
       }
     )
     .catch(error=>
     {
-      this.alertAndLoadingService.showToast({message:"Plese check your network connection is active."});
+    //  this.alertAndLoadingService.showToast({message:"Plese check your network connection is active."});
     });
   }
 

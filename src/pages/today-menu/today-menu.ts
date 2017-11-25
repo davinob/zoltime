@@ -64,18 +64,18 @@ export class TodayMenuPage {
 
   updateUserField(fieldName:string,field:any)
   {
-    this.alertAndLoadingService.showLoading();
+   // this.alertAndLoadingService.showLoading();
 
     this.sellerService.updateCurrentUserField(fieldName,field).then
     (
       (successEvent)=>
       {
-        this.alertAndLoadingService.dismissLoading();
+     //   this.alertAndLoadingService.dismissLoading();
       }
     )
     .catch(error=>
     {
-      this.alertAndLoadingService.showToast({message:"Plese check your network connection is active."});
+   //   this.alertAndLoadingService.showToast({message:"Plese check your network connection is active."});
     });
   }
 
@@ -160,19 +160,22 @@ export class TodayMenuPage {
 
   stopTodayPromotion()
   {
-    this.alertAndLoadingService.showLoading();
+   // this.alertAndLoadingService.showLoading();
     this.sellerService.stopTodayPromotion().then
     (stopPromo=>
     {
       this.alertAndLoadingService.dismissLoading();
-    })
+    }).catch(error=>
+      {
+       //this.alertAndLoadingService.showToast(error);
+      })
   }
 
 
 
   publishTodayPromotion()
   {
-    this.alertAndLoadingService.showLoading();
+    //this.alertAndLoadingService.showLoading();
    
     if (this.sellerService.getCurrentSeller().promotionStartTime==null)
     return;
@@ -226,8 +229,11 @@ export class TodayMenuPage {
     this.sellerService.startTodayPromotion().then
     (startPromo=>
     {
-      this.alertAndLoadingService.dismissLoading();
-    })
+     // this.alertAndLoadingService.dismissLoading();
+    }).catch(error=>
+      {
+      // this.alertAndLoadingService.showToast(error);
+      })
    
   }
   

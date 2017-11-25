@@ -15,6 +15,8 @@ import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/first';
 
 import { TranslateService } from '@ngx-translate/core';
+import { ImageLoaderConfig } from 'ionic-image-loader';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -29,8 +31,11 @@ export class MyApp {
 
   constructor(public translate: TranslateService,public platform: Platform, public authService: AuthService, 
     public sellerService: SellerService,
-  private storage: Storage ) {
+  private storage: Storage,
+  private imageLoaderConfig: ImageLoaderConfig ) {
     
+    imageLoaderConfig.enableSpinner(false);
+    imageLoaderConfig.setConcurrency(10);
          authService.getAuthState().subscribe(user=>
           {
           if (user)

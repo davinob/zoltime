@@ -30,6 +30,8 @@ import { GlobalService } from './../providers/global-service';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { IonicImageLoader } from 'ionic-image-loader';
+
 export const firebaseConfig = {
     apiKey: "AIzaSyCjWUCqcYx8lGtAKWI8Q-5H8V1rktUQjJc",
     authDomain: "zoltime-77973.firebaseapp.com",
@@ -52,7 +54,7 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     HttpModule,
     HttpClientModule,
@@ -64,7 +66,8 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicImageLoader.forRoot()
     
   ],
   bootstrap: [IonicApp],

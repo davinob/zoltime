@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TodayMenuPage } from './today-menu';
 import { TranslateModule } from '@ngx-translate/core';
+import { IonicImageLoader } from 'ionic-image-loader';
+
 
 @NgModule({
   declarations: [
@@ -9,7 +11,8 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   imports: [
     IonicPageModule.forChild(TodayMenuPage),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    IonicImageLoader
   ]
 })
 export class TodayMenuPageModule {}
