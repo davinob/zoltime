@@ -7,10 +7,11 @@ import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { Camera,CameraOptions  } from '@ionic-native/camera';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { DatePicker } from '@ionic-native/date-picker';
 
 import 'rxjs/Rx';
 /**
- * Generated class for the TodayMenuPage page.
+ * Generated class for the PromotionsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -18,10 +19,10 @@ import 'rxjs/Rx';
 
 @IonicPage()
 @Component({
-  selector: 'page-today-menu',
-  templateUrl: 'today-menu.html',
+  selector: 'page-promotions',
+  templateUrl: 'promotions.html',
 })
-export class TodayMenuPage {
+export class PromotionsPage {
 
 
   allInputsShows:any={};
@@ -41,13 +42,7 @@ export class TodayMenuPage {
     private upSvc: UploadService,
     private elRef:ElementRef,
     public toastCtrl: ToastController ) {
-
-      if (this.shouldShowCurrentPromotion())
-      {
-        console.log("starting timer?");
-        this.sellerService.startPromotionTimer();
-      }
-      
+    
   }
 
   
@@ -56,7 +51,7 @@ export class TodayMenuPage {
   
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TodayMenuPage');
+    console.log('ionViewDidLoad PromotionsPage');
   }
 
 
@@ -81,10 +76,12 @@ export class TodayMenuPage {
 
 
 
-  addProduct(){
+
+
+  addPromotion(){
     if (this.shouldShowCurrentPromotion())
     return;
-    this.navCtrl.push('CreateProductPage');
+    this.navCtrl.push('CreatePromotionPage');
   }
 
   showPromotionStartTime()
@@ -138,23 +135,16 @@ export class TodayMenuPage {
   {
    return this.sellerService.getCurrentSeller().promotionStartTime==null || 
    this.sellerService.getCurrentSeller().promotionEndTime==null || 
-   this.sellerService.getCurrentDefaultProducts()==null||
-   (<Array<any>>this.sellerService.getCurrentDefaultProducts()).length<=0;
+   this.sellerService.getSellerProducts()==null||
+   (<Array<any>>this.sellerService.getSellerProducts()).length<=0;
   }
 
 
-
-   
-  getQuantity(product:any)
-  {
-    if (this.shouldShowCurrentPromotion())
-    return "Quantity: "+product.currentQuantity;
-    else
-    return "Initial Quantity: "+product.quantity;
-  }
-
+  
   shouldShowCurrentPromotion():boolean
   {
+    if (this.sellerService.getCurrentSeller()==null)
+    return false;
    return (this.sellerService.getCurrentSeller().promotionStartDateTime!=null && this.sellerService.getCurrentSeller().promotionEndDateTime!=null)
   }
 

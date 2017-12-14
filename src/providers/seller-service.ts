@@ -1,3 +1,5 @@
+
+
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { Http } from '@angular/http';
@@ -12,6 +14,9 @@ import {
   AngularFirestoreCollection,
   AngularFirestoreDocument} from 'angularfire2/firestore';
   import { Address } from './address-service';
+  
+  import * as firebase from 'firebase/app';
+  
 
   import { Subject } from 'rxjs/Subject';
 
@@ -45,34 +50,52 @@ export interface Seller {
 export interface Product{
   name: string,
   description: string,
-  quantity: string,
-  currentQuantity:string,
-  originalPrice: string,
-  reducedPrice: string,
+  quantity?: number,
+  currentQuantity?:number,
+  originalPrice: number,
+  reducedPrice?: number,
   key:string,
-  picture?:Picture
+  picture?:Picture,
+  uID:string,
+  discount?:number
+}
+
+export interface Promotion{
+  name: string,
+  products:{},
+  isOneTime:boolean,
+  promotionStartTime:string,
+  promotionEndTime:string,
+  days?:{},
+  date?:Date,
+  key?:string,
+  uID?:string
 }
 
 @Injectable()
 export class SellerService {
   
   sellersCollectionRef: AngularFirestoreCollection<Seller>;
-  defaultProductsCollectionRef:AngularFirestoreCollection<Product>
+  productsCollectionRef:firebase.firestore.CollectionReference;
+  promotionsCollectionRef:firebase.firestore.CollectionReference;
   currentSeller:Seller;
   userStatus:Subject<any>=new Subject<any>();
    
   currentUserObs:Observable<any>=null;
   
-  currentDefaultProducts=null;
-  currentDefaultProductsObs:Observable<any>=null;
+  sellerProducts:Array<any>=[];
+  sellerPromotions:Array<any> = [];
+  
 
-  defaultProductsColletionName="defaultProducts";
+  
   
 
   constructor(private afs: AngularFirestore,public authService:AuthService,
     private uploadService:UploadService,private http: HttpClient,
     private globalService:GlobalService) {
         this.sellersCollectionRef = this.afs.collection<Seller>('sellers'); 
+        this.productsCollectionRef = this.afs.collection<Product>('products').ref; 
+        this.promotionsCollectionRef = this.afs.collection<Product>('promotions').ref; 
    }
   
    public initCurrentUser(userID:string):Observable<any>
@@ -81,8 +104,7 @@ export class SellerService {
         this.globalService.userID=userID;
         this.uploadService.initBasePath();
         this.currentUserObs=this.sellersCollectionRef.doc(this.globalService.userID).valueChanges();
-        this.defaultProductsCollectionRef=this.sellersCollectionRef.doc(this.globalService.userID).collection(this.defaultProductsColletionName);
-        this.currentDefaultProductsObs=this.defaultProductsCollectionRef.valueChanges();
+        
       
 
        this.currentUserObs.subscribe(data =>
@@ -118,14 +140,37 @@ export class SellerService {
          
         });
 
-        this.currentDefaultProductsObs.subscribe(data =>
+        this.productsCollectionRef.where("uID", "==", userID).onSnapshot(
+          querySnapshot =>
           { 
-            this.currentDefaultProducts=data;
-            (<Array<any>>this.currentDefaultProducts).length
+            let sellerProducts:Array<any>= [];
+            console.log(querySnapshot);
+            querySnapshot.forEach(function(doc) {
+              console.log(doc);
+              sellerProducts.push(doc.data());
+            });
+            this.sellerProducts=sellerProducts;
 
             console.log("CURRENT PRODUCTS");
-            console.log(this.currentDefaultProducts);
+            console.log(this.sellerProducts);
           });
+
+          this.promotionsCollectionRef.where("uID", "==", userID).onSnapshot(
+            querySnapshot =>
+            { 
+              console.log("PROMOTIONS COLLECTIONS REF");
+              console.log(querySnapshot);
+              let sellerPromotions:Array<any> = [];
+              console.log(querySnapshot);
+              querySnapshot.forEach(function(doc) {
+                console.log(doc);
+                sellerPromotions.push(doc.data());
+              });
+              this.sellerPromotions=sellerPromotions;
+  
+              console.log("CURRENT PROMOTIONS");
+              console.log(this.sellerPromotions);
+            });
 
         return this.userStatus.asObservable().first(data=>data!=null);
   }
@@ -156,9 +201,20 @@ export class SellerService {
     return this.currentSeller;
   }
 
-  public getCurrentDefaultProducts():any
+  public getSellerProducts():Array<any>
   {
-    return this.currentDefaultProducts;
+    return this.sellerProducts;
+  }
+
+
+  public getSellerProductsClone():Array<any>
+  {
+    return Object.assign([], this.sellerProducts);
+  }
+
+  public getSellerPromotions():Array<any>
+  {
+    return this.sellerPromotions;
   }
   
   public isCurrentUserEnabled():boolean
@@ -250,20 +306,18 @@ reject(new Error("Error inserting the data"));
 }
 
 
-public addDefaultProductToCurrentUser(
+public addProductToCurrentUser(
   name:string,description:string,
-  quantity:string,originalPrice:string,reducedPrice:string,picture:Picture):Promise<any>
+  originalPrice:number,picture:Picture):Promise<any>
 {
   let key=new Date().valueOf()+Math.random()+"";
 
   let product:Product={
   name: name,
   description: description,
-  quantity: quantity,
-  currentQuantity:quantity,
   originalPrice: originalPrice,
-  reducedPrice: reducedPrice,
-  key:key
+  key:key,
+  uID:this.globalService.userID
   };
 
   if (picture!=null)
@@ -278,7 +332,39 @@ console.log("adding product on UID"+this.globalService.userID);
 console.log(product); 
 
 return new Promise<any>((resolve, reject) => {
-let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(key).set(product);
+let setUserPromise:Promise<any>=this.productsCollectionRef.doc(key).set(product);
+console.log("PROMISE launched");
+setUserPromise.then( ()=>
+{
+console.log("PROMISE DONE");
+resolve(key);
+}
+).catch( (error)=>
+{
+console.log(error);
+reject(new Error("Error inserting the data"));
+});
+
+setTimeout( () => {
+reject(new Error("Error inserting the data"));
+}, 15001);      
+});
+
+}
+
+
+public addPromotionToCurrentUser(promotion:Promotion):Promise<any>
+{
+  let key=new Date().valueOf()+Math.random()+"";
+  promotion.key=key;
+  promotion.uID=this.globalService.userID;
+ 
+
+  console.log("MY PROMO:");
+  console.log(promotion);
+
+return new Promise<any>((resolve, reject) => {
+let setUserPromise:Promise<any>=this.promotionsCollectionRef.doc(key).set(promotion);
 console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
@@ -306,7 +392,7 @@ public updateCurrentProductQuantity(myProduct:Product,
   productUpdate["currentQuantity"]=quantity;
 
 return new Promise<any>((resolve, reject) => {
-let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(myProduct.key).update(productUpdate);
+let setUserPromise:Promise<void>=this.productsCollectionRef.doc(myProduct.key).update(productUpdate);
 console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
@@ -329,7 +415,7 @@ reject(new Error("Error inserting the data"));
 
 public updateDefaultProductToCurrentUser(myProduct:Product,
   name:string,description:string,
-  quantity:string,originalPrice:string,reducedPrice:string):Promise<any>
+  quantity:number,originalPrice:number,reducedPrice:number):Promise<any>
 {
   let product:Product={
   name: name,
@@ -339,7 +425,8 @@ public updateDefaultProductToCurrentUser(myProduct:Product,
   originalPrice: originalPrice,
   reducedPrice: reducedPrice,
   key:myProduct.key,
-  picture:myProduct.picture
+  picture:myProduct.picture,
+  uID:this.globalService.userID
   };
 
   
@@ -348,7 +435,7 @@ console.log("editing product on UID"+this.globalService.userID);
 console.log(product); 
 
 return new Promise<any>((resolve, reject) => {
-let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(myProduct.key).update(product);
+let setUserPromise:Promise<void>=this.productsCollectionRef.doc(myProduct.key).update(product);
 console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
@@ -376,7 +463,7 @@ console.log(product);
 return new Promise<any>((resolve, reject) => {
 this.uploadService.deletePicture(product.picture);
 
-let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(product.key).delete().then( ()=>
+let setUserPromise:Promise<void>=this.productsCollectionRef.doc(product.key).delete().then( ()=>
 {
 console.log("PROMISE DONE");
 resolve(setUserPromise);
@@ -402,7 +489,7 @@ let productUpdate:any={};
 productUpdate[fieldName]=fieldValue;
 
 return new Promise<any>((resolve, reject) => {
-  let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).collection<Seller>(this.defaultProductsColletionName).doc(product.key).update(productUpdate);
+  let setUserPromise:Promise<void>=this.productsCollectionRef.doc(product.key).update(productUpdate);
   if (fieldName=="picture")
   {
     this.uploadService.deletePicture(product.picture);
@@ -478,10 +565,10 @@ public updateTodayPromotion():Promise<any>
     let docRef=this.sellersCollectionRef.doc(this.globalService.userID).ref;
     batch.update(docRef,userUpdate);
 
-    this.currentDefaultProducts.forEach(product => {
+    this.sellerProducts.forEach(product => {
       console.log("Updating product:");
       console.log(product);
-      docRef=this.defaultProductsCollectionRef.doc(product.key).ref;
+      docRef=this.productsCollectionRef.doc(product.key);
       let prodUpdate:any={};
       prodUpdate["currentQuantity"]=product.quantity;
       console.log(product);

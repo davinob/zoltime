@@ -28,12 +28,13 @@ export interface Slide {
 export class TutorialPage {
   slides: Slide[];
   showSkip = false;
-  dir: string = 'ltr';
+  dir: string = 'rtl';
 
   @ViewChild('description') descriptionInput ;
   @ViewChild('address') addressInput ;
   @ViewChild('fileInput') fileInput;
-
+  @ViewChild('selectPictureType') selectPictureType;
+  
   public signupForm:FormGroup;
 
   searchAddress: string = '';
@@ -192,20 +193,22 @@ export class TutorialPage {
   }
 
 
-  getPicture() {
+  choosePictureType()
+  {
+    console.log(this.selectPictureType);
+    console.log(this.selectPictureType.nativeElement);
+    this.selectPictureType._elementRef.nativeElement.click();
+  }
+
+
+  getPicture(typeChosen:any) {
+    console.log(typeChosen);
     if (Camera['installed']()) {
       let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
-      this.alertAndLoadingService.
-      showChoice("Take a picture from:","Gallery","Camera").then(
-        (response)=>
-        {
-          if (response)
-          {
-            sourceType=this.camera.PictureSourceType.CAMERA
-          }
-
-          this.takePicture(sourceType);
-        });
+      if (typeChosen=="Camera")
+      sourceType=this.camera.PictureSourceType.CAMERA;
+     
+      this.takePicture(sourceType);
       }
 
       else { 

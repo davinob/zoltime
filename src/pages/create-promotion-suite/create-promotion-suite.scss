@@ -1,0 +1,165 @@
+page-create-promotion-suite{
+  
+  
+  
+  
+  .promotions
+  {
+      color: white;
+      border-color: white;
+      border: 3px solid;
+      margin-bottom: 13px;
+      border-radius: 15px;
+      font-size: larger;
+  }
+  
+  .labelPromotions
+  {
+      text-align: center;
+      color: white;
+      font-size: larger;
+      margin-top: 10px;
+      margin-bottom:5px;
+ 
+  }
+  
+  .productDescription {
+    font-style: italic;
+    color:white
+   
+  }
+  
+  .productName
+  {
+    font-weight:bold;
+    color:white
+  }
+
+  .datetime-text
+  {
+    color:white
+  }
+  
+  .productQuantity
+  {
+    font-weight:bold;
+    color:white
+  }
+  
+  .productPrice
+  {
+    color:red;
+    font-weight:bold;
+  }
+
+  .datePromotions
+  {
+    border-radius: 15px;
+    border: 3px solid;
+    color: white;
+  }
+  
+.recurrentTimePromotion{
+    display: inline-block;
+    vertical-align: middle;
+    color: white;
+    border-color: white;
+    margin-bottom: 13px;
+    margin-top: 10px;
+    font-size: larger;
+}
+
+.input-wrapper {
+  border-bottom: 1px solid;
+  background-color:transparent;
+}
+
+.item{
+  margin-bottom:0px;
+  color: white;
+  background-color: transparent;
+}
+
+.item-md {
+  margin-bottom:0px;
+  color: white;
+   background-color: transparent;
+   margin-left: 10px;
+}
+
+.label {
+  color: white;
+   background-color: transparent;
+}
+
+.item-md.item-toggle ion-label {
+  margin-left: 10px;
+}
+
+.text-input-md
+{
+  color: white;
+}
+
+.item-input .label-md {
+  color: white;
+   background-color: transparent;
+}
+
+  .buttonPromotion
+  {
+    align-items: center;
+  }
+  
+  .publishPromo
+  {
+    background-color: green;
+  }
+  
+  .stopPromo
+  {
+    background-color: red;
+  }
+  
+  .card-md {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left:0px;
+    border-radius: 10px;
+    width:100%;
+    border-radius: 0;
+  
+  }
+  
+  .item-md
+  {
+  padding-left:0px;
+  margin: 0px 0px 0px 0;  
+  color: #0c1897;
+  }
+  
+  .label-md {
+    margin: 0px 0px 0px 0;
+  }
+
+
+  .select-text
+  {
+  visibility: hidden
+  }
+  .select-icon
+  {
+    visibility: hidden
+  }
+
+   
+  .product{
+    border: solid 3px;
+    border-color: white;
+    border-radius: 10%;
+    margin-bottom: 13px;
+  }
+  
+  }
+  
+  

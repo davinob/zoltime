@@ -56,7 +56,7 @@
     
     
     <input type="file" accept="image/*" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
-    <div class="profile-image-wrapper" (click)="getPicture()">
+    <div class="profile-image-wrapper" (click)="choosePictureType()">
       <div class="profile-image-placeholder" *ngIf="!signupForm.controls.picture.value">
         <ion-icon class="basic"  name="add-circle"></ion-icon>
         <div class="whiteBig">
@@ -72,4 +72,10 @@
   </form>
   </ion-slide>
   </ion-slides>
+
+  <ion-select #selectPictureType [hidden]="true" (ionChange)="getPicture($event)" interface="action-sheet">
+    <ion-option value="Gallery">Gallery</ion-option>
+    <ion-option value="Camera">Camera</ion-option>
+  </ion-select> 
+
 </ion-content>

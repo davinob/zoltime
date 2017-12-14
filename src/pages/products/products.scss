@@ -1,4 +1,4 @@
-page-today-menu{
+page-products{
 
 
   .item{
@@ -22,7 +22,6 @@ page-today-menu{
 }
 
 .productDescription {
-  line-height: 0px;
   font-style: italic;
  
 }
@@ -40,14 +39,19 @@ page-today-menu{
 
 .products_disabled{
   opacity:0.5;
+  left: 0;
+  position: absolute;
+  width:100%;
+
 }
 
 .products_enabled{
   opacity:1;
+  left: 0;
+  position: absolute;
+  width:100%;
+
 }
-
-
-
 
 .buttonPromotion
 {
@@ -69,5 +73,29 @@ page-today-menu{
   margin-bottom: 10px;
   margin-left:0px;
   border-radius: 10px;
+  width:100%;
+  border-radius: 0;
+
 }
+
+.item-md
+{
+padding-left:0px;
+margin: 0px 0px 0px 0;  
+color: #0c1897;
+}
+
+.label-md {
+  margin: 0px 0px 0px 0;
+}
+
+}
+
+.select-text
+{
+visibility: hidden
+}
+.select-icon
+{
+  visibility: hidden
 }

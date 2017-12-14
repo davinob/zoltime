@@ -24,8 +24,8 @@
                     
                     <ion-col align-self-center>
                         <div class="profile-info">
-                            <img-loader class="profile-image" src='{{user.picture.url}}' useImg></img-loader>
-                            <button class="profilebutton" (click)="getPicture()">
+                            <img class="profile-image" src='{{user.picture.url}}'/>
+                            <button class="profilebutton" (click)="choosePictureType()">
                                 <ion-icon name="create"></ion-icon>
                             </button>
                           </div>
@@ -130,7 +130,10 @@
            
 
      
-
+                     <ion-select #selectPictureType [hidden]="true" (ionChange)="getPicture($event)" interface="action-sheet">
+                      <ion-option value="Gallery">Gallery</ion-option>
+                      <ion-option value="Camera">Camera</ion-option>
+                    </ion-select> 
     
         
   </ion-content>

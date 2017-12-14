@@ -15,7 +15,6 @@ import { AddressService,Address } from '../../providers/address-service';
 
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ImageLoader } from 'ionic-image-loader';
 
 /**
  * Generated class for the ProfileSettingsPage page.
@@ -33,6 +32,7 @@ export class ProfileSettingsPage {
   @ViewChild('fileInput') fileInput;
   @ViewChild('categoriesInput') categoriesInput;
   @ViewChild('hashgahaInput') hashgahaInput;
+  @ViewChild('selectPictureType') selectPictureType;
 
   public loading:Loading;
 
@@ -49,8 +49,7 @@ export class ProfileSettingsPage {
   public addressService: AddressService,
   public camera: Camera,
   private upSvc: UploadService,
-  public formBuilder: FormBuilder,
-  imageLoader: ImageLoader) {
+  public formBuilder: FormBuilder) {
     
     this.updateForm = formBuilder.group({
       address: [''],
@@ -58,8 +57,7 @@ export class ProfileSettingsPage {
      
     });
 
-    imageLoader.preload(sellerService.getCurrentSeller().picture.url);
-  
+      
     
   }
 
@@ -228,21 +226,22 @@ export class ProfileSettingsPage {
 
   profilePic:Picture;
 
+  choosePictureType()
+  {
+    console.log(this.selectPictureType);
+    console.log(this.selectPictureType.nativeElement);
+    this.selectPictureType._elementRef.nativeElement.click();
+  }
 
-  getPicture() {
+
+  getPicture(typeChosen:any) {
+    console.log(typeChosen);
     if (Camera['installed']()) {
       let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
-      this.alertAndLoadingService.
-      showChoice("Take a picture from:","Gallery","Camera").then(
-        (response)=>
-        {
-          if (response)
-          {
-            sourceType=this.camera.PictureSourceType.CAMERA
-          }
-
-          this.takePicture(sourceType);
-        });
+      if (typeChosen=="Camera")
+      sourceType=this.camera.PictureSourceType.CAMERA;
+     
+      this.takePicture(sourceType);
       }
 
       else { 

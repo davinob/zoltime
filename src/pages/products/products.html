@@ -1,5 +1,5 @@
 <!--
-  Generated template for the TodayMenuPage page.
+  Generated template for the ProductsPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -10,7 +10,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Today Menu</ion-title>
+    <ion-title>My Products</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -55,40 +55,38 @@
       </ion-grid>
     </div>    
 
+
     
     <div [ngClass]="shouldShowCurrentPromotion() ? 'products_disabled' : 'products_enabled'">
               <button ion-button (click)="addProduct()">
                   Add product
                 </button>
-                
-
-               <ion-list  *ngIf="sellerService.getCurrentDefaultProducts() as products ">
+               <ion-list  *ngIf="sellerService.getSellerProducts() as products ">
                   <ion-card  *ngFor="let product of products">
-                      <ion-item-sliding>
+                    <ion-item-sliding>
                        
                       <ion-item text-wrap>
                           <ion-grid>
                               <ion-row >
-                                  <ion-col (click)="updatePicture(product)" col-5>
-                                      <img-loader class="profile-image" src="{{product.picture.url}}" useImg></img-loader>
-                                      </ion-col>
+                                  <ion-col col-5 (click)="choosePictureType()">
+                                      <img class="profile-image" src="{{product.picture.url}}" cache="true"/>
+                                  </ion-col>
+                              
                                       <ion-col (click)='editProduct(product)'>
                                           <ion-row >
                                           <span  class="productName" >{{product.name}}</span>
                                         </ion-row> 
-                                        <ion-row >
-                                          <span class="productQuantity">{{product.currentQuantity}}</span>
-                                        </ion-row >
-                                        <ion-row >
-                                            <span  class="productPrice" >  Price: <del>{{product.originalPrice}}  </del>  {{product.reducedPrice}} ₪ </span>
-                                          </ion-row >
-                                      </ion-col>
-                                    </ion-row >
-                                   <ion-row (click)='editProduct(product)'>
-                                   <ion-col>
+                                      <ion-row >
+                                          <span  class="productPrice" > {{product.originalPrice}} ₪ </span>
+                                      </ion-row >
+                                 <ion-row >
                                      <span   class="productDescription" >{{product.description}}</span>
-                                  </ion-col>
-                               </ion-row >
+                                 </ion-row >
+                               </ion-col>
+                              
+                                
+                        
+                              </ion-row>
                               </ion-grid>
                             </ion-item>
                            <ion-item-options  (ionSwipe)="removeInput(product)" side="right" icon-start>
@@ -107,7 +105,10 @@
          minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="user.promotionEndTime" (ionChange)="updateUserField('promotionEndTime',user.promotionEndTime)"></ion-datetime>
          
      
-  <input type="file" #fileInput accept="image/*"  style="visibility: hidden; height: 0px" name="files[]" (change)="processImage($event)" />                      
-
+  <input type="file" #fileInput accept="image/*"  [hidden]="true" name="files[]" (change)="processImage($event)" />                      
+  <ion-select #selectPictureType [hidden]="true" (ionChange)="updatePicture(product,$event)" interface="action-sheet">
+    <ion-option value="Gallery">Gallery</ion-option>
+    <ion-option value="Camera">Camera</ion-option>
+  </ion-select> 
 
 </ion-content>

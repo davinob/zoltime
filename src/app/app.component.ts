@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform} from 'ionic-angular';
 
 
-import { TodayMenuPage } from '../pages/today-menu/today-menu';
+import { ProductsPage } from '../pages/products/products';
 import { OrdersTabPage } from '../pages/orders-tab/orders-tab';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
@@ -15,7 +15,6 @@ import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/first';
 
 import { TranslateService } from '@ngx-translate/core';
-import { ImageLoaderConfig } from 'ionic-image-loader';
 
 
 @Component({
@@ -31,12 +30,9 @@ export class MyApp {
 
   constructor(public translate: TranslateService,public platform: Platform, public authService: AuthService, 
     public sellerService: SellerService,
-  private storage: Storage,
-  private imageLoaderConfig: ImageLoaderConfig ) {
+  private storage: Storage ) {
     
-    imageLoaderConfig.enableSpinner(false);
-    imageLoaderConfig.setConcurrency(10);
-         authService.getAuthState().subscribe(user=>
+           authService.getAuthState().subscribe(user=>
           {
           if (user)
           {
@@ -71,7 +67,8 @@ export class MyApp {
    
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Today Menu', component: 'TodayMenuPage' },
+      { title: 'My Products', component: 'ProductsPage' },
+      { title: 'My Promotions', component: 'PromotionsPage' },
       { title: 'Orders', component: 'OrdersTabPage' },
       { title: 'Profile Settings', component: 'ProfileSettingsPage' }
     ];

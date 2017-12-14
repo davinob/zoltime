@@ -5,7 +5,7 @@ import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Camera } from '@ionic-native/camera';
-import {TodayMenuPage} from '../today-menu/today-menu';
+import {ProductsPage} from '../products/products';
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -39,9 +39,7 @@ export class CreateProductPage {
       this.addProductForm = formBuilder.group({
         name: ['', Validators.required],
         description: ['', Validators.required],
-        quantity: ['', Validators.required],
         originalPrice: ['', Validators.required],
-        reducedPrice: ['', Validators.required],
         picture: ['']
       });
   }
@@ -50,23 +48,25 @@ export class CreateProductPage {
     console.log('ionViewDidLoad CreateProductPage');
   }
 
+  
+    
+
+ 
 
 
-  getPicture() {
+  getPicture(typeChosen:any) {
+   
+    let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+    if (typeChosen=="Camera")
+    sourceType=this.camera.PictureSourceType.CAMERA;
+
+   
+
     if (Camera['installed']()) {
-      console.log("GETPICTURE");
       let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
-      this.alertAndLoadingService.
-      showChoice("Take a picture from:","Gallery","Camera").then(
-        (response)=>
-        {
-          if (response)
-          {
-            sourceType=this.camera.PictureSourceType.CAMERA
-          }
-
-          this.takePicture(sourceType);
-        });
+      if (typeChosen=="Camera")
+      sourceType=this.camera.PictureSourceType.CAMERA;
+      this.takePicture(sourceType);
       }
 
       else { 
@@ -79,7 +79,6 @@ export class CreateProductPage {
       takePicture(srcType:number)
       {
        this.upSvc.takePicture(srcType).then((data) => {
-        this.addProductForm.patchValue({ 'picture': 'data:image/jpg;base64,' + data });
         this.uploadPicture(data,false);
       }, (err) => {
         //alert('Unable to take photo');
@@ -100,6 +99,7 @@ export class CreateProductPage {
         if (this.picture!=null)
           this.upSvc.deletePicture(this.picture);
         this.picture=resultPic;      
+        this.addProductForm.patchValue({ 'picture': 'data:image/jpg;base64,' + picture });
          this.alertAndLoadingService.dismissLoading();
       }
     ).catch(error=>
@@ -152,17 +152,17 @@ export class CreateProductPage {
         let user=this.sellerService.getCurrentSeller();
         console.log("SIGNUP:"+user);
         
-         this.sellerService.addDefaultProductToCurrentUser(
+         this.sellerService.addProductToCurrentUser(
           this.addProductForm.value.name,this.addProductForm.value.description,
-          this.addProductForm.value.quantity,this.addProductForm.value.originalPrice,
-          this.addProductForm.value.reducedPrice,this.picture)
+         this.addProductForm.value.originalPrice,
+          this.picture)
         .then(()=> {
           console.log("Document successfully written!");
         
           }
         )
    
-      this.navCtrl.setRoot(TodayMenuPage);
+      this.navCtrl.setRoot(ProductsPage);
     }
   }
 

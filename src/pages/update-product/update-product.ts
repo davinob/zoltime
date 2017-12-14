@@ -4,7 +4,7 @@ import { SellerService } from '../../providers/seller-service';
 import { AddressService,Address } from '../../providers/address-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Camera } from '@ionic-native/camera';
-import {TodayMenuPage} from '../today-menu/today-menu';
+import {ProductsPage} from '../products/products';
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -72,7 +72,7 @@ export class UpdateProductPage {
         });
         
 
-        this.navCtrl.setRoot(TodayMenuPage);
+        this.navCtrl.setRoot(ProductsPage);
      // this.alertAndLoadingService.showLoading();
     }
   }
