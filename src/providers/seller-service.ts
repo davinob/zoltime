@@ -369,7 +369,34 @@ console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
 console.log("PROMISE DONE");
-resolve(key);
+resolve(setUserPromise);
+}
+).catch( (error)=>
+{
+console.log(error);
+reject(new Error("Error inserting the data"));
+});
+
+setTimeout( () => {
+reject(new Error("Error inserting the data"));
+}, 15001);      
+});
+
+}
+
+
+public updatePromotionToCurrentUser(promotion:Promotion):Promise<any>
+{
+  console.log("MY PROMO:");
+  console.log(promotion);
+
+return new Promise<any>((resolve, reject) => {
+let setUserPromise:Promise<any>=this.promotionsCollectionRef.doc(promotion.key).update(promotion);
+console.log("PROMISE launched");
+setUserPromise.then( ()=>
+{
+console.log("PROMISE DONE");
+resolve(setUserPromise);
 }
 ).catch( (error)=>
 {
@@ -415,15 +442,12 @@ reject(new Error("Error inserting the data"));
 
 public updateDefaultProductToCurrentUser(myProduct:Product,
   name:string,description:string,
-  quantity:number,originalPrice:number,reducedPrice:number):Promise<any>
+  originalPrice:number):Promise<any>
 {
   let product:Product={
   name: name,
   description: description,
-  quantity: quantity,
-  currentQuantity:quantity,
   originalPrice: originalPrice,
-  reducedPrice: reducedPrice,
   key:myProduct.key,
   picture:myProduct.picture,
   uID:this.globalService.userID

@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 /**
- * Generated class for the CreatePromotionSuitePage page.
+ * Generated class for the UpdatePromotionSuitePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -19,10 +19,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-create-promotion-suite',
-  templateUrl: 'create-promotion-suite.html',
+  selector: 'page-update-promotion-suite',
+  templateUrl: 'update-promotion-suite.html',
 })
-export class CreatePromotionSuitePage {
+export class UpdatePromotionSuitePage {
 
   @ViewChild('daysInput') daysInput;
 
@@ -46,7 +46,7 @@ export class CreatePromotionSuitePage {
 
   
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CreatePromotionSuitePage');
+    console.log('ionViewDidLoad UpdatePromotionSuitePage');
   }
 
 
@@ -109,7 +109,7 @@ export class CreatePromotionSuitePage {
         }
       )
 
-         this.sellerService.addPromotionToCurrentUser(this.promotion)
+         this.sellerService.updatePromotionToCurrentUser(this.promotion)
         .then(()=> {
           console.log("Document successfully written!");
         

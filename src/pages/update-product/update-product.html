@@ -28,25 +28,14 @@
       <ion-label stacked>General Description</ion-label>
       <ion-input formControlName="description"  type="text"  placeholder="General Description"></ion-input>
     </ion-item>
-         
-    
-    <ion-item>
-        
-      <ion-label stacked>Quantity</ion-label>
-      <ion-input formControlName="quantity"   type="text"  placeholder="Default Quantity"></ion-input>
-    </ion-item>
-
+   
     <ion-item>
         
       <ion-label stacked>Original Price</ion-label>
       <ion-input formControlName="originalPrice"  type="text"  placeholder="Original Price"></ion-input>
     </ion-item>
 
-    <ion-item>
-        
-      <ion-label stacked>New Price</ion-label>
-      <ion-input formControlName="reducedPrice"  type="text"  placeholder="Reduced Price"></ion-input>
-    </ion-item>
+  
         
     <button ion-button block [disabled]="!updateProductForm.valid" type="submit">
         {{ 'Update Product' | translate }}

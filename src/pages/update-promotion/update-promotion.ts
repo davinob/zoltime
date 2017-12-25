@@ -5,13 +5,13 @@ import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { Camera } from '@ionic-native/camera';
-import {CreatePromotionSuitePage} from '../create-promotion-suite/create-promotion-suite';
+import {UpdatePromotionSuitePage} from '../update-promotion-suite/update-promotion-suite';
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 /**
- * Generated class for the CreatePromotionPage page.
+ * Generated class for the UpdatePromotionPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -19,10 +19,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-create-promotion',
-  templateUrl: 'create-promotion.html',
+  selector: 'page-update-promotion',
+  templateUrl: 'update-promotion.html',
 })
-export class CreatePromotionPage {
+export class UpdatePromotionPage {
 
   @ViewChild('fileInput') fileInput;
   @ViewChild('promotionStartTime') promotionStartTime;
@@ -43,24 +43,25 @@ export class CreatePromotionPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder,
     public alertAndLoadingService: AlertAndLoadingService,
-    public sellerService: SellerService)  {
+    public sellerService: SellerService
+    )  {
 
+      this.promotion=Object.assign({}, navParams.get('promotion'));
+      console.log("Promo!!");
+      console.log(this.promotion);
+
+
+      console.log(this.selectedProducts);
+     
 
       this.addPromotionForm = formBuilder.group({
         name: ['', Validators.required],
         dateOneTime: ['', Validators.required],
       });
 
-      this.promotion={name:"",
-      promotionStartTime:"00:00",
-      promotionEndTime:"00:00",
-      isOneTime:true,
-      days:{1:false,2:false,3:false,4:false,5:false,6:false,7:false},
-      products:{},
-      date:new Date()
-      };
+      this.addPromotionForm.controls['dateOneTime'].setValue(this.promotion.isOneTime);
+      this.addPromotionForm.controls['name'].setValue(this.promotion.name);
 
-      this.addPromotionForm.controls['dateOneTime'].setValue(true);
       this.todayDateISO= new Date().toISOString();
       this.allProducts=this.sellerService.getSellerProductsClone();
       
@@ -68,20 +69,24 @@ export class CreatePromotionPage {
 
   
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CreatePromotionPage');
-    this.promotionStartDate._text="Today";
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth()+1; //January is 0!
-    var yyyy = today.getFullYear();
-    this.promotionStartDate.value.day=dd;
-    this.promotionStartDate.value.month=mm;
-    this.promotionStartDate.value.year=yyyy;
-    
+    console.log('ionViewDidLoad UpdatePromotionPage');
+   this.promotionStartDate.value.day=this.promotion.date.getDate();
+   this.promotionStartDate.value.month=this.promotion.date.getMonth()+1;
+   this.promotionStartDate.value.year=this.promotion.date.getFullYear();
+   this.promotionStartDate._text=this.promotion.date.toDateString();
+
+   this.setDate();
+
     this.allProducts.forEach(prod =>
     {
-      prod.enabled=false;
+      prod.enabled=(this.promotion.products[prod.key]!=null);
+      if (prod.enabled)
+      {
+        this.selectedProducts.push(prod);
+      }
     })
+
+    console.log(this.allProducts);
 
     
 
@@ -129,9 +134,13 @@ export class CreatePromotionPage {
     else
     {
     product.enabled=false;
+ 
     this.selectedProducts=this.selectedProducts.filter(
-      (prod)=>{return prod.key!=product.key});
+      (prod)=>{
+        return prod.key!=product.key});
     }
+
+    console.log(this.selectedProducts);
     
   }
 
@@ -199,7 +208,7 @@ export class CreatePromotionPage {
     } else {
       this.promotion.name=this.addPromotionForm.value.name;
       this.promotion.isOneTime=this.isOneTimePromotion();
-      this.navCtrl.push('CreatePromotionSuitePage',{promotion:this.promotion,selectedProducts:this.selectedProducts});
+      this.navCtrl.push('UpdatePromotionSuitePage',{promotion:this.promotion,selectedProducts:this.selectedProducts});
     }
   }
 

@@ -1,4 +1,4 @@
-page-create-promotion{
+page-update-promotion-suite{
   
   
   
@@ -25,14 +25,14 @@ page-create-promotion{
   
   .productDescription {
     font-style: italic;
-    color:#4B64F3
+    color:white
    
   }
   
   .productName
   {
     font-weight:bold;
-    color:#4B64F3
+    color:white
   }
 
   .datetime-text
@@ -43,7 +43,7 @@ page-create-promotion{
   .productQuantity
   {
     font-weight:bold;
-    color:#4B64F3
+    color:white
   }
   
   .productPrice
@@ -106,51 +106,6 @@ page-create-promotion{
    background-color: transparent;
 }
 
-.day_enabled{
-  color: #486ff1;
-  border: solid 2px;
-  border-radius: 100%;
-  background-color: white;
-  margin: 6px;
-  float: left;
-  width: 34px;
-  height: 34px;
-  padding: 6px 0 0 0;
-  font-size: 17px;
-  text-align: center;
-  font-weight: bolder;
-}
-
-
-
-.day_disabled{
-  color:white ;
-  border-radius: 100%;
-  float: left;
-  margin: 6px;
-  width: 34px;
-  height: 34px;
-  padding: 6px 0 0 0;
-  font-size: 17px;
-  text-align: center;
-}
-
-  .products_disabled{
-    opacity:0.3;
-    left: 0;
-    position: absolute;
-    width:100%;
-  
-  }
-  
-  .products_enabled{
-    opacity:1;
-    left: 0;
-    position: absolute;
-    width:100%;
-  
-  }
-  
   .buttonPromotion
   {
     align-items: center;
@@ -197,18 +152,12 @@ page-create-promotion{
     visibility: hidden
   }
 
-  .product_disabled{
-    opacity:0.5;
-    left: 0;
-    width:100%;
-  
-  }
-  
-  .product_enabled{
-    opacity:1;
-    left: 0;
-    width:100%;
-  
+   
+  .product{
+    border: solid 3px;
+    border-color: white;
+    border-radius: 10%;
+    margin-bottom: 13px;
   }
   
   }

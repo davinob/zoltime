@@ -36,10 +36,7 @@ export class UpdateProductPage {
       this.updateProductForm = formBuilder.group({
         name: [this.myProduct.name, Validators.required],
         description: [this.myProduct.description, Validators.required],
-        quantity: [this.myProduct.quantity, Validators.required],
-        originalPrice: [this.myProduct.originalPrice, Validators.required],
-        reducedPrice: [this.myProduct.reducedPrice, Validators.required],
-        picture: [this.myProduct.picture]
+        originalPrice: [this.myProduct.originalPrice, Validators.required]
       });
 
       
@@ -60,8 +57,7 @@ export class UpdateProductPage {
         
          this.sellerService.updateDefaultProductToCurrentUser(this.myProduct,
           this.updateProductForm.value.name,this.updateProductForm.value.description,
-          this.updateProductForm.value.quantity,this.updateProductForm.value.originalPrice,
-          this.updateProductForm.value.reducedPrice)
+          this.updateProductForm.value.originalPrice)
         .then(()=> {
           console.log("Document successfully written!");
        
