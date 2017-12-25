@@ -86,7 +86,7 @@
       
       <div class="labelPromotions">Promotion products</div>
 
-      <ion-list  *ngIf="sellerService.getSellerProductsClone() as products ">
+      <ion-list  *ngIf="allProducts as products ">
                         <ion-card (click)="endisableProduct(product)" *ngFor="let product of products"  [ngClass]="isProductEnabled(product)? 'product_enabled' :'product_disabled' " >
                            
                               <ion-item text-wrap>

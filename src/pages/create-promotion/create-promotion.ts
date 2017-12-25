@@ -37,6 +37,7 @@ export class CreatePromotionPage {
   public promotion:Promotion;
   public selectedProducts:Array<any>=[];
   public todayDateISO:String;
+  public allProducts:Array<any>;
 
   
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -61,7 +62,7 @@ export class CreatePromotionPage {
 
       this.addPromotionForm.controls['dateOneTime'].setValue(true);
       this.todayDateISO= new Date().toISOString();
-      
+      this.allProducts=this.sellerService.getSellerProductsClone();
       
   }
 
@@ -76,6 +77,11 @@ export class CreatePromotionPage {
     this.promotionStartDate.value.day=dd;
     this.promotionStartDate.value.month=mm;
     this.promotionStartDate.value.year=yyyy;
+    let products;
+    this.allProducts.forEach(prod =>
+    {
+      prod.enabled=false;
+    })
 
     
 

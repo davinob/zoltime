@@ -481,6 +481,30 @@ reject(new Error("Error deleting the data"));
 
 }
 
+
+public removePromotionFromCurrentSeller(promotion:Promotion):Promise<any>
+{
+
+console.log(promotion); 
+return new Promise<any>((resolve, reject) => {
+let setUserPromise:Promise<void>=this.promotionsCollectionRef.doc(promotion.key).delete().then( ()=>
+{
+console.log("PROMISE DONE");
+resolve(setUserPromise);
+}
+).catch( (error)=>
+{
+console.log(error);
+reject(new Error("Error inserting the data"));
+});
+
+setTimeout( () => {
+reject(new Error("Error deleting the data"));
+}, 150001);      
+});
+
+}
+
 public updateCurrentUserDefaultProductField(product:Product,fieldName:any,fieldValue:any):Promise<any>
 {
 

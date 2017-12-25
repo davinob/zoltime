@@ -22,7 +22,31 @@
                 <button ion-button (click)="addPromotion()">
                     Add promotion
                   </button>
-              
+           
+                  <ion-list  *ngIf="sellerService.getSellerPromotions() as promotions ">
+                      <ion-card  *ngFor="let promotion of promotions">
+                        <ion-item-sliding>
+                           
+                          <ion-item text-wrap>
+                              <ion-grid>
+                                  <ion-row >
+                                          <ion-col (click)='editPromotion(promotion)'>
+                                              <ion-row >
+                                              <span  class="productName" >{{promotion.name}}</span>
+                                            </ion-row> 
+                                    
+                                   </ion-col>
+                            
+                                  </ion-row>
+                                  </ion-grid>
+                                </ion-item>
+                               <ion-item-options  (ionSwipe)="removeInput(promotion)" side="right" icon-start>
+                               </ion-item-options>
+                         
+                      </ion-item-sliding>
+                        </ion-card>
+    
+                  </ion-list>
         
    
    
