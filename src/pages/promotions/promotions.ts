@@ -1,7 +1,7 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController  } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { SellerService, Seller } from '../../providers/seller-service';
+import { SellerService, Seller,Promotion,Product } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { Camera,CameraOptions  } from '@ionic-native/camera';
@@ -26,20 +26,63 @@ export class PromotionsPage {
 
 
   allInputsShows:any={};
-  
+  sellerProducts:Array<Product>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private sellerService:SellerService, public alertAndLoadingService: AlertAndLoadingService
     , public formBuilder: FormBuilder,
     private elRef:ElementRef,
     public toastCtrl: ToastController ) {
+
+      this.sellerProducts=this.sellerService.getSellerProductsClone();
+      this.sellerService.getSellerPromotions().forEach
+      (promo=>
+      {
+        if (promo.isActivated)
+          {
+            this.sellerService.startPromotionTimer(promo);
+          }
+      });
+
     
   }
 
+  isPromotionExpired(promotion:Promotion)
+  {
+    return this.sellerService.isPromoExpired(promotion);
+  }
   
+  getProductsOfPromotion(promotion:Promotion):Array<Product>
+  {
+    return this.sellerProducts.filter( prod =>{
+      return promotion.products[prod.key]!=null
+    }
+    );
   
+  }
+
+
+  getCurrentPromotionTimerMessage(promotion:Promotion):string
+  {
+    return this.sellerService.getPromotionMessage(promotion);
+    
+  }
   
+
+  shouldShowPromotion(promotion:Promotion):boolean
+  {
+    return promotion.isActivated;
+  }
   
+  startPromo(promotion:Promotion)
+  {
+    this.sellerService.startPromotion(promotion);
+  }
+
+  stopPromo(promotion:Promotion)
+  {
+    this.sellerService.stopPromotion(promotion);
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PromotionsPage');
@@ -75,7 +118,7 @@ export class PromotionsPage {
 
 
   
-  editPromotion(promotion:any)
+  editPromotion(promotion:Promotion)
   {
     console.log("HALLO");
     this.navCtrl.push('UpdatePromotionPage',{promotion:promotion});

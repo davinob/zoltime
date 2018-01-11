@@ -42,13 +42,6 @@ export class ProductsPage {
     private upSvc: UploadService,
     private elRef:ElementRef,
     public toastCtrl: ToastController ) {
-
-      if (this.shouldShowCurrentPromotion())
-      {
-        console.log("starting timer?");
-        this.sellerService.startPromotionTimer();
-      }
-      
   }
 
   
@@ -83,8 +76,6 @@ export class ProductsPage {
 
 
   addProduct(){
-    if (this.shouldShowCurrentPromotion())
-    return;
     this.navCtrl.push('CreateProductPage');
   }
 
@@ -102,9 +93,6 @@ export class ProductsPage {
 
   removeInput(product:any)
   {
-    if (this.shouldShowCurrentPromotion())
-    return;
-
     this.alertAndLoadingService.
     presentConfirm("Are you sure you want to remove this product?").then(
       (response)=>
@@ -145,106 +133,20 @@ export class ProductsPage {
 
 
   
-  shouldShowCurrentPromotion():boolean
-  {
-    if (this.sellerService.getCurrentSeller()==null)
-    return false;
-   return (this.sellerService.getCurrentSeller().promotionStartDateTime!=null && this.sellerService.getCurrentSeller().promotionEndDateTime!=null)
-  }
+  
 
-  stopTodayPromotion()
-  {
-   // this.alertAndLoadingService.showLoading();
-    this.sellerService.stopTodayPromotion().then
-    (stopPromo=>
-    {
-      this.alertAndLoadingService.dismissLoading();
-    }).catch(error=>
-      {
-       //this.alertAndLoadingService.showToast(error);
-      })
-  }
-
-
-
-  publishTodayPromotion()
-  {
-    //this.alertAndLoadingService.showLoading();
-   
-    if (this.sellerService.getCurrentSeller().promotionStartTime==null)
-    return;
-    if (this.sellerService.getCurrentSeller().promotionEndTime==null)
-    return;
-
-    let startTime=(this.sellerService.getCurrentSeller().promotionStartTime.split(":",2));
-    let hourStart=Number.parseInt(startTime[0]);
-    let minuteStart=Number.parseInt(startTime[1]);
-    
-
-    let endTime=this.sellerService.getCurrentSeller().promotionEndTime.split(":",2)
-    let hourEnd=Number.parseInt(endTime[0]);
-    let minuteEnd=Number.parseInt(endTime[1]);
-    
-
-    let date=new Date();
-    let nowHour=date.getHours();
-    let nowMinutes=date.getMinutes();
-    
-
-    console.log("NOW: "+nowHour+":"+nowMinutes);
-
-    if ((nowHour>hourStart)||((nowHour==hourStart)&&((nowMinutes>minuteStart)))) //promotion not in same day
-    {
-      console.log("ADDED ONE DAY to start TIME");
-      date=new Date(date.valueOf()+(1000 * 60 * 60 * 24));
-      console.log(date.toDateString());
-    }
-
-    date.setHours(hourStart);
-    date.setMinutes(minuteStart);
-    date.setSeconds(0);
-
-    this.sellerService.getCurrentSeller().promotionStartDateTime=date.valueOf();
-
-    
-    
-    if ((hourStart>hourEnd)||((hourStart==hourEnd)&&((minuteStart>minuteEnd)))) //promotion not in same day
-    {
-      date=new Date(date.valueOf()+(1000 * 60 * 60 * 24));
-    }
-    
-    date.setHours(hourEnd);
-    date.setMinutes(minuteEnd);
-
-
-  this.sellerService.getCurrentSeller().promotionEndDateTime=date.valueOf();
-    console.log("ENDs"+date.getHours()+":"+date.getMinutes());
-
-    this.sellerService.startTodayPromotion().then
-    (startPromo=>
-    {
-     // this.alertAndLoadingService.dismissLoading();
-    }).catch(error=>
-      {
-      // this.alertAndLoadingService.showToast(error);
-      })
-   
-  }
   
 
 
-  getCurrentPromotionTimerMessage():string
-  {
-    return this.sellerService.promotionMessage;
-    
-  }
+
+  
+
+
+
   
   editProduct(product:any)
   {
     console.log("HALLO");
-    if (this.shouldShowCurrentPromotion())
-    this.navCtrl.push('UpdateQuantityPage',{product:product});
-    else
     this.navCtrl.push('UpdateProductPage',{product:product});
   }
 
@@ -260,8 +162,7 @@ export class ProductsPage {
   }
 
   updatePicture(product:any, typeChosen:any) {
-    if (this.shouldShowCurrentPromotion())
-    return;
+
     console.log(typeChosen);
     this.productClicked=product;
 

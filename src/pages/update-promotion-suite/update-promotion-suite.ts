@@ -105,7 +105,7 @@ export class UpdatePromotionSuitePage {
     } else {
       this.selectedProducts.forEach(
         prod=>{
-          this.promotion.products[prod.key]={reducePrice:prod.reducedPrice,quantity:prod.quantity};
+          this.promotion.products[prod.key]={reducedPrice:prod.reducedPrice,quantity:prod.quantity};
         }
       )
 

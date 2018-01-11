@@ -28,16 +28,39 @@
                         <ion-item-sliding>
                            
                           <ion-item text-wrap>
-                              <ion-grid>
-                                  <ion-row >
-                                          <ion-col (click)='editPromotion(promotion)'>
-                                              <ion-row >
-                                              <span  class="productName" >{{promotion.name}}</span>
-                                            </ion-row> 
-                                    
-                                   </ion-col>
-                            
-                                  </ion-row>
+                              <ion-grid >
+                                      <ion-row (click)='editPromotion(promotion)'>
+                                          <span  class="productName" >{{promotion.name}}</span>
+                                        </ion-row> 
+                                        <ion-row (click)='editPromotion(promotion)'>
+                                        <span class="prodPic" *ngFor="let product of getProductsOfPromotion(promotion)">
+                                         <img class="profile-image" src="{{product.picture.url}}" cache="true"/>
+                                        </span>
+                                 
+                                       </ion-row>
+                                   
+                                        <ion-row [hidden]="!shouldShowPromotion(promotion)">
+                                           <ion-col align-self-center>
+                                              <span class="productName">{{getCurrentPromotionTimerMessage(promotion)}}</span>
+                                           </ion-col>
+                                      </ion-row>
+
+                                          <ion-row >
+                                              <ion-col  [hidden]="isPromotionExpired(promotion)" align-self-center>
+                                       <button [hidden]="shouldShowPromotion(promotion)" class="publishPromo" ion-button (click)="startPromo(promotion)">
+                                          Start
+                                        </button>
+                                      <button [hidden]="!shouldShowPromotion(promotion)" class="stopPromo"  ion-button (click)="stopPromo(promotion)">
+                                           Stop
+                                       </button>
+                                      </ion-col>
+                                      <ion-col  [hidden]="!isPromotionExpired(promotion)" align-self-center>
+                                          <span >Promotion Expired</span>
+                                      </ion-col>
+
+                                    </ion-row>
+                                 
+                               
                                   </ion-grid>
                                 </ion-item>
                                <ion-item-options  (ionSwipe)="removeInput(promotion)" side="right" icon-start>

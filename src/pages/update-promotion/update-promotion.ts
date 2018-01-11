@@ -1,6 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { SellerService,Promotion } from '../../providers/seller-service';
+import { SellerService,Promotion,Product } from '../../providers/seller-service';
 import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
@@ -35,9 +35,9 @@ export class UpdatePromotionPage {
 
   public addPromotionForm:FormGroup;
   public promotion:Promotion;
-  public selectedProducts:Array<any>=[];
+  public selectedProducts:Array<Product>=[];
   public todayDateISO:String;
-  public allProducts:Array<any>;
+  public allProducts:Array<Product>;
 
   
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -76,15 +76,25 @@ export class UpdatePromotionPage {
    this.promotionStartDate._text=this.promotion.date.toDateString();
 
    this.setDate();
+   
 
-    this.allProducts.forEach(prod =>
+    this.allProducts.forEach((prod,index) =>
     {
+      if (this.promotion.products[prod.key])
+      {
+      
+        prod.quantity=this.promotion.products[prod.key].quantity;
+        prod.reducedPrice=this.promotion.products[prod.key].reducedPrice;
+        this.allProducts[index]=prod;
+  
+      }
+
       prod.enabled=(this.promotion.products[prod.key]!=null);
       if (prod.enabled)
       {
         this.selectedProducts.push(prod);
       }
-    })
+     })
 
     console.log(this.allProducts);
 

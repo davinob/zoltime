@@ -57,7 +57,8 @@ export class CreatePromotionPage {
       isOneTime:true,
       days:{1:false,2:false,3:false,4:false,5:false,6:false,7:false},
       products:{},
-      date:new Date()
+      date:new Date(),
+      isActivated:true
       };
 
       this.addPromotionForm.controls['dateOneTime'].setValue(true);
