@@ -58,7 +58,8 @@ export interface Product{
   picture?:Picture,
   uID:string,
   discount?:number,
-  enabled?:boolean
+  enabled?:boolean,
+  isPreviouslyChosen?:boolean
 }
 
 export interface Promotion{
@@ -414,33 +415,6 @@ reject(new Error("Error inserting the data"));
 }
 
 
-public updateCurrentProductQuantity(myProduct:Product,
-  quantity:string):Promise<any>
-{
-  let productUpdate:any={};
-  productUpdate["currentQuantity"]=quantity;
-
-return new Promise<any>((resolve, reject) => {
-let setUserPromise:Promise<void>=this.productsCollectionRef.doc(myProduct.key).update(productUpdate);
-console.log("PROMISE launched");
-setUserPromise.then( ()=>
-{
-console.log("PROMISE DONE");
-resolve(myProduct.key);
-}
-).catch( (error)=>
-{
-console.log(error);
-reject(new Error("Error inserting the data"));
-});
-
-setTimeout( () => {
-reject(new Error("Error inserting the data"));
-}, 150001);      
-});
-
-}
-
 
 public updateDefaultProductToCurrentUser(myProduct:Product,
   name:string,description:string,
@@ -591,16 +565,93 @@ reject(new Error("Error inserting the data"));
 }
 
 
-timerSubscription:{}={};
-promotionMessages:{}={};
 
 
-getPromotionMessage(promo:Promotion)
+
+promoMessages:Array<any>=[];
+
+
+ initPromotionMessage(promo:Promotion):boolean
 {
-  if (this.promotionMessages[promo.key]==null)
-    return "";
+ 
 
-  return this.promotionMessages[promo.key];
+      let nowDate=new Date();
+      let promotionHasStarted=false;
+      let datesCalculated=this.calculatePromoStartEndDates(promo,false);
+      let startDate=datesCalculated.startDate;
+      let endDate=datesCalculated.endDate;
+
+     
+      let timeDiffInSecBeforeStart=Math.round((startDate.valueOf()-nowDate.valueOf())/1000);
+      let timeDiffInSec=timeDiffInSecBeforeStart;
+      if (timeDiffInSecBeforeStart<=0)
+      {
+        promotionHasStarted=true;
+        timeDiffInSec=Math.round( (endDate.valueOf()-nowDate.valueOf())/1000);
+        
+        if (timeDiffInSec<0)
+        {
+          this.promoMessages[promo.key]= {message:"Promotion is expired",isExpired:true};
+          return true;
+        }
+          
+      }
+
+      if (!promo.isActivated)
+      {
+        this.promoMessages[promo.key]={message:"",isExpired:false}
+        return false;
+      }
+
+
+
+      let secondsDiff=timeDiffInSec%(60);
+      timeDiffInSec-=secondsDiff;
+      let timeDiffInMin=timeDiffInSec/60;
+      let minutesDiff=(timeDiffInMin)%60;
+      timeDiffInMin-=minutesDiff;
+      let timeDiffInHours=timeDiffInMin/60;
+      let hoursDiff=timeDiffInHours%24;
+      timeDiffInHours-=hoursDiff;
+      let daysDiff=timeDiffInHours/24;
+
+     
+    
+      let promoMessage={message:"",isExpired:false};
+      if (promotionHasStarted)
+      {
+        promoMessage.message+=" Ends in: ";
+      }
+      else
+      {
+        promoMessage.message+=" Starts in: ";
+      }
+
+      if (daysDiff!=0)
+      {
+        promoMessage.message+=daysDiff+ " day(s) ";
+      }
+
+      promoMessage.message+=this.formT(hoursDiff)+":"+this.formT(minutesDiff);//+":"+this.formT(secondsDiff);
+      
+      this.promoMessages[promo.key]=promoMessage;
+
+      return true;
+
+}
+
+getPromotionMessage(promo:Promotion):string
+{
+ if (this.promoMessages[promo.key]==null)
+  return "";
+  return this.promoMessages[promo.key].message;
+}
+
+isPromotionExpired(promo:Promotion):boolean
+{
+  if (this.promoMessages[promo.key]==null)
+  return false;
+  return this.promoMessages[promo.key].isExpired;
 }
 
 
@@ -608,55 +659,64 @@ public startPromotion(promo:Promotion)
 {
   promo.isActivated=true;
    this.updatePromotionToCurrentUser(promo);
-  this.startPromotionTimer(promo);
 }
 
 public stopPromotion(promo:Promotion)
 {
   promo.isActivated=false;
   this.updatePromotionToCurrentUser(promo);
-  this.stopPromotionTimer(promo);
-}
-
-public stopPromotionTimer(promo:Promotion)
-{
-  if (this.promotionMessages[promo.key]==null)
-    return;
-
-    console.log("UNSUBSCRIBING");
-  this.timerSubscription[promo.key].unsubscribe();
-  this.timerSubscription[promo.key]=null;
+ 
 }
 
 
 
-calculatePromoStartEndDates(promo:Promotion):any
+calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
 {
+
+
   let nowDate=new Date();
 
   let startDate:Date;
   let endDate:Date;
 
+  let startH=Number.parseInt(promo.promotionStartTime.substr(0,2));
+  let startM=Number.parseInt(promo.promotionStartTime.substr(3,2));
+
+   
+  let endH=Number.parseInt(promo.promotionEndTime.substr(0,2));
+  let endM=Number.parseInt(promo.promotionEndTime.substr(3,2));
+
   if (!promo.isOneTime)
   {
 
     let daysToAddToToday=-1;
+
+    if ((startH>endH)||((startH==endH)&&((startM>endM)))) //promotion not in same day
+    {
+      nowDate=new Date(nowDate.valueOf()-(1000 * 60 * 60 * 24))
+    }
+
     let nowD:number=nowDate.getDay()+1;
     let i=0;
-
-    console.log("promo days")
-    console.log(promo.days);
-    while (i<=6 && daysToAddToToday==-1)
+    
+    if (checkForNext)
     {
-      console.log((nowD+i)%7);
+      i=1;
+    }
+
+    
+ 
+   
+    while (i<=7 && daysToAddToToday==-1)
+    {
+      
       if (promo.days[(nowD+i)%7])
       {
         daysToAddToToday=i;
       }
       i++;
     }
-    console.log("DAYS TO ADD:"+daysToAddToToday);
-
+  
     startDate=new Date(nowDate.valueOf()+(daysToAddToToday*1000 * 60 * 60 * 24));
     startDate.setSeconds(0);
     startDate.setMilliseconds(0);
@@ -669,130 +729,34 @@ calculatePromoStartEndDates(promo:Promotion):any
     endDate=new Date(promo.date);
   }
     
-    let startH=Number.parseInt(promo.promotionStartTime.substr(0,2));
-    let startM=Number.parseInt(promo.promotionStartTime.substr(3,2));
+   
     startDate.setHours(startH);
     startDate.setMinutes(startM);
   
-   
-   let endH=Number.parseInt(promo.promotionEndTime.substr(0,2));
-   let endM=Number.parseInt(promo.promotionEndTime.substr(3,2));
+  
    endDate.setHours(endH);
    endDate.setMinutes(endM);
   
   if ((startH>endH)||((startH==endH)&&((startM>endM)))) //promotion not in same day
   {
-    console.log("ADDED ONE DAY to endDate TIME");
+   
     endDate=new Date(endDate.valueOf()+(1000 * 60 * 60 * 24));
-    console.log(endDate.toDateString());
+   
   }
+
+  if ((!promo.isOneTime)&&(!checkForNext)&&(Math.round( endDate.valueOf()-nowDate.valueOf())<0))
+    return this.calculatePromoStartEndDates(promo,true);
+  
 
   return {startDate:startDate,endDate:endDate};
   
 }
 
 
-isPromoExpired(promo)
-{
-  let nowDate=new Date();
-  
-  let datesCalculated=this.calculatePromoStartEndDates(promo);
-  let startDate=datesCalculated.startDate;
-  let endDate=datesCalculated.endDate;
-
-  let timeDiffInSecBeforeStart=Math.round((startDate.valueOf()-nowDate.valueOf())/1000);
-      let timeDiffInSec=timeDiffInSecBeforeStart;
-      if (timeDiffInSecBeforeStart<=0)
-      {
-      
-        timeDiffInSec=Math.round( (endDate.valueOf()-nowDate.valueOf())/1000);
-        console.log(timeDiffInSec);
-        if (timeDiffInSec<0)
-        {
-          this.stopPromotionTimer(promo);
-          return true;
-        }
-          
-      }
-
-      return false;
-
-}
 
 
-startPromotionTimer(promo:Promotion)
-{
-  console.log("starting timer");
-  if (this.timerSubscription[promo.key]!=null)
-  return;
-
-  this.timerSubscription[promo.key]=Observable.timer(0,1000).
-  subscribe(
-    ()=>
-    {
-      let nowDate=new Date();
-      let promotionHasStarted=false;
-      let datesCalculated=this.calculatePromoStartEndDates(promo);
-      let startDate=datesCalculated.startDate;
-      let endDate=datesCalculated.endDate;
-
-     
-      let timeDiffInSecBeforeStart=Math.round((startDate.valueOf()-nowDate.valueOf())/1000);
-      let timeDiffInSec=timeDiffInSecBeforeStart;
-      if (timeDiffInSecBeforeStart<=0)
-      {
-        promotionHasStarted=true;
-        timeDiffInSec=Math.round( (endDate.valueOf()-nowDate.valueOf())/1000);
-        console.log(timeDiffInSec);
-        if (timeDiffInSec<0)
-        {
-          this.stopPromotionTimer(promo);
-          return;
-        }
-          
-      }
 
 
-      console.log("PROMO MESSAGE");
-      console.log(this.promotionMessages);
-      console.log(this.promotionMessages[promo.key]);
-
-      let secondsDiff=timeDiffInSec%(60);
-      timeDiffInSec-=secondsDiff;
-      let timeDiffInMin=timeDiffInSec/60;
-      let minutesDiff=(timeDiffInMin)%60;
-      timeDiffInMin-=minutesDiff;
-      let timeDiffInHours=timeDiffInMin/60;
-      let hoursDiff=timeDiffInHours%24;
-      timeDiffInHours-=hoursDiff;
-      let daysDiff=timeDiffInHours/24;
-
-      console.log("PROMO MESSAGE");
-      console.log(this.promotionMessages[promo.key]);
-    
-      let promoMessage="";
-      if (promotionHasStarted)
-      {
-        promoMessage+=" Ends in: ";
-      }
-      else
-      {
-        promoMessage+=" Starts in: ";
-      }
-
-      if (daysDiff!=0)
-      {
-        promoMessage+=daysDiff+ " day(s) ";
-      }
-
-      promoMessage+=this.formT(hoursDiff)+":"+this.formT(minutesDiff)+":"+this.formT(secondsDiff);
-      
-      this.promotionMessages[promo.key]=promoMessage;
-      console.log("PROMO MESSAGE");
-      console.log(this.promotionMessages[promo.key]);
-  }
-  );
-}
 
 
 

@@ -39,24 +39,22 @@
                                  
                                        </ion-row>
                                    
-                                        <ion-row [hidden]="!shouldShowPromotion(promotion)">
+                                        <ion-row>
                                            <ion-col align-self-center>
-                                              <span class="productName">{{getCurrentPromotionTimerMessage(promotion)}}</span>
+                                              <span *ngIf="sellerService.initPromotionMessage(promotion)" class="productName">{{sellerService.getPromotionMessage(promotion)}}</span>
                                            </ion-col>
                                       </ion-row>
 
                                           <ion-row >
-                                              <ion-col  [hidden]="isPromotionExpired(promotion)" align-self-center>
-                                       <button [hidden]="shouldShowPromotion(promotion)" class="publishPromo" ion-button (click)="startPromo(promotion)">
-                                          Start
-                                        </button>
-                                      <button [hidden]="!shouldShowPromotion(promotion)" class="stopPromo"  ion-button (click)="stopPromo(promotion)">
-                                           Stop
-                                       </button>
+                                              <ion-col  [hidden]="sellerService.isPromotionExpired(promotion)" align-self-center>
+                                               <button [hidden]="shouldShowPromotion(promotion)" class="publishPromo" ion-button (click)="startPromo(promotion)">
+                                                Start
+                                               </button>
+                                               <button [hidden]="!shouldShowPromotion(promotion)" class="stopPromo"  ion-button (click)="stopPromo(promotion)">
+                                                 Stop
+                                              </button>
                                       </ion-col>
-                                      <ion-col  [hidden]="!isPromotionExpired(promotion)" align-self-center>
-                                          <span >Promotion Expired</span>
-                                      </ion-col>
+                                   
 
                                     </ion-row>
                                  

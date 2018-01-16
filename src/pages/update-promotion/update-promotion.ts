@@ -82,12 +82,14 @@ export class UpdatePromotionPage {
     {
       if (this.promotion.products[prod.key])
       {
-      
+        console.log(prod);
+        console.log(this.promotion.products[prod.key]);
         prod.quantity=this.promotion.products[prod.key].quantity;
         prod.reducedPrice=this.promotion.products[prod.key].reducedPrice;
+        prod.isPreviouslyChosen=true;
         this.allProducts[index]=prod;
-  
       }
+     
 
       prod.enabled=(this.promotion.products[prod.key]!=null);
       if (prod.enabled)

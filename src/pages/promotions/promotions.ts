@@ -35,22 +35,8 @@ export class PromotionsPage {
     public toastCtrl: ToastController ) {
 
       this.sellerProducts=this.sellerService.getSellerProductsClone();
-      this.sellerService.getSellerPromotions().forEach
-      (promo=>
-      {
-        if (promo.isActivated)
-          {
-            this.sellerService.startPromotionTimer(promo);
-          }
-      });
-
-    
   }
 
-  isPromotionExpired(promotion:Promotion)
-  {
-    return this.sellerService.isPromoExpired(promotion);
-  }
   
   getProductsOfPromotion(promotion:Promotion):Array<Product>
   {
@@ -61,17 +47,14 @@ export class PromotionsPage {
   
   }
 
-
-  getCurrentPromotionTimerMessage(promotion:Promotion):string
-  {
-    return this.sellerService.getPromotionMessage(promotion);
-    
-  }
   
+
+ 
+
 
   shouldShowPromotion(promotion:Promotion):boolean
   {
-    return promotion.isActivated;
+    return promotion.isActivated && !this.sellerService.isPromotionExpired(promotion);
   }
   
   startPromo(promotion:Promotion)

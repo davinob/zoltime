@@ -103,9 +103,11 @@ export class CreatePromotionSuitePage {
     if (!this.isPromotionReadyToGo()){
       console.log("FORM INVALID");
     } else {
+      console.log("SELECTED PRODUCTS TO BE ADDED:");
+      console.log(this.selectedProducts);
       this.selectedProducts.forEach(
         prod=>{
-          this.promotion.products[prod.key]={reducedPrice:prod.reducedPrice,quantity:prod.quantity};
+          this.promotion.products[prod.key]={reducedPrice:prod.reducedPrice,quantity:prod.quantity,currentQuantity:prod.quantity};
         }
       )
 

@@ -42,6 +42,15 @@ export class UpdatePromotionSuitePage {
       
       this.promotion=navParams.get('promotion');
       this.selectedProducts=navParams.get('selectedProducts');
+    
+
+      this.selectedProducts.forEach(
+        (prod,index)=>{
+          let discountVal=Math.round(((prod.originalPrice-prod.reducedPrice)/prod.originalPrice)*100*100)/100;
+          this.selectedProducts[index].discount=discountVal;
+        });
+        console.log("SELECTED PRODUCTS UPDATE:");
+        console.log(this.selectedProducts);
   }
 
   
@@ -103,9 +112,11 @@ export class UpdatePromotionSuitePage {
     if (!this.isPromotionReadyToGo()){
       console.log("FORM INVALID");
     } else {
+      console.log("SELECTED PRODUCTS TO BE ADDED:");
+      console.log(this.selectedProducts);
       this.selectedProducts.forEach(
         prod=>{
-          this.promotion.products[prod.key]={reducedPrice:prod.reducedPrice,quantity:prod.quantity};
+          this.promotion.products[prod.key]={reducedPrice:prod.reducedPrice,quantity:prod.quantity,currentQuantity:prod.quantity};
         }
       )
 
