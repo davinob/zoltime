@@ -256,9 +256,7 @@ export class SellerService {
       console.log(error);
     });
        resolve(setUserPromise);
-       setTimeout( () => {
-        reject(new Error("Error inserting the data"));
-        }, 15001);      
+    
   });
 
 }
@@ -301,9 +299,7 @@ console.log("PROMISE DONE");
 console.log(error);
 });
 resolve(setUserPromise);
-setTimeout( () => {
-reject(new Error("Error inserting the data"));
-}, 15001);      
+    
 });
 
 }
@@ -348,9 +344,7 @@ console.log(error);
 reject(new Error("Error inserting the data"));
 });
 
-setTimeout( () => {
-reject(new Error("Error inserting the data"));
-}, 15001);      
+     
 });
 
 }
@@ -379,10 +373,7 @@ resolve(setUserPromise);
 console.log(error);
 reject(new Error("Error inserting the data"));
 });
-
-setTimeout( () => {
-reject(new Error("Error inserting the data"));
-}, 15001);      
+    
 });
 
 }
@@ -407,9 +398,7 @@ console.log(error);
 reject(new Error("Error inserting the data"));
 });
 
-setTimeout( () => {
-reject(new Error("Error inserting the data"));
-}, 15001);      
+      
 });
 
 }
@@ -448,9 +437,7 @@ console.log(error);
 reject(new Error("Error inserting the data"));
 });
 
-setTimeout( () => {
-reject(new Error("Error inserting the data"));
-}, 150001);      
+      
 });
 
 }
@@ -474,9 +461,7 @@ console.log(error);
 reject(new Error("Error inserting the data"));
 });
 
-setTimeout( () => {
-reject(new Error("Error deleting the data"));
-}, 150001);      
+      
 });
 
 }
@@ -498,9 +483,7 @@ console.log(error);
 reject(new Error("Error inserting the data"));
 });
 
-setTimeout( () => {
-reject(new Error("Error deleting the data"));
-}, 150001);      
+   
 });
 
 }
@@ -528,9 +511,8 @@ console.log("PROMISE DONE");
 console.log(error);
 });
 resolve(setUserPromise);
-setTimeout( () => {
-reject(new Error("Error inserting the data"));
-}, 15001);      
+
+
 });
 
 }
@@ -557,9 +539,7 @@ console.log("PROMISE DONE");
 console.log(error);
 });
 resolve(setUserPromise);
-setTimeout( () => {
-reject(new Error("Error inserting the data"));
-}, 15001);      
+      
 });
 
 }
