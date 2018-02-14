@@ -16,140 +16,161 @@
 // automatically applied to the <body> element in the app.
 
 
- .spinner-container {
-        width: 100%;
-        text-align: center;
-        padding: 10px;
-    }
+.spinner-container {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
 
-    .global{
-        background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
-    }      
+.global{
+    background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
+}      
 
-    .menuList{
-        background-color:transparent;
-    }
-    .menuItem
-    {
-        background-color:transparent;
-    }
+.menuList{
+    background-color:transparent;
+}
+.menuItem
+{
+    background-color:transparent;
+}
 
-    .menuButton
-    {
-        color:white;
-    }
+.menuButton
+{
+    color:white;
+}
 
-    .toolbar-background-md {
-        background-color: #486ff1;
-      }
+.toolbar-background-md {
+    background-color: #486ff1;
+  }
+
+  .toolbar-title-md {
+    color: white;
+ }
+
+ .back-button-md{
+     color:white;
+ }
+
+ .bar-button-default-md
+ {
+  color:white;
+ }
+
+ .item{
+    margin-bottom:10px;
+}
+
+.md .tabs .tabbar
+{
+   background-color:#496cf2
+ 
+}
+
+.tabs-md .tab-button {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tabs-md .tab-button .tab-button-icon{
+    color: rgba(255, 255, 255, 0.7);
     
-      .toolbar-title-md {
-        color: white;
-     }
+}
+
+.tabs-md .tab-button[aria-selected=true] .tab-button-icon{
+    color: white;
     
-     .back-button-md{
-         color:white;
-     }
-    
-     .bar-button-default-md
-     {
-      color:white;
-     }
+}
 
-     .item{
-        margin-bottom:10px;
-    }
+.tabs-md .tab-button[aria-selected=true] {
+    color: white;
+ }
 
-    .md .tabs .tabbar
-    {
-       background-color:#496cf2
-     
-    }
-
-    .tabs-md .tab-button {
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .tabs-md .tab-button .tab-button-icon{
-        color: rgba(255, 255, 255, 0.7);
-        
-    }
-
-    .tabs-md .tab-button[aria-selected=true] .tab-button-icon{
-        color: white;
-        
-    }
-
-    .tabs-md .tab-button[aria-selected=true] {
-        color: white;
-     }
-
-     .has-icon .tab-badge {
-        background-color: red;
-    }
+ .has-icon .tab-badge {
+    background-color: red;
+}
 
 
-    .red
-    {
-    color:red
-    }
+.red
+{
+color:red
+}
 
-    .green
-    {
-      color:green;
-    }
-   
+.green
+{
+  color:green;
+}
 
-    .item-md ion-avatar ion-img, .item-md ion-avatar img {
-        /* border-radius: 50%; */
-        overflow: hidden;
-        width: 100px;
-        height: 100px;
-    }
+
+.item-md ion-avatar ion-img, .item-md ion-avatar img {
+    /* border-radius: 50%; */
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+}
 
 .alert-md .alert-wrapper
 {
-    background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
-    border-radius: 20%;
-    
+background: linear-gradient(to bottom, #4B64F3, #34B3E6); /* Standard syntax */
+
+
 }
 
 .alert-md .alert-message
 {
-    color:white;
-    font-size: 20px;
+color:white;
+font-size: 20px;
 }
 
 .alert-md .alert-button
 {
-    color:white
+color:white
 }
 
 .alert-md .alert-radio-label
 {
-    color:white 
+color:white 
 }
 
 .alert-md .alert-checkbox-label
 {
-    color:white 
+color:white 
 }
 
 .blankTextSimpleButton
 {
-    color:white;
-    font-size: small;
-    font-weight: 400;
+color:white;
+font-size: small;
+font-weight: 400;
 }
 
 .whiteBig
 {
-    color:white;
-    font-size: large;
-    font-weight: bold;
+color:white;
+font-size: large;
+font-weight: bold;
+}
+
+
+.alert-md [aria-checked=true] .alert-radio-icon {
+border-color: white;
+border: 2px white solid;
+}
+
+.alert-md [aria-checked=false] .alert-radio-icon {
+border-color: white;
+
+}
+
+.alert-md [aria-checked=true] .alert-radio-label {
+color: white;
+font-weight: bold;
+}
+
+.alert-md .alert-radio-inner
+{
+background-color:white
 }
 
 .basic
 {
-    color:#4B64F3;
+color:#4B64F3;
 }
