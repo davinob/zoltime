@@ -154,18 +154,20 @@ export class ProductsPage {
   productClicked=null;
 
 
-  choosePictureType()
+  choosePictureType(product:any)
   {
     console.log(this.selectPictureType);
     console.log(this.selectPictureType.nativeElement);
     this.selectPictureType._elementRef.nativeElement.click();
+    this.productClicked=product;
+    console.log("Product clicked");
+    console.log(product);
   }
 
   updatePicture(product:any, typeChosen:any) {
 
     console.log(typeChosen);
-    this.productClicked=product;
-
+    
     if (Camera['installed']()) {
       let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
       if (typeChosen=="Camera")

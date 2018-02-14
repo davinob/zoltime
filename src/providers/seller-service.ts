@@ -43,6 +43,7 @@ export interface Seller {
   profileCompleted?:boolean;
   promotionStartDateTime?:number;
   promotionEndDateTime?:number;
+  key:string;
 }
 
 
@@ -240,7 +241,8 @@ export class SellerService {
    let user:Seller={
       email: email,
       restaurantName:restaurantName,
-      enabled:false
+      enabled:false,
+      key:userUID
     };
    console.log("creating user on UID"+userUID);
     
@@ -494,6 +496,8 @@ public updateCurrentUserDefaultProductField(product:Product,fieldName:any,fieldV
 let productUpdate:any={};
 
 productUpdate[fieldName]=fieldValue;
+console.log("updateCurrentUserDefaultProductField");
+console.log(product);
 
 return new Promise<any>((resolve, reject) => {
   let setUserPromise:Promise<void>=this.productsCollectionRef.doc(product.key).update(productUpdate);
