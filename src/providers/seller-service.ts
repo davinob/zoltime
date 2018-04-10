@@ -25,7 +25,7 @@ import {
   import { GlobalService } from './global-service';
 
   import { HttpClient, HttpParams } from '@angular/common/http';
-import { provideSettings } from '../../../myTest/src/app/app.module';
+
 
 export interface Seller {
   email: string;
@@ -675,7 +675,11 @@ calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
 
     let daysToAddToToday=-1;
 
-    if ((startH>endH)||((startH==endH)&&((startM>endM)))) //promotion not in same day
+
+    if (((startH>endH)||((startH==endH)&&((startM>endM)))) //promotion not in same day
+      && 
+      ((nowDate.getHours()<startH)||((nowDate.getHours()==startH)&&((nowDate.getMinutes()<startM))))
+      )
     {
       nowDate=new Date(nowDate.valueOf()-(1000 * 60 * 60 * 24))
     }
@@ -729,8 +733,12 @@ calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
   }
 
   if ((!promo.isOneTime)&&(!checkForNext)&&(Math.round( endDate.valueOf()-nowDate.valueOf())<0))
-    return this.calculatePromoStartEndDates(promo,true);
+      return this.calculatePromoStartEndDates(promo,true);
+    
   
+  
+      console.log("DATE RETURNED");
+      console.log({startDate:startDate,endDate:endDate});
 
   return {startDate:startDate,endDate:endDate};
   
