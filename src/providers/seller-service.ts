@@ -555,9 +555,8 @@ resolve(setUserPromise);
 promoMessages:Array<any>=[];
 
 
- initPromotionMessage(promo:Promotion):boolean
+initPromotionMessage(promo:Promotion):boolean
 {
- 
 
       let nowDate=new Date();
       let promotionHasStarted=false;
@@ -599,7 +598,7 @@ promoMessages:Array<any>=[];
       timeDiffInHours-=hoursDiff;
       let daysDiff=timeDiffInHours/24;
 
-     
+   
     
       let promoMessage={message:"",isExpired:false};
       if (promotionHasStarted)
@@ -653,11 +652,12 @@ public stopPromotion(promo:Promotion)
 }
 
 
-
+ 
 calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
 {
 
 
+  console.log(promo);
   let nowDate=new Date();
 
   let startDate:Date;
@@ -681,15 +681,18 @@ calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
       ((nowDate.getHours()<startH)||((nowDate.getHours()==startH)&&((nowDate.getMinutes()<startM))))
       )
     {
+      console.log("HERE 1");
       nowDate=new Date(nowDate.valueOf()-(1000 * 60 * 60 * 24))
     }
 
-    let nowD:number=nowDate.getDay()+1;
-    let i=0;
+    let nowD:number=nowDate.getDay();
+    console.log("nowD"+nowD);
+    let i=-1;
     
     if (checkForNext)
     {
-      i=1;
+      console.log("HERE 2");
+      i=0;
     }
 
     
@@ -697,10 +700,14 @@ calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
    
     while (i<=7 && daysToAddToToday==-1)
     {
-      
-      if (promo.days[(nowD+i)%7])
+      console.log(i);
+      console.log((nowD+i)%7+1);
+      console.log(promo.days[(nowD+i)%7+1]);
+      if (promo.days[(nowD+i)%7+1])
       {
-        daysToAddToToday=i;
+        console.log("HERE 3");
+        daysToAddToToday=i+1;
+        console.log(daysToAddToToday);
       }
       i++;
     }
