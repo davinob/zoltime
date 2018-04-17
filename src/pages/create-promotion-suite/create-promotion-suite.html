@@ -43,7 +43,7 @@
                         <ion-col>
                             <ion-item text-wrap>
                       <ion-label stacked>Quantity</ion-label>
-                      <ion-input   [ngModelOptions]="{standalone:true}" [(ngModel)]="product.quantity" type="text"  placeholder="Default Quantity"></ion-input>
+                      <ion-input   [ngModelOptions]="{standalone:true}" [(ngModel)]="product.quantity" type="number"  placeholder="Default Quantity"></ion-input>
                     </ion-item>
                         </ion-col>
                      </ion-row >
@@ -51,13 +51,13 @@
                       <ion-col>
                             <ion-item text-wrap>
                         <ion-label stacked>Discount (%)</ion-label>
-                     <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.discount" (ionBlur)="checkAndCalculateReducedPrice(product)" type="text"  placeholder="Discount" value='100'></ion-input>
+                     <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.discount" (ionBlur)="checkAndCalculateReducedPrice(product)" type="number"  placeholder="Discount" value='100'></ion-input>
                     </ion-item>
                     </ion-col>
                     <ion-col>
                             <ion-item text-wrap>
                       <ion-label stacked>New Price (₪)</ion-label>
-                      <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.reducedPrice" (ionBlur)="checkAndCalculateDiscount(product)" type="text"  placeholder="New" value='0'></ion-input>
+                      <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.reducedPrice" (ionBlur)="checkAndCalculateDiscount(product)" type="number"  placeholder="New" value='0'></ion-input>
                     </ion-item>
                   </ion-col>
                 </ion-row >

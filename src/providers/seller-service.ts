@@ -352,6 +352,9 @@ public addProductToCurrentUser(
   category:category,
   originalPrice: originalPrice,
   key:key,
+  discount:100,
+  reducedPrice:0,
+  quantity:0,
   uID:this.globalService.userID
   };
 
