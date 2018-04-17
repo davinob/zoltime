@@ -89,13 +89,12 @@
 
          
                 <ion-item (click)='editInput("categories",true)'>
-                    
                      <h4 class="h4"> Categories</h4>
                      <h3>{{user.textCategories}}</h3>
                    </ion-item>
                   
                       <ion-select [hidden]="true" #categoriesInput  multiple="true" (ionChange)='saveInput("categories",$event)'>
-                       <ion-option *ngFor="let category of categories"  (value)="category">{{category}}</ion-option>
+                       <ion-option *ngFor="let category of globalSvc.categories"  (value)="category.name">{{category.name}}</ion-option>
                       </ion-select>
          
           

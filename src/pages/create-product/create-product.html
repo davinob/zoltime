@@ -43,20 +43,52 @@
       <ion-input formControlName="name"  type="text"  placeholder="Name"></ion-input>
     </ion-item>
 
-    <ion-item>
+
+    
+       
+    <div class="input-wrapper">
+       <ion-item (click)="showCategoriesChoiceSelect()">
+         
+            <div class="categoriesInputLabel" stacked>Category</div>
+          <div class="categoriesInput">{{addProductForm.value.category}}</div>
+        </ion-item>
+         </div>
+       
+
+         <ion-item [hidden]="true">
+            <ion-select formControlName="category" #categoriesInput multiple="false" >
+                <ion-option *ngFor="let category of sellerService.getProductCategoriesChoices()"
+                  (value)="category">{{category}}    </ion-option>
+               </ion-select>
+        </ion-item>
+
+        
+      <ion-item>
+
+   
+
+        
         
       <ion-label stacked>General Description</ion-label>
       <ion-input formControlName="description"  type="text"  placeholder="General Description"></ion-input>
     </ion-item>
+
         <ion-item>
         <ion-label stacked>Original Price (₪)</ion-label>
-        <ion-input formControlName="originalPrice"  type="text"  placeholder="Original Price"></ion-input>
+        <ion-input formControlName="originalPrice"  type="number"  placeholder="Original Price"></ion-input>
       </ion-item>
         
     
     <button ion-button block [disabled]="!addProductForm.valid" type="submit">
         {{ 'Create A New Product' | translate }}
         </button>
+      
+      
+      
+   
+
       </form>
+
+     
 
 </ion-content>

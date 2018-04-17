@@ -9,6 +9,7 @@ import {ProductsPage} from '../products/products';
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+
 /**
  * Generated class for the CreateProductPage page.
  *
@@ -24,8 +25,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CreateProductPage {
 
   @ViewChild('fileInput') fileInput;
+  @ViewChild('categoriesInput') categoriesInput;
 
   public addProductForm:FormGroup;
+  
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder,
@@ -33,11 +36,13 @@ export class CreateProductPage {
     public addressService: AddressService,
     public sellerService: SellerService,
     public camera: Camera,
-    private upSvc: UploadService)  {
+    private upSvc: UploadService
+    )  {
 
 
       this.addProductForm = formBuilder.group({
         name: ['', Validators.required],
+        category: ['', Validators.required],
         description: ['', Validators.required],
         originalPrice: ['', Validators.required],
         picture: ['']
@@ -46,13 +51,17 @@ export class CreateProductPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CreateProductPage');
+    
+  }
+
+
+
+  showCategoriesChoiceSelect()
+  {
+    this.categoriesInput._elementRef.nativeElement.click();
   }
 
   
-    
-
- 
-
 
   getPicture(typeChosen:any) {
    
@@ -155,7 +164,7 @@ export class CreateProductPage {
          this.sellerService.addProductToCurrentUser(
           this.addProductForm.value.name,this.addProductForm.value.description,
          this.addProductForm.value.originalPrice,
-          this.picture)
+          this.picture,this.addProductForm.value.category)
         .then(()=> {
           console.log("Document successfully written!");
         

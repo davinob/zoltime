@@ -83,5 +83,23 @@ page-update-product {
       {
         color:green;
       }
+
+      .categoriesInput
+      {
+        margin: 6px 2px 0px 0px;
+        padding: 0;
+        font: inherit;
+        color: inherit;
+      }
+
+      .categoriesInputLabel
+      {
+        color: #999;
+        font-size: 1.2rem;
+        margin-bottom: 0;
+       align-self: stretch; 
+      width: auto; 
+      max-width: 100%; 
+      }
       
 }

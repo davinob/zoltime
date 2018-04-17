@@ -25,6 +25,8 @@ export class UpdateProductPage {
   
   public updateProductForm:FormGroup;
   myProduct:any;
+
+  @ViewChild('categoriesInput') categoriesInput;
   
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder,
@@ -35,6 +37,7 @@ export class UpdateProductPage {
       this.myProduct=navParams.get('product');
       this.updateProductForm = formBuilder.group({
         name: [this.myProduct.name, Validators.required],
+        category: [this.myProduct.category, Validators.required],
         description: [this.myProduct.description, Validators.required],
         originalPrice: [this.myProduct.originalPrice, Validators.required]
       });
@@ -47,6 +50,13 @@ export class UpdateProductPage {
   }
 
 
+  showCategoriesChoiceSelect()
+  {
+    this.categoriesInput._elementRef.nativeElement.click();
+  }
+
+
+
 
   updateProduct(){
     if (!this.updateProductForm.valid){
@@ -57,7 +67,7 @@ export class UpdateProductPage {
         
          this.sellerService.updateDefaultProductToCurrentUser(this.myProduct,
           this.updateProductForm.value.name,this.updateProductForm.value.description,
-          this.updateProductForm.value.originalPrice)
+          this.updateProductForm.value.originalPrice,this.updateProductForm.value.category)
         .then(()=> {
           console.log("Document successfully written!");
        

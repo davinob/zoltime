@@ -15,6 +15,7 @@ import { AddressService,Address } from '../../providers/address-service';
 
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { GlobalService } from '../../providers/global-service';
 
 /**
  * Generated class for the ProfileSettingsPage page.
@@ -39,7 +40,7 @@ export class ProfileSettingsPage {
   allInputsShows:any={};
 
   hashgahot:string[]=["Kosher","Lemehadrin","No"];
-  categories:string[]=["Italian", "Sandwichs","Israeli", "Boulangerie"];
+  
   
   public updateForm:FormGroup;
 
@@ -49,7 +50,8 @@ export class ProfileSettingsPage {
   public addressService: AddressService,
   public camera: Camera,
   private upSvc: UploadService,
-  public formBuilder: FormBuilder) {
+  public formBuilder: FormBuilder,
+  public globalSvc:GlobalService) {
     
     this.updateForm = formBuilder.group({
       address: [''],

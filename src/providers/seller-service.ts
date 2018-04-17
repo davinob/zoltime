@@ -34,7 +34,7 @@ export interface Seller {
   description?:string;
   picture?:Picture;
   hashgaha?:string;
-  categories?:string;
+  categories?:Array<string>;
   enabled?:boolean;
   textCategories?:string;
   products?:any;
@@ -51,6 +51,7 @@ export interface Seller {
 export interface Product{
   name: string,
   description: string,
+  category: string,
   quantity?: number,
   currentQuantity?:number,
   originalPrice: number,
@@ -309,13 +310,14 @@ resolve(setUserPromise);
 
 public addProductToCurrentUser(
   name:string,description:string,
-  originalPrice:number,picture:Picture):Promise<any>
+  originalPrice:number,picture:Picture, category:string):Promise<any>
 {
   let key=new Date().valueOf()+Math.random()+"";
 
   let product:Product={
   name: name,
   description: description,
+  category:category,
   originalPrice: originalPrice,
   key:key,
   uID:this.globalService.userID
@@ -349,6 +351,37 @@ reject(new Error("Error inserting the data"));
      
 });
 
+}
+
+
+public getProductCategoriesChoices():Set<string>
+{
+  let set:Set<string>=new Set();
+ 
+
+  this.globalService.categories.filter(
+    categoVal=>
+    {
+     
+      
+      return this.getCurrentSeller().categories[categoVal.name];
+    }
+  ).forEach(
+    val=>{
+      if (val)
+    {
+      console.log(val);
+      val.subCategories.forEach(subCatego=>
+      {
+      set.add(subCatego);
+      })
+      
+    }
+}
+
+  );
+
+  return set;
 }
 
 
@@ -409,12 +442,13 @@ reject(new Error("Error inserting the data"));
 
 public updateDefaultProductToCurrentUser(myProduct:Product,
   name:string,description:string,
-  originalPrice:number):Promise<any>
+  originalPrice:number, category:string):Promise<any>
 {
   let product:Product={
   name: name,
   description: description,
   originalPrice: originalPrice,
+  category:category,
   key:myProduct.key,
   picture:myProduct.picture,
   uID:this.globalService.userID

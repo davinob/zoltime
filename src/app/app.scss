@@ -174,3 +174,13 @@ background-color:white
 {
 color:#4B64F3;
 }
+
+.alert-md .alert-head {
+    visibility: hidden;
+     padding: 0px; 
+}
+
+.alert-md [aria-checked=true] .alert-checkbox-label {
+     color: white;
+     font-weight: bolder;
+}
