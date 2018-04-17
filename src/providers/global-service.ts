@@ -12,34 +12,36 @@ export class GlobalService {
   
     userID:string;
 
-  public categories=
+    public categories=
     [
        {
         name: "American",
         icon: "american.png",
-        subCategories: ["hamburger", "fries", "hot-dog", "salad","drinks","desserts"]
+        subCategories: ["HAMBURGER", "FRIES", "HOT-DOG", "SALAD","DRINKS","DESSERTS","COMBINATION"]
       },
       {
         name: "Italian",
         icon: "italian.png",
-        subCategories: ["pizza", "lasagna", "pasta", "salad","drinks","desserts"]
+        subCategories: ["PIZZA", "LASAGNA", "PASTA", "SALAD","DRINKS","DESSERTS","COMBINATION"]
       },
        {
         name: "Israeli",
         icon: "israeli.png",
-        subCategories: ["shawarma", "falafel", "fries", "shnitzel", "humus", "salad","drinks","desserts"]
+        subCategories: ["SHAWARMA", "FALAFEL", "FRIES", "SHNITZEL", "HUMUS", "SALAD","DRINKS","DESSERTS","COMBINATION"]
       },
        {
         name: "Boulangerie",
         icon: "boulangerie.png",
-        subCategories: ["bread", "cake", "borekas", "salad", "sandwich","drinks","desserts"]
+        subCategories: ["BREAD", "CAKE", "BOREKAS", "SALAD", "SANDWICH","DRINKS","DESSERTS","COMBINATION"]
       },
       {
         name: "Sandwish",
         icon: "sandwish.png",
-        subCategories: ["sandwish","drinks","desserts"]
+        subCategories: ["SANDWISH","DRINKS","DESSERTS","COMBINATION"]
       }
     ];
+
+
 
   constructor() { 
    }

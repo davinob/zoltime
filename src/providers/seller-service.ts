@@ -89,6 +89,7 @@ export class SellerService {
   currentUserObs:Observable<any>=null;
   
   sellerProducts:Array<any>=[];
+  sellerProductsGroupedByCatego:{};
   sellerPromotions:Array<any> = [];
   
 
@@ -155,6 +156,7 @@ export class SellerService {
               sellerProducts.push(doc.data());
             });
             this.sellerProducts=sellerProducts;
+            this.sellerProductsGroupedByCatego=this.caculateProductsGroupedByCategory();
 
             console.log("CURRENT PRODUCTS");
             console.log(this.sellerProducts);
@@ -208,7 +210,37 @@ export class SellerService {
 
   public getSellerProducts():Array<any>
   {
+
     return this.sellerProducts;
+  }
+
+  public getSellerProductsCategories():Array<any>
+  {
+
+    return Object.keys(this.sellerProductsGroupedByCatego);
+  }
+
+  public getCategoryProducts(catego:string):Array<any>
+  {
+    return this.sellerProductsGroupedByCatego[catego];
+  }
+
+  public caculateProductsGroupedByCategory():{}
+  {
+    let productsPerCategos={};
+    this.sellerProducts.forEach(
+      product=>{
+        if (productsPerCategos[product.category])
+        {
+        (<Array<any>>productsPerCategos[product.category]).push(product);
+        }
+        else
+        {
+          productsPerCategos[product.category]=[product];
+        }
+    });
+    
+    return productsPerCategos;
   }
 
 

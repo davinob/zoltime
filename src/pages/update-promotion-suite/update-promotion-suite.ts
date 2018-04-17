@@ -108,12 +108,19 @@ export class UpdatePromotionSuitePage {
 
 
 
-  addPromotion(){
+  updatePromotion(){
     if (!this.isPromotionReadyToGo()){
       console.log("FORM INVALID");
     } else {
+     
       console.log("SELECTED PRODUCTS TO BE ADDED:");
       console.log(this.selectedProducts);
+      Object.keys(this.promotion.products).forEach(elem=>
+      {
+        this.promotion.products[elem]=null;
+      });
+
+      
       this.selectedProducts.forEach(
         prod=>{
           this.promotion.products[prod.key]={reducedPrice:prod.reducedPrice,quantity:prod.quantity,currentQuantity:prod.quantity};

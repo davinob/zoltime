@@ -26,8 +26,12 @@
               <button ion-button (click)="addProduct()">
                   Add product
                 </button>
-               <ion-list  *ngIf="sellerService.getSellerProducts() as products ">
-                  <ion-card  *ngFor="let product of products">
+               <ion-list  *ngIf="sellerService.getSellerProductsCategories() as categories ">
+                  <div *ngFor="let category of categories" text-wrap>
+                      <div class="categoTitle">{{category}}</div>
+                 
+                  <ion-list  *ngIf="sellerService.getCategoryProducts(category) as categoProducts ">
+                  <ion-card  *ngFor="let product of categoProducts">
                     <ion-item-sliding>
                        
                       <ion-item text-wrap>
@@ -48,10 +52,7 @@
                                      <span   class="productDescription" >{{product.description}}</span>
                                  </ion-row >
                                </ion-col>
-                              
-                                
-                        
-                              </ion-row>
+                               </ion-row>
                               </ion-grid>
                             </ion-item>
                            <ion-item-options  (ionSwipe)="removeInput(product)" side="right" icon-start>
@@ -59,8 +60,9 @@
                      
                   </ion-item-sliding>
                     </ion-card>
-
               </ion-list> 
+            </div>
+            </ion-list>
          </div>  
    
   <input type="file" #fileInput accept="image/*"  [hidden]="true" name="files[]" (change)="processImage($event)" />                      
