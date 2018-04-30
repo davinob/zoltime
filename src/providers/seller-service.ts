@@ -38,11 +38,8 @@ export interface Seller {
   enabled?:boolean;
   textCategories?:string;
   products?:any;
-  promotionStartTime?:string;
-  promotionEndTime?:string;
+  promotions?:any;
   profileCompleted?:boolean;
-  promotionStartDateTime?:number;
-  promotionEndDateTime?:number;
   key:string;
 }
 
@@ -80,47 +77,48 @@ export interface Promotion{
 @Injectable()
 export class SellerService {
   
-  sellersCollectionRef: AngularFirestoreCollection<Seller>;
+  sellersCollectionRef: firebase.firestore.CollectionReference;
   productsCollectionRef:firebase.firestore.CollectionReference;
   promotionsCollectionRef:firebase.firestore.CollectionReference;
   currentSeller:Seller;
   userStatus:Subject<any>=new Subject<any>();
    
-  currentUserObs:Observable<any>=null;
   
-  sellerProducts:Array<any>=[];
+  
+  
   sellerProductsGroupedByCatego:{};
-  sellerPromotions:Array<any> = [];
+  
   
 
-  
+  db=firebase.firestore();
   
 
   constructor(private afs: AngularFirestore,public authService:AuthService,
     private uploadService:UploadService,private http: HttpClient,
     private globalService:GlobalService) {
-        this.sellersCollectionRef = this.afs.collection<Seller>('sellers'); 
-        this.productsCollectionRef = this.afs.collection<Product>('products').ref; 
-        this.promotionsCollectionRef = this.afs.collection<Product>('promotions').ref; 
+        this.sellersCollectionRef = this.db.collection('sellers'); 
+      
    }
   
    public initCurrentUser(userID:string):Observable<any>
   {
     console.log("init with userID:"+userID);
+
+    this.productsCollectionRef = this.sellersCollectionRef.doc(userID).collection("products");
+    this.promotionsCollectionRef = this.sellersCollectionRef.doc(userID).collection("promotions");
+
         this.globalService.userID=userID;
         this.uploadService.initBasePath();
-        this.currentUserObs=this.sellersCollectionRef.doc(this.globalService.userID).valueChanges();
-        
-      
-
-       this.currentUserObs.subscribe(data =>
+        this.sellersCollectionRef.doc(this.globalService.userID).onSnapshot(seller =>
         { 
-          this.setCurrentUserData(data);
+          console.log(seller.data());
+
+          this.setCurrentUserGeneralData(seller.data());
 
           console.log("CURRENT USER DATA SUBSCRIBE FROM INIT");
               let isOK:boolean=true;
             console.log("THE DATA");
-            console.log(data);
+            
               console.log("IS CURRENT USER ENABLED?");
               let page:string="";
               if (this.isCurrentUserEnabled())
@@ -143,50 +141,48 @@ export class SellerService {
               }
             this.userStatus.next({isOK:isOK,page:page});
             
+
+         
+
+            console.log("CURRENT PRODUCTS");
+            console.log(this.currentSeller.products);
          
         });
 
-        this.productsCollectionRef.where("uID", "==", userID).onSnapshot(
-          querySnapshot =>
+        this.productsCollectionRef.onSnapshot(snapshot =>
           { 
-            let sellerProducts:Array<any>= [];
-            console.log(querySnapshot);
-            querySnapshot.forEach(function(doc) {
-              console.log(doc);
-              sellerProducts.push(doc.data());
+            this.currentSeller.products=new Array();
+            console.log("PRODUCTS");
+            console.log(snapshot);
+            snapshot.forEach(product=>{
+              this.currentSeller.products.push(product.data());
             });
-            this.sellerProducts=sellerProducts;
+            console.log(this.currentSeller.products);
             this.sellerProductsGroupedByCatego=this.caculateProductsGroupedByCategory();
-
-            console.log("CURRENT PRODUCTS");
-            console.log(this.sellerProducts);
           });
 
-          this.promotionsCollectionRef.where("uID", "==", userID).onSnapshot(
-            querySnapshot =>
+          this.promotionsCollectionRef.onSnapshot(snapshot =>
             { 
-              console.log("PROMOTIONS COLLECTIONS REF");
-              console.log(querySnapshot);
-              let sellerPromotions:Array<any> = [];
-              console.log(querySnapshot);
-              querySnapshot.forEach(function(doc) {
-                console.log(doc);
-                sellerPromotions.push(doc.data());
+              this.currentSeller.promotions=new Array();
+              console.log("PRODUCTS");
+              console.log(snapshot);
+              snapshot.forEach(promotion=>{
+                this.currentSeller.promotions.push(promotion.data());
               });
-              this.sellerPromotions=sellerPromotions;
-  
-              console.log("CURRENT PROMOTIONS");
-              console.log(this.sellerPromotions);
+              console.log(this.currentSeller.promotions);
+              
             });
+
+   
 
         return this.userStatus.asObservable().first(data=>data!=null);
   }
   
 
-  public setCurrentUserData(data:any)
+  public setCurrentUserGeneralData(data:any)
   {
     this.currentSeller=data;
-
+    
     let str:string="";
      if ((this.currentSeller!=null)&&(this.currentSeller.categories!=null))
     {
@@ -200,6 +196,7 @@ export class SellerService {
     });
   
     this.currentSeller.textCategories=str;
+
     }
   }
 
@@ -211,11 +208,13 @@ export class SellerService {
   public getSellerProducts():Array<any>
   {
 
-    return this.sellerProducts;
+    return this.currentSeller.products;
   }
 
   public getSellerProductsCategories():Array<any>
   {
+    if (!this.sellerProductsGroupedByCatego)
+      return new Array();
 
     return Object.keys(this.sellerProductsGroupedByCatego);
   }
@@ -228,7 +227,11 @@ export class SellerService {
   public caculateProductsGroupedByCategory():{}
   {
     let productsPerCategos={};
-    this.sellerProducts.forEach(
+    
+    if (!this.currentSeller.products)
+      return {};
+
+    this.currentSeller.products.forEach(
       product=>{
         if (productsPerCategos[product.category])
         {
@@ -246,12 +249,12 @@ export class SellerService {
 
   public getSellerProductsClone():Array<any>
   {
-    return Object.assign([], this.sellerProducts);
+    return Object.assign([], this.currentSeller.products);
   }
 
   public getSellerPromotions():Array<any>
   {
-    return this.sellerPromotions;
+    return this.currentSeller.promotions;
   }
   
   public isCurrentUserEnabled():boolean
@@ -624,14 +627,32 @@ resolve(setUserPromise);
 promoMessages:Array<any>=[];
 
 
-initPromotionMessage(promo:Promotion):boolean
+
+initPromotionMessages()
 {
+  console.log("initPromotionMessages");
+  Observable.timer(0,60000).subscribe(()=>
+  {
+    console.log("timer is on");
+    this.getSellerPromotions().forEach(promo=>
+    {
+      this.calculatePromotionMessage(promo);
+    });
+  });
+
+
+}
+
+
+calculatePromotionMessage(promo:Promotion):boolean
+{
+
 
       let nowDate=new Date();
       let promotionHasStarted=false;
       let datesCalculated=this.calculatePromoStartEndDates(promo,false);
-      let startDate=datesCalculated.startDate;
-      let endDate=datesCalculated.endDate;
+      let startDate:Date=datesCalculated.startDate;
+      let endDate:Date=datesCalculated.endDate;
 
      
       let timeDiffInSecBeforeStart=Math.round((startDate.valueOf()-nowDate.valueOf())/1000);
@@ -672,20 +693,26 @@ initPromotionMessage(promo:Promotion):boolean
       let promoMessage={message:"",isExpired:false};
       if (promotionHasStarted)
       {
-        promoMessage.message+=" Ends in: ";
+        promoMessage.message+="Current promotion ends ";
+        if (daysDiff==0)
+          promoMessage.message+="today";
+        else
+        promoMessage.message+=endDate.toDateString();
+
+        promoMessage.message+=" at "+this.formT(endDate.getHours())+":"+this.formT(endDate.getMinutes());
       }
       else
       {
-        promoMessage.message+=" Starts in: ";
+        promoMessage.message+="Next promotion starts ";
+        if (daysDiff==0)
+          promoMessage.message+="today";
+        else
+        promoMessage.message+=startDate.toDateString();
+
+        promoMessage.message+=" at "+this.formT(startDate.getHours())+":"+this.formT(startDate.getMinutes());
       }
 
-      if (daysDiff!=0)
-      {
-        promoMessage.message+=daysDiff+ " day(s) ";
-      }
-
-      promoMessage.message+=this.formT(hoursDiff)+":"+this.formT(minutesDiff);//+":"+this.formT(secondsDiff);
-      
+    
       this.promoMessages[promo.key]=promoMessage;
 
       return true;

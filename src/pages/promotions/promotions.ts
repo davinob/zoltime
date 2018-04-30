@@ -35,6 +35,7 @@ export class PromotionsPage {
     public toastCtrl: ToastController ) {
 
       this.sellerProducts=this.sellerService.getSellerProductsClone();
+      
   }
 
   
@@ -69,6 +70,7 @@ export class PromotionsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PromotionsPage');
+    this.sellerService.initPromotionMessages();
   }
 
 

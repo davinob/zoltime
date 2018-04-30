@@ -3,10 +3,10 @@ import { Http  } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import * as firebase from 'firebase/app';
 
 export interface Address{
-   lat:number;
-   lng:number;
+    geoPoint:firebase.firestore.GeoPoint;
    streetNumber:number;
    street:string;
    city:string;
@@ -65,8 +65,8 @@ export class AddressService{
          address.city=addressComp.long_name;
       }
       
-      address.lat=data.result.geometry.location.lat;
-      address.lng=data.result.geometry.location.lng;
+      address.geoPoint=new firebase.firestore.GeoPoint(data.result.geometry.location.lat,data.result.geometry.location.lng);
+
 
       addressPos.next({value:address});
       

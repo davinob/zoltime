@@ -6,17 +6,15 @@
     
     <ion-item>
        <ion-input #email formControlName="email" type="email" placeholder="Your email address"
-        [class.invalid]="!loginForm.controls.email.valid &&
-          loginForm.controls.email.dirty"></ion-input>
-          <ion-label  class="error-message" *ngIf="!loginForm.controls.email.valid  &&
+        ></ion-input>
+          <ion-label   *ngIf="!loginForm.controls.email.valid  &&
           loginForm.controls.email.dirty" stacked>Please enter a valid email</ion-label>
     </ion-item>
     
-    <ion-item class="passwordItem">
+    <ion-item >
       <ion-label stacked>Password</ion-label>
       <ion-input #password formControlName="password" type="password" placeholder="Your password"
-        [class.invalid]="!loginForm.controls.password.valid &&
-          loginForm.controls.password.dirty"></ion-input>
+        ></ion-input>
     </ion-item>
  
     <button ion-button [disabled]="!loginForm.valid" block type="submit">

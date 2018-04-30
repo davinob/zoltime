@@ -125,22 +125,9 @@ export class ProductsPage {
 
   isPublishDisabled():boolean
   {
-   return this.sellerService.getCurrentSeller().promotionStartTime==null || 
-   this.sellerService.getCurrentSeller().promotionEndTime==null || 
-   this.sellerService.getSellerProducts()==null||
-   (<Array<any>>this.sellerService.getSellerProducts()).length<=0;
+   return   this.sellerService.getSellerProducts()==null||
+          (<Array<any>>this.sellerService.getSellerProducts()).length<=0;
   }
-
-
-  
-  
-
-  
-
-
-
-  
-
 
 
   

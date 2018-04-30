@@ -6,10 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection} from 'angularfire2/firestore';
-  import * as firebase from 'firebase';
+import * as firebase from 'firebase';
  import {UploadTaskSnapshot} from 'firebase/storage';
   
  import { Camera } from '@ionic-native/camera';
@@ -60,7 +57,7 @@ export class UploadService {
 
   private basePath:string = '/uploads';
 
-  constructor(private afs: AngularFirestore,public globalService:GlobalService,
+  constructor(public globalService:GlobalService,
       public camera: Camera) { 
   }
 

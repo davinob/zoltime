@@ -5,7 +5,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content class="global">
+  <ion-content class="global" >
     <ion-list class="menuList">
         <ion-item class="menuItem" *ngFor="let p of pages">
             <button menuClose clear ion-button  [class.activeHighLight]="checkActive(p)" (click)="openPage(p)">

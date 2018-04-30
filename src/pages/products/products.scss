@@ -50,7 +50,7 @@ page-products{
   left: 0;
   position: absolute;
   width:100%;
-
+  
 }
 
 .buttonPromotion
@@ -106,4 +106,9 @@ color:white;
 font-weight: bolder;
 font-size: larger;
 margin-top: 20px;
+}
+
+.list-md {
+  max-width: 500px;
+  margin: auto;
 }
