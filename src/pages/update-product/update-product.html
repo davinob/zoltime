@@ -37,7 +37,7 @@
           <ion-item [hidden]="true">
              <ion-select formControlName="category" #categoriesInput multiple="false" >
                  <ion-option *ngFor="let category of sellerService.getProductCategoriesChoices()"
-                   (value)="category">{{category}}    </ion-option>
+                   (value)="category">{{category}}</ion-option>
                 </ion-select>
          </ion-item>
 

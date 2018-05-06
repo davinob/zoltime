@@ -37,6 +37,7 @@ export interface Seller {
   categories?:Array<string>;
   enabled?:boolean;
   textCategories?:string;
+  textHashgaha?:string;
   products?:any;
   promotions?:any;
   profileCompleted?:boolean;
@@ -198,6 +199,17 @@ export class SellerService {
     this.currentSeller.textCategories=str;
 
     }
+
+    this.currentSeller.textHashgaha="No";
+    if ((this.currentSeller!=null)&&(this.currentSeller.hashgaha!=null))
+    {
+      if (this.currentSeller.hashgaha["Kosher"])
+      this.currentSeller.textHashgaha="Kosher";
+
+      if (this.currentSeller.hashgaha["Lemehadrin"])
+      this.currentSeller.textHashgaha="Lemehadrin";
+   }
+
   }
 
    public getCurrentSeller():Seller
@@ -418,7 +430,7 @@ public getProductCategoriesChoices():Set<string>
 }
 
   );
-
+  console.log(set);
   return set;
 }
 

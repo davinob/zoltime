@@ -13,32 +13,39 @@ export class GlobalService {
     userID:string;
 
     public categories=
-    [
-       {
-        name: "American",
-        icon: "american.png",
-        subCategories: ["HAMBURGER", "FRIES", "HOT-DOG", "SALAD","DRINKS","DESSERTS","COMBINATION"]
-      },
+   [
+    {
+      name: "Boulangerie",
+      description:"Boulangerie",
+      icon: "bread.svg",
+      subCategories: ["Bread", "Cake", "Borekas", "Salad", "Sandwich","Drinks","Desserts"]
+    },
+    {
+      name: "Sandwich",
+      description:"Sandwich",
+      icon: "sandwich.svg",
+      subCategories: ["Sandwich","Drinks","Desserts"]
+    },
+    {
+       name: "American",
+       description:"American",
+       icon: "hamburger.svg",
+       subCategories: ["Hamburger", "Fries", "Hot-Dog", "Salad","Drinks","Desserts"]
+     },
+     {
+       name: "Italian",
+       description:"Italian",
+       icon: "italian.svg",
+       subCategories: ["Pizza", "Lasagna", "Pasta", "Salad","Drinks","Desserts"]
+     },
       {
-        name: "Italian",
-        icon: "italian.png",
-        subCategories: ["PIZZA", "LASAGNA", "PASTA", "SALAD","DRINKS","DESSERTS","COMBINATION"]
-      },
-       {
-        name: "Israeli",
-        icon: "israeli.png",
-        subCategories: ["SHAWARMA", "FALAFEL", "FRIES", "SHNITZEL", "HUMUS", "SALAD","DRINKS","DESSERTS","COMBINATION"]
-      },
-       {
-        name: "Boulangerie",
-        icon: "boulangerie.png",
-        subCategories: ["BREAD", "CAKE", "BOREKAS", "SALAD", "SANDWICH","DRINKS","DESSERTS","COMBINATION"]
-      },
-      {
-        name: "Sandwish",
-        icon: "sandwish.png",
-        subCategories: ["SANDWISH","DRINKS","DESSERTS","COMBINATION"]
-      }
+       name: "Israeli",
+       description:"Israeli",
+       icon: "falafel.png",
+       subCategories: ["Shawarma", "Falafel", "Fries", "Shnitzel", "Humus", "Salad","Drinks","Desserts"]
+     }
+     
+    
     ];
 
 

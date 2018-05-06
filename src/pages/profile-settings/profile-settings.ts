@@ -112,6 +112,7 @@ export class ProfileSettingsPage {
    this.editInput(name,false);
   //  this.alertAndLoadingService.showLoading();
 
+  
     if (name=="categories")
     {
       inputValue=this.jsonCatego(inputValue);
@@ -119,6 +120,23 @@ export class ProfileSettingsPage {
     if (name=="address")
     {
       inputValue=this.addressJSON;
+    }
+
+    if (name=="hashgaha")
+    {
+      
+      if (inputValue=="No")
+      {
+        inputValue={"Kosher":false,"Lemehadrin":false};
+      }
+      else if (inputValue=="Kosher")
+      {
+        inputValue={"Kosher":true,"Lemehadrin":false};
+      }
+      else
+      {
+        inputValue={"Kosher":true,"Lemehadrin":true};
+      }
     }
     
     this.updateUser(name,inputValue);
