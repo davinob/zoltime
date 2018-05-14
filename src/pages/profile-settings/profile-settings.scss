@@ -38,6 +38,8 @@ page-profile-settings{
   }
     .profile-image {
       display: inline-block;
+      border-radius: 10%;
+      width: 260px;
     }
 
       
@@ -78,10 +80,7 @@ page-profile-settings{
         color: #888;
       }
 
-      .profile-image {
-        border-radius: 25%;
-        width: 100px;
-      }
+     
       
       .profilebutton {
         margin-left:-4%
@@ -104,6 +103,36 @@ page-profile-settings{
       .h4{
           font-weight: bolder;
       }
+
+      .label-md[stacked] {
+         font-size: 1.5rem; 
+    }
+
+    .label-md, .item-input .label-md-primary, .item-select .label-md-primary, .item-datetime .label-md-primary {
+      color: white;
+      font-weight: bolder;
+    }
+
+    .item-input-has-focus  .label-md[stacked],
+    .input-has-focus .label-md[stacked],
+    .item-input-has-focus .label-md[floating],
+     .input-has-focus .label-md[floating] {
+      color: white;
+      font-weight: bolder;
+    }
+    
+   
+
+    .item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+       border-bottom-color: transparent; 
+      -webkit-box-shadow: inset 0 -1px 0 0 transparent; 
+       box-shadow: inset 0 -1px 0 0 transparent; 
+  }
+
+
+  
+  
+
     }
   
 

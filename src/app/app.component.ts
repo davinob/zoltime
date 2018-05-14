@@ -25,6 +25,7 @@ export class MyApp {
 
   activePage: any;
   initTime:boolean=true;
+  userConnected=false;
   
   pages: Array<{title: string, component: any}>;
 
@@ -37,6 +38,7 @@ export class MyApp {
           if (user)
           {
           console.log("USER IS CONNECTED");
+          this.userConnected=true;
            if (this.initTime)
          {
            console.log("REDIRECTING TO SIGNED PAGE")
@@ -57,6 +59,7 @@ export class MyApp {
         }
         else
         {
+          this.userConnected=false;
           console.log("USER IS NOT CONNECTED");
           this.nav.setRoot('LoginPage');
           console.log("Changed to root page");
@@ -69,7 +72,6 @@ export class MyApp {
     this.pages = [
       { title: 'My Products', component: 'ProductsPage' },
       { title: 'My Promotions', component: 'PromotionsPage' },
-      { title: 'Orders', component: 'OrdersTabPage' },
       { title: 'Profile Settings', component: 'ProfileSettingsPage' }
     ];
     

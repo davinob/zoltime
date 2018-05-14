@@ -32,6 +32,7 @@ export interface Seller {
   restaurantName:string;
   address?:Address;
   description?:string;
+  telNo?:string;
   picture?:Picture;
   hashgaha?:string;
   categories?:Array<string>;
@@ -127,7 +128,7 @@ export class SellerService {
               console.log("USER ENABLED");
                 if (this.isProfileCompleted())
                 {
-                  page="OrdersTabPage";
+                  page="ProductsPage";
                 }
                 else
                 {
@@ -194,13 +195,12 @@ export class SellerService {
       str+=",";
       str+=key;
       i++;
-    });
-  
-    this.currentSeller.textCategories=str;
 
+    });
+      this.currentSeller.textCategories=str;
     }
 
-    this.currentSeller.textHashgaha="No";
+       this.currentSeller.textHashgaha="No";
     if ((this.currentSeller!=null)&&(this.currentSeller.hashgaha!=null))
     {
       if (this.currentSeller.hashgaha["Kosher"])
@@ -211,6 +211,8 @@ export class SellerService {
    }
 
   }
+
+  
 
    public getCurrentSeller():Seller
   {
@@ -266,6 +268,8 @@ export class SellerService {
 
   public getSellerPromotions():Array<any>
   {
+    if (!this.currentSeller.promotions)
+     this.currentSeller.promotions=new Array();
     return this.currentSeller.promotions;
   }
   
@@ -312,13 +316,14 @@ export class SellerService {
 }
 
 
-public updateCurrentUser(address:Address,description:string,
+public updateCurrentUser(address:Address,description:string,telNo:string,
   picture:Picture,hashgaha:string,categories:string):Promise<any>
 {
 
 let userUpdate:any={
 address:address,
 description:description,
+telNo:telNo,
 hashgaha:hashgaha,
 categories:categories,
 profileCompleted:true,
@@ -615,6 +620,8 @@ this.currentSeller[fieldName]=fieldValue;
 console.log("updating user on UID"+this.globalService.userID);
 console.log(userUpdate); 
 
+
+
 return new Promise<any>((resolve, reject) => {
 let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).update(userUpdate);
 console.log("PROMISE launched");
@@ -646,10 +653,12 @@ initPromotionMessages()
   Observable.timer(0,60000).subscribe(()=>
   {
     console.log("timer is on");
-    this.getSellerPromotions().forEach(promo=>
-    {
+   
+        this.getSellerPromotions().forEach(promo=>
+     {
       this.calculatePromotionMessage(promo);
-    });
+      });
+  
   });
 
 

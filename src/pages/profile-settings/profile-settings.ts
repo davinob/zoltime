@@ -1,6 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams,LoadingController, 
-  Loading} from 'ionic-angular';
+  Loading,TextInput } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 
 import { LoginPage } from '../login/login';
@@ -34,12 +34,14 @@ export class ProfileSettingsPage {
   @ViewChild('categoriesInput') categoriesInput;
   @ViewChild('hashgahaInput') hashgahaInput;
   @ViewChild('selectPictureType') selectPictureType;
+  @ViewChild('addressInput') addressInput :TextInput;
 
   public loading:Loading;
 
   allInputsShows:any={};
 
   hashgahot:string[]=["Kosher","Lemehadrin","No"];
+  searchAddressInput=false;
   
   
   public updateForm:FormGroup;
@@ -54,8 +56,8 @@ export class ProfileSettingsPage {
   public globalSvc:GlobalService) {
     
     this.updateForm = formBuilder.group({
+      addressSaved: [this.sellerService.getCurrentSeller().address.description],
       address: [''],
-      name: [''],
      
     });
 
@@ -83,6 +85,7 @@ export class ProfileSettingsPage {
     this.updateForm.controls.address.valueChanges.debounceTime(400).subscribe(search => {
       this.setFilteredItems();
   });
+ 
   }
 
   editInput(input:string,bool:boolean)
@@ -97,7 +100,22 @@ export class ProfileSettingsPage {
       break;
       case "address":
       if (bool)
-        this.addressSelected=false;
+        {
+          this.addressSelected=false;
+          this.searchAddressInput=true;
+          Observable
+        .interval(200).first()
+        .subscribe(x=>
+        {
+        this.addressInput.setFocus();
+      });
+      
+      }
+        else
+        {
+          this.searchAddressInput=false;
+        }
+      
         break;
       default:
         break;
@@ -120,6 +138,7 @@ export class ProfileSettingsPage {
     if (name=="address")
     {
       inputValue=this.addressJSON;
+      this.updateForm.controls.addressSaved.setValue(this.addressJSON.description);
     }
 
     if (name=="hashgaha")
@@ -160,8 +179,8 @@ export class ProfileSettingsPage {
 
   
 
-  @ViewChild('address') addressInput ;
-  searchAddress: string = '';
+ 
+  searchAddress: string="";
   addresses: any;
   shouldShowAddresses:boolean;
   searching:boolean=false;

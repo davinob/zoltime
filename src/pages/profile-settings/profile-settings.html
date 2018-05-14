@@ -37,42 +37,38 @@
  
   <input type="file" accept="image/*" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
       
-             <ion-item (click)='editInput("restaurantName",true)' *ngIf="!allInputsShows.restaurantName">
-                <h4 class="h4"> Name</h4>
-                <h3>{{user.restaurantName}}</h3>
-              </ion-item>
-              <ion-item *ngIf="allInputsShows.restaurantName">
-                  <ion-input type="text" [(ngModel)]="user.restaurantName" #restaurantName placeholder="Restaurant Name" ></ion-input>
-                    <button ion-button icon-only item-end clear (click)='editInput("restaurantName",false)'>
-                        <ion-icon class="red" name="redo"></ion-icon>
-                  </button>
-                  <button ion-button icon-only item-end clear (click)='saveInput("restaurantName",user.restaurantName)' [disabled]="user.restaurantName==''">
-                      <ion-icon class="green" name="checkmark"></ion-icon>
+              <ion-item >
+                  <ion-label color="primary" stacked>Name</ion-label>
+                  <ion-input  [(ngModel)]="user.restaurantName" (ionFocus)='editInput("restaurantName",true)' placeholder="Restaurant Name"></ion-input>
+            
+                  <button *ngIf="allInputsShows.restaurantName" ion-button icon-only item-end clear (click)='editInput("restaurantName",false)'>
+                   <ion-icon *ngIf="allInputsShows.restaurantName" class="red" name="redo"></ion-icon>
                 </button>
-              </ion-item>
+                <button *ngIf="allInputsShows.restaurantName" ion-button icon-only item-end clear (click)='saveInput("restaurantName",user.restaurantName)' [disabled]="user.restaurantName==''">
+                    <ion-icon *ngIf="allInputsShows.restaurantName" class="green" name="checkmark"></ion-icon>
+              </button>
+                </ion-item>
           
           
             <form [formGroup]="updateForm">
            
-                 <ion-item (click)='editInput("address",true)' *ngIf="!allInputsShows.address">
-                   
-                       <h4 class="h4"> Address</h4>
-                       <h3>{{ user.address.street }} {{ user.address.streetNumber }},{{ user.address.city }}</h3>
-                     </ion-item>
-                    
-                     <ion-item [hidden]="!allInputsShows.address">
-                       
-                          <ion-input  #address formControlName="address"
-                         type="text" [(ngModel)]="searchAddress"  placeholder="Address" (ionFocus)="showAddresses(true)" (ionBlur)="showAddresses(false)"></ion-input>
-                        
-                           <button ion-button icon-only item-end clear (click)='editInput("address",false)'>
-                               <ion-icon class="red" name="redo"></ion-icon>
+                
+                     <ion-item [hidden]="searchAddressInput">
+                        <ion-label color="primary" stacked>Address</ion-label>
+                        <ion-input   formControlName="addressSaved"
+                          type="text" placeholder="Address" (ionFocus)='editInput("address",true)' ></ion-input>
+                     </ion-item> 
+                     <ion-item [hidden]="!searchAddressInput">
+                        <ion-label color="primary" stacked>Address</ion-label>
+                         <ion-input   #addressInput formControlName="address"
+                          type="text" [(ngModel)]="searchAddress"  placeholder="Address" (ionFocus)='showAddresses(true)' (ionBlur)="showAddresses(false)"></ion-input>
+                     <button *ngIf="searchAddressInput" ion-button icon-only item-end clear (click)=' editInput("address",false); '>  <ion-icon class="red" name="redo"></ion-icon>
                          </button>
-                         <button ion-button icon-only item-end clear (click)='saveInput("address",user.address)' [disabled]="!addressSelected">
+                         <button *ngIf="searchAddressInput" ion-button icon-only item-end clear (click)=' saveInput("address",user.address);' [disabled]="!addressSelected">
                              <ion-icon class="green" name="checkmark"></ion-icon>
                        </button>
         
-                     </ion-item>           
+                     </ion-item>             
 
                      <div *ngIf="searching" class="spinner-container">
                         <ion-spinner></ion-spinner>
@@ -83,7 +79,7 @@
                       </ion-item>
                     </ion-list>
           
-          </form>
+                  </form>
 
 
 
@@ -111,22 +107,31 @@
           
 
       
-         
-                  <ion-item text-wrap *ngIf="!allInputsShows.description" (click)='editInput("description",true)'>
-                      
-                       <h4 class="h4"> Description</h4>
-                       <h3>{{user.description}}</h3>
-                     </ion-item>
-                     <ion-item *ngIf="allInputsShows.description">
-                     <ion-textarea  [(ngModel)]="user.description"  type="text"  placeholder="General Description"></ion-textarea>  
-                           <button ion-button icon-only item-end clear (click)='editInput("description",false)'>
-                               <ion-icon class="red" name="redo"></ion-icon>
-                         </button>
-                         <button ion-button icon-only item-end clear (click)='saveInput("description",user.description)' [disabled]="user.description==''">
-                             <ion-icon class="green" name="checkmark"></ion-icon>
-                       </button>
-                     </ion-item>
-           
+                     <ion-item >
+                        <ion-label color="primary" stacked>Description</ion-label>
+                        <ion-input  [(ngModel)]="user.description" (ionFocus)='editInput("description",true)' placeholder="Description"></ion-input>
+                  
+                        <button *ngIf="allInputsShows.description" ion-button icon-only item-end clear (click)='editInput("description",false)'>
+                         <ion-icon *ngIf="allInputsShows.description" class="red" name="redo"></ion-icon>
+                      </button>
+                      <button *ngIf="allInputsShows.description" ion-button icon-only item-end clear (click)='saveInput("description",user.description)' [disabled]="user.description==''">
+                          <ion-icon *ngIf="allInputsShows.description" class="green" name="checkmark"></ion-icon>
+                    </button>
+                      </ion-item>
+
+                 
+                      <ion-item >
+                          <ion-label color="primary" stacked>Telephone Number</ion-label>
+                          <ion-input [(ngModel)]="user.telNo" (ionFocus)='editInput("telNo",true)' placeholder="Telephone Number"></ion-input>
+                    
+                          <button *ngIf="allInputsShows.telNo" ion-button icon-only item-end clear (click)='editInput("telNo",false)'>
+                           <ion-icon *ngIf="allInputsShows.telNo" class="red" name="redo"></ion-icon>
+                        </button>
+                        <button *ngIf="allInputsShows.telNo" ion-button icon-only item-end clear (click)='saveInput("telNo",user.telNo)' [disabled]="user.telNo==''">
+                            <ion-icon *ngIf="allInputsShows.telNo" class="green" name="checkmark"></ion-icon>
+                      </button>
+                        </ion-item>
+                  
 
      
                      <ion-select #selectPictureType [hidden]="true" (ionChange)="getPicture($event)" interface="action-sheet">

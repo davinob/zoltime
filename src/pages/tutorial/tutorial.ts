@@ -13,6 +13,7 @@ import { Camera } from '@ionic-native/camera';
 
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GlobalService } from '../../providers/global-service';
 
 export interface Slide {
   title: string;
@@ -34,6 +35,10 @@ export class TutorialPage {
   @ViewChild('address') addressInput ;
   @ViewChild('fileInput') fileInput;
   @ViewChild('selectPictureType') selectPictureType;
+
+  @ViewChild('categoriesInput') categoriesInput;
+
+  @ViewChild('hashgahaInput') hashgahaInput;
   
   public signupForm:FormGroup;
 
@@ -48,7 +53,7 @@ export class TutorialPage {
 
 
   hashgahot:string[]=["Kosher","Lemehadrin","No"];
-  categories:string[]=["Italian", "Sandwichs","Israeli", "Boulangerie"];
+  
  
   profilePic:Picture;
 
@@ -61,12 +66,14 @@ export class TutorialPage {
     public addressService: AddressService,
     public sellerService: SellerService,
     public camera: Camera,
-    private upSvc: UploadService) 
+    private upSvc: UploadService,
+   private globalSvc: GlobalService) 
   {
     this.dir = platform.dir();
    
       this.signupForm = formBuilder.group({
         description: [''],
+        telNo: [''],
         address: ['', Validators.required],
         picture: [''],
         hashgaha: ['', Validators.required],
@@ -243,6 +250,17 @@ export class TutorialPage {
     return 'url(' + this.signupForm.controls['picture'].value + ')'
   }
 
+
+  showCategoriesChoiceSelect()
+  {
+    this.categoriesInput._elementRef.nativeElement.click();
+  }
+
+  showHashgahaChoiceSelect()
+  {
+    this.hashgahaInput._elementRef.nativeElement.click();
+  }
+
   jsonCatego(arr:string[]):any
   {
     let myCategos:any=<any>{};
@@ -262,11 +280,12 @@ export class TutorialPage {
         console.log("SIGNUP:"+user);
         let jsonCatego:any=this.jsonCatego(this.signupForm.value.categories);
          this.sellerService.updateCurrentUser(
-          this.addressJSON,this.signupForm.value.description,
+          this.addressJSON,this.signupForm.value.description,this.signupForm.value.telNo,
         this.profilePic,this.signupForm.value.hashgaha
         ,jsonCatego)
         .then(()=> {
           this.startApp();
+          console.log(this.signupForm.value.hashgaha);
           console.log("Document successfully written!");
           })
         

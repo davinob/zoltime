@@ -10,6 +10,7 @@ export interface Address{
    streetNumber:number;
    street:string;
    city:string;
+   description:string;
 }
 
 @Injectable()
@@ -67,6 +68,7 @@ export class AddressService{
       
       address.geoPoint=new firebase.firestore.GeoPoint(data.result.geometry.location.lat,data.result.geometry.location.lng);
 
+      this.setAddressDescription(address);
 
       addressPos.next({value:address});
       
@@ -78,6 +80,20 @@ export class AddressService{
     );
  
     return addressPos.asObservable();
+  }
+
+
+  setAddressDescription(address:Address):void
+  {
+   
+    let addressDescription="";
+    if (address.street)
+    addressDescription+=address.street+" ";
+    if (address.streetNumber)
+    addressDescription+=address.streetNumber+", ";
+    addressDescription+=address.city;
+
+    address.description=addressDescription;
   }
 
 }
