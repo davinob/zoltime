@@ -15,11 +15,7 @@ import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalService } from '../../providers/global-service';
 
-export interface Slide {
-  title: string;
-  description: string;
-  image: string;
-}
+
 
 @IonicPage()
 @Component({
@@ -58,6 +54,7 @@ export class TutorialPage {
   profilePic:Picture;
 
 
+
   constructor(public navCtrl: NavController, 
     public menu: MenuController, translate: TranslateService, 
     public platform: Platform,
@@ -76,14 +73,29 @@ export class TutorialPage {
         telNo: [''],
         address: ['', Validators.required],
         picture: [''],
-        hashgaha: ['', Validators.required],
+        hashgaha: ['No', Validators.required],
         categories: ['', Validators.required]
       });
+
+      this.profilePic={
+        folder:"",
+        name:"",
+        url:"/assets/icon/store.png"};
+      
+  }
+
+
+  getCategories()
+  {
+    if (!this.signupForm.value.categories)
+    return "Please select your restaurant categories";
+    else
+    return this.signupForm.value.categories
   }
 
 
   startApp() {
-    this.navCtrl.setRoot('OrdersTabPage', {}, {
+    this.navCtrl.setRoot('ProductsPage', {}, {
       animate: true,
       direction: 'forward'
     });
@@ -217,7 +229,7 @@ export class TutorialPage {
     this.upSvc.pushUpload(currentUpload).then(
       (resultPic:Picture)=>
       {
-        if (this.profilePic!=null)
+        if (this.profilePic.folder)
           this.upSvc.deletePicture(this.profilePic);
         this.profilePic=resultPic;      
          this.alertAndLoadingService.dismissLoading();

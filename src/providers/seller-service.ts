@@ -724,15 +724,12 @@ calculatePromotionMessage(promo:Promotion):boolean
 
 
 
-      let secondsDiff=timeDiffInSec%(60);
-      timeDiffInSec-=secondsDiff;
-      let timeDiffInMin=timeDiffInSec/60;
-      let minutesDiff=(timeDiffInMin)%60;
-      timeDiffInMin-=minutesDiff;
-      let timeDiffInHours=timeDiffInMin/60;
-      let hoursDiff=timeDiffInHours%24;
-      timeDiffInHours-=hoursDiff;
-      let daysDiff=timeDiffInHours/24;
+     
+     
+    
+     
+   
+     
 
    
     
@@ -740,7 +737,9 @@ calculatePromotionMessage(promo:Promotion):boolean
       if (promotionHasStarted)
       {
         promoMessage.message+="Current promotion ends ";
-        if (daysDiff==0)
+        if ((endDate.getDate()==nowDate.getDate())
+          &&(endDate.getMonth()==nowDate.getMonth())
+          &&(endDate.getFullYear()==nowDate.getFullYear()))
           promoMessage.message+="today";
         else
         promoMessage.message+=endDate.toDateString();
@@ -750,7 +749,9 @@ calculatePromotionMessage(promo:Promotion):boolean
       else
       {
         promoMessage.message+="Next promotion starts ";
-        if (daysDiff==0)
+        if ((startDate.getDate()==nowDate.getDate())
+        &&(startDate.getMonth()==nowDate.getMonth())
+        &&(startDate.getFullYear()==nowDate.getFullYear()))
           promoMessage.message+="today";
         else
         promoMessage.message+=startDate.toDateString();
@@ -820,7 +821,7 @@ calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
 
     if (((startH>endH)||((startH==endH)&&((startM>endM)))) //promotion not in same day
       && 
-      ((nowDate.getHours()<startH)||((nowDate.getHours()==startH)&&((nowDate.getMinutes()<startM))))
+      ((nowDate.getHours()<endH)||((nowDate.getHours()==endH)&&((nowDate.getMinutes()<endH))))
       )
     {
       console.log("HERE 1");

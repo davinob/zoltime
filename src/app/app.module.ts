@@ -29,7 +29,7 @@ import { GlobalService } from './../providers/global-service';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { DirectivesModule } from '../directives/directives.module';
+
 
 export const firebaseConfig = {
     apiKey: "AIzaSyCjWUCqcYx8lGtAKWI8Q-5H8V1rktUQjJc",
@@ -65,8 +65,8 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    IonicModule.forRoot(MyApp),
-    DirectivesModule
+    IonicModule.forRoot(MyApp)
+    
     
     
   ],
