@@ -17,6 +17,10 @@ import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { GlobalService } from '../../providers/global-service';
 
+
+
+
+
 /**
  * Generated class for the ProfileSettingsPage page.
  *
@@ -35,6 +39,7 @@ export class ProfileSettingsPage {
   @ViewChild('hashgahaInput') hashgahaInput;
   @ViewChild('selectPictureType') selectPictureType;
   @ViewChild('addressInput') addressInput :TextInput;
+  
 
   public loading:Loading;
 
@@ -42,6 +47,10 @@ export class ProfileSettingsPage {
 
   hashgahot:string[]=["Kosher","Lemehadrin","No"];
   searchAddressInput=false;
+
+  nameSaved:string;
+  telNoSaved:string;
+  descriptionSaved:string;
   
   
   public updateForm:FormGroup;
@@ -56,15 +65,24 @@ export class ProfileSettingsPage {
   public globalSvc:GlobalService) {
     
     this.updateForm = formBuilder.group({
-      addressSaved: [this.sellerService.getCurrentSeller().address.description],
+      addressSaved: [this.sellerService.getCurrentSellerAddress()],
       address: [''],
      
+
     });
 
+    if (this.sellerService.getCurrentSeller())
+    {
+      this.nameSaved=this.sellerService.getCurrentSeller().restaurantName;
+      this.telNoSaved=this.sellerService.getCurrentSeller().telNo;
+      this.descriptionSaved=this.sellerService.getCurrentSeller().description;
+    }
       
     
   }
 
+
+ 
 
  
 
@@ -117,6 +135,38 @@ export class ProfileSettingsPage {
         }
       
         break;
+       case "restaurantName":
+       if (!bool)
+       {
+       this.sellerService.getCurrentSeller().restaurantName=this.nameSaved;
+      }
+      else
+      {
+        this.nameSaved=this.sellerService.getCurrentSeller().restaurantName;
+      }
+      break;
+      case "description":
+      if (!bool)
+      {
+      this.sellerService.getCurrentSeller().description=this.descriptionSaved;
+     
+     }
+     else
+     {
+       this.descriptionSaved=this.sellerService.getCurrentSeller().description;
+     }
+        break;
+        case "telNo":
+        if (!bool)
+        {
+        this.sellerService.getCurrentSeller().telNo=this.telNoSaved;
+       }
+       else
+       {
+         this.telNoSaved=this.sellerService.getCurrentSeller().telNo;
+       }
+      break;
+
       default:
         break;
     }

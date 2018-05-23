@@ -53,7 +53,7 @@ export class LoginPage {
             console.log(data);
           if (!data.isOK)
           {
-            this.alertAndLoadingService.showAlert({message:"User is not enabled. In order to activate it, please contact us at: zoltimeapp@gmail.com"});
+            this.alertAndLoadingService.showToast({message:"User is not enabled. In order to activate it, please contact us at: zoltimeapp@gmail.com"});
           }
           else
           {

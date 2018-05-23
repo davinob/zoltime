@@ -112,13 +112,24 @@ export class SellerService {
         this.globalService.userID=userID;
         this.uploadService.initBasePath();
         this.sellersCollectionRef.doc(this.globalService.userID).onSnapshot(seller =>
-        { 
+        {
+          let isOK:boolean=true;
+
+          if (!seller || !seller.exists)
+          {
+            this.authService.logoutUser();
+            isOK=false; 
+            return;
+          }
+
+      
+      
           console.log(seller.data());
 
           this.setCurrentUserGeneralData(seller.data());
 
           console.log("CURRENT USER DATA SUBSCRIBE FROM INIT");
-              let isOK:boolean=true;
+             
             console.log("THE DATA");
             
               console.log("IS CURRENT USER ENABLED?");
@@ -149,31 +160,35 @@ export class SellerService {
             console.log("CURRENT PRODUCTS");
             console.log(this.currentSeller.products);
          
+
+            this.productsCollectionRef.onSnapshot(snapshot =>
+              { 
+                this.currentSeller.products=new Array();
+                console.log("PRODUCTS");
+                console.log(snapshot);
+                snapshot.forEach(product=>{
+                  this.currentSeller.products.push(product.data());
+                });
+                console.log(this.currentSeller.products);
+                this.sellerProductsGroupedByCatego=this.caculateProductsGroupedByCategory();
+              });
+    
+              this.promotionsCollectionRef.onSnapshot(snapshot =>
+                { 
+                  this.currentSeller.promotions=new Array();
+                  console.log("PRODUCTS");
+                  console.log(snapshot);
+                  snapshot.forEach(promotion=>{
+                    this.currentSeller.promotions.push(promotion.data());
+                  });
+                  console.log(this.currentSeller.promotions);
+                  
+                });
+
+
         });
 
-        this.productsCollectionRef.onSnapshot(snapshot =>
-          { 
-            this.currentSeller.products=new Array();
-            console.log("PRODUCTS");
-            console.log(snapshot);
-            snapshot.forEach(product=>{
-              this.currentSeller.products.push(product.data());
-            });
-            console.log(this.currentSeller.products);
-            this.sellerProductsGroupedByCatego=this.caculateProductsGroupedByCategory();
-          });
-
-          this.promotionsCollectionRef.onSnapshot(snapshot =>
-            { 
-              this.currentSeller.promotions=new Array();
-              console.log("PRODUCTS");
-              console.log(snapshot);
-              snapshot.forEach(promotion=>{
-                this.currentSeller.promotions.push(promotion.data());
-              });
-              console.log(this.currentSeller.promotions);
-              
-            });
+    
 
    
 
@@ -218,6 +233,16 @@ export class SellerService {
   {
     return this.currentSeller;
   }
+
+  public getCurrentSellerAddress():string
+  {
+    if (this.currentSeller)
+    return this.currentSeller.address.description;
+
+    else return "";
+  }
+
+
 
   public getSellerProducts():Array<any>
   {

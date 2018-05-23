@@ -109,7 +109,8 @@
       
                      <ion-item >
                         <ion-label color="primary" stacked>Description</ion-label>
-                        <ion-input  [(ngModel)]="user.description" (ionFocus)='editInput("description",true)' placeholder="Description"></ion-input>
+                        <ion-textarea autosize  type="text" [(ngModel)]="user.description" (ionFocus)='editInput("description",true)' placeholder="Description">
+                        </ion-textarea>
                   
                         <button *ngIf="allInputsShows.description" ion-button icon-only item-end clear (click)='editInput("description",false)'>
                          <ion-icon *ngIf="allInputsShows.description" class="red" name="redo"></ion-icon>
