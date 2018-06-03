@@ -23,7 +23,7 @@
                 <ion-row>
                     
                     <ion-col align-self-center>
-                        <div class="profile-info">
+                        <div class="profile-info"  (click)="choosePictureType()">
                             <img class="profile-image" src='{{user.picture.url}}'/>
                             <button class="profilebutton" (click)="choosePictureType()">
                                 <ion-icon name="create"></ion-icon>
@@ -84,12 +84,12 @@
 
 
          
-                <ion-item (click)='editInput("categories",true)'>
-                     <h4 class="h4"> Categories</h4>
-                     <h3>{{user.textCategories}}</h3>
+                <ion-item (click)='editInput("category",true)'>
+                     <h4 class="h4"> Category</h4>
+                     <h3>{{user.category}}</h3>
                    </ion-item>
                   
-                      <ion-select [hidden]="true" #categoriesInput  multiple="true" (ionChange)='saveInput("categories",$event)'>
+                      <ion-select [hidden]="true" #categoryInput  multiple="false" (ionChange)='saveInput("category",$event)'>
                        <ion-option *ngFor="let category of globalSvc.categories"  (value)="category.name">{{category.name}}</ion-option>
                       </ion-select>
          

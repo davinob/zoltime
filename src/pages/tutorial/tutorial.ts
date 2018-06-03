@@ -32,7 +32,7 @@ export class TutorialPage {
   @ViewChild('fileInput') fileInput;
   @ViewChild('selectPictureType') selectPictureType;
 
-  @ViewChild('categoriesInput') categoriesInput;
+  @ViewChild('categoryInput') categoryInput;
 
   @ViewChild('hashgahaInput') hashgahaInput;
   
@@ -74,7 +74,7 @@ export class TutorialPage {
         address: ['', Validators.required],
         picture: [''],
         hashgaha: ['No', Validators.required],
-        categories: ['', Validators.required]
+        category: ['', Validators.required]
       });
 
       this.profilePic={
@@ -85,12 +85,12 @@ export class TutorialPage {
   }
 
 
-  getCategories()
+  getCategory()
   {
-    if (!this.signupForm.value.categories)
-    return "Please select your restaurant categories";
+    if (!this.signupForm.value.category)
+    return "Please select your restaurant category...";
     else
-    return this.signupForm.value.categories
+    return this.signupForm.value.category
   }
 
 
@@ -265,7 +265,7 @@ export class TutorialPage {
 
   showCategoriesChoiceSelect()
   {
-    this.categoriesInput._elementRef.nativeElement.click();
+    this.categoryInput._elementRef.nativeElement.click();
   }
 
   showHashgahaChoiceSelect()
@@ -273,15 +273,7 @@ export class TutorialPage {
     this.hashgahaInput._elementRef.nativeElement.click();
   }
 
-  jsonCatego(arr:string[]):any
-  {
-    let myCategos:any=<any>{};
-      arr.forEach(element => {
-        myCategos[element]=true;
-      });
-
-    return myCategos;
-  }
+ 
 
 
   signupUser(){
@@ -290,11 +282,10 @@ export class TutorialPage {
     } else {
         let user=this.sellerService.getCurrentSeller();
         console.log("SIGNUP:"+user);
-        let jsonCatego:any=this.jsonCatego(this.signupForm.value.categories);
          this.sellerService.updateCurrentUser(
           this.addressJSON,this.signupForm.value.description,this.signupForm.value.telNo,
         this.profilePic,this.signupForm.value.hashgaha
-        ,jsonCatego)
+        ,this.signupForm.value.category)
         .then(()=> {
           this.startApp();
           console.log(this.signupForm.value.hashgaha);

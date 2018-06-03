@@ -35,7 +35,7 @@ import { GlobalService } from '../../providers/global-service';
 export class ProfileSettingsPage {
 
   @ViewChild('fileInput') fileInput;
-  @ViewChild('categoriesInput') categoriesInput;
+  @ViewChild('categoryInput') categoryInput;
   @ViewChild('hashgahaInput') hashgahaInput;
   @ViewChild('selectPictureType') selectPictureType;
   @ViewChild('addressInput') addressInput :TextInput;
@@ -87,17 +87,6 @@ export class ProfileSettingsPage {
  
 
 
-  jsonCatego(arr:string[]):any
-  {
-    console.log(arr);
-  
-    let myCategos:any=<any>{};
-      arr.forEach(element => {
-        myCategos[element]=true;
-      });
-
-    return myCategos;
-  }
 
   ionViewDidLoad() {
     this.updateForm.controls.address.valueChanges.debounceTime(400).subscribe(search => {
@@ -110,8 +99,8 @@ export class ProfileSettingsPage {
   {
     this.allInputsShows[input]=bool;
     switch (input) {
-      case "categories":
-      this.categoriesInput._elementRef.nativeElement.click();
+      case "category":
+      this.categoryInput._elementRef.nativeElement.click();
         break;
        case "hashgaha":
       this.hashgahaInput._elementRef.nativeElement.click();
@@ -181,10 +170,7 @@ export class ProfileSettingsPage {
   //  this.alertAndLoadingService.showLoading();
 
   
-    if (name=="categories")
-    {
-      inputValue=this.jsonCatego(inputValue);
-    } 
+   
     if (name=="address")
     {
       inputValue=this.addressJSON;

@@ -137,11 +137,17 @@ export class UploadService {
 
   deletePicture(pic: Picture) {
   
+    try{
     if ((pic.name!=null)&&(pic.folder!=null))
     {
     let storageRef = firebase.storage().ref();
     storageRef.child(`${this.basePath}/${pic.folder}/${pic.name}`).delete()
     }
+  }
+  catch(error)
+  {
+    console.log("ISSUE DELETING PIC");
+  }
   }
 
 }

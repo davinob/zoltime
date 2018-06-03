@@ -35,9 +35,8 @@ export interface Seller {
   telNo?:string;
   picture?:Picture;
   hashgaha?:string;
-  categories?:Array<string>;
+  category?:string;
   enabled?:boolean;
-  textCategories?:string;
   textHashgaha?:string;
   products?:any;
   promotions?:any;
@@ -200,22 +199,7 @@ export class SellerService {
   {
     this.currentSeller=data;
     
-    let str:string="";
-     if ((this.currentSeller!=null)&&(this.currentSeller.categories!=null))
-    {
-   
-    let i=0;
-    Object.keys(this.currentSeller.categories).forEach(function(key) {
-      if (i!=0)
-      str+=",";
-      str+=key;
-      i++;
-
-    });
-      this.currentSeller.textCategories=str;
-    }
-
-       this.currentSeller.textHashgaha="No";
+    this.currentSeller.textHashgaha="No";
     if ((this.currentSeller!=null)&&(this.currentSeller.hashgaha!=null))
     {
       if (this.currentSeller.hashgaha["Kosher"])
@@ -342,7 +326,7 @@ export class SellerService {
 
 
 public updateCurrentUser(address:Address,description:string,telNo:string,
-  picture:Picture,hashgaha:string,categories:string):Promise<any>
+  picture:Picture,hashgaha:string,category:string):Promise<any>
 {
 
 let userUpdate:any={
@@ -350,10 +334,9 @@ address:address,
 description:description,
 telNo:telNo,
 hashgaha:hashgaha,
-categories:categories,
+category:category,
 profileCompleted:true,
-promotionStartTime:"18:00",
-promotionEndTime:"20:00"
+
 };
 
 if (picture!=null)
@@ -444,7 +427,7 @@ public getProductCategoriesChoices():Set<string>
     {
      
       
-      return this.getCurrentSeller().categories[categoVal.name];
+      return this.getCurrentSeller().category==categoVal.name;
     }
   ).forEach(
     val=>{

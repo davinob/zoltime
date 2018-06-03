@@ -56,11 +56,11 @@
         
     
         <ion-item (click)="showCategoriesChoiceSelect()">
-            <h4 class="h4"> Categories</h4>
-            <h3>{{getCategories()}}</h3>
+            <h4 class="h4"> Category</h4>
+            <h3>{{getCategory()}}</h3>
           </ion-item>
 
-             <ion-select [hidden]="true" formControlName="categories" #categoriesInput multiple="true" >
+             <ion-select [hidden]="true" formControlName="category" #categoryInput multiple="false" >
                  <ion-option *ngFor="let category of globalSvc.categories"
                    (value)="category.name">{{category.name}}</ion-option>
                 </ion-select>
