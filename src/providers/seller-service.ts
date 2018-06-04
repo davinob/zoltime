@@ -705,16 +705,6 @@ calculatePromotionMessage(promo:Promotion):boolean
         return false;
       }
 
-
-
-     
-     
-    
-     
-   
-     
-
-   
     
       let promoMessage={message:"",isExpired:false};
       if (promotionHasStarted)

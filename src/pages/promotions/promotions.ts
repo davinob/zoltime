@@ -68,11 +68,12 @@ export class PromotionsPage {
     this.sellerService.stopPromotion(promotion);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PromotionsPage');
+ 
+
+  ionViewDidEnter(){
+    console.log('ionViewDidEnter PromotionsPage');
     this.sellerService.initPromotionMessages();
   }
-
 
   addPromotion(){
   
