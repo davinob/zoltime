@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.zol.time" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Zol Time App</name>
-    <description>Zol Time App</description>
+<widget id="com.zol.time.sellers" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Zol Time App - Sellers</name>
+    <description>Zol Time App - Sellers</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">DavidB</author>
     <content src="index.html" />
     <access origin="*" />
@@ -93,4 +93,5 @@
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="To choose photos" />
     </plugin>
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
+    <engine name="windows" spec="~5.0.0" />
 </widget>

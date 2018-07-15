@@ -791,6 +791,12 @@ calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
 
     let daysToAddToToday=-1;
 
+    console.log("startH"+startH);
+    console.log("endH"+endH);
+    console.log("startM"+startM);
+    console.log("endM"+endM);
+    console.log("getHours"+nowDate.getHours());
+    console.log("getMinutes"+nowDate.getMinutes());
 
     if (((startH>endH)||((startH==endH)&&((startM>endM)))) //promotion not in same day
       && 
@@ -801,7 +807,7 @@ calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
       nowDate=new Date(nowDate.valueOf()-(1000 * 60 * 60 * 24))
     }
 
-    let nowD:number=nowDate.getDay();
+    let nowD:number=nowDate.getDay()+7; //on sunday it returns 0, so adding 7
     console.log("nowD"+nowD);
     let i=-1;
     
@@ -813,9 +819,10 @@ calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
 
     
  
-   
+    console.log(promo.days);
     while (i<=7 && daysToAddToToday==-1)
     {
+      
       console.log(i);
       console.log((nowD+i)%7+1);
       console.log(promo.days[(nowD+i)%7+1]);
