@@ -380,9 +380,9 @@ public addProductToCurrentUser(
   category:category,
   originalPrice: originalPrice,
   key:key,
-  discount:100,
-  reducedPrice:0,
-  quantity:0,
+  discount:50,
+  reducedPrice:Math.round(100*50*originalPrice/100)/100,
+  quantity:10,
   uID:this.globalService.userID
   };
 
@@ -391,7 +391,7 @@ public addProductToCurrentUser(
   else
   product.picture=
   {
-    url:"/assets/icon/favicon.ico",
+    url:"/assets/icon/food.png",
   };
 
 console.log("adding product on UID"+this.globalService.userID);
