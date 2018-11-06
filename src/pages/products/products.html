@@ -62,7 +62,7 @@
          </div>  
    
   <input type="file" #fileInput accept="image/*"  [hidden]="true" name="files[]" (change)="processImage($event)" />                      
-  <ion-select #selectPictureType [hidden]="true" (ionChange)="updatePicture(product,$event)" interface="action-sheet">
+  <ion-select #selectPictureType  [hidden]="true" (ionChange)="updatePicture(product,$event)" interface="action-sheet">
     <ion-option value="Gallery">Gallery</ion-option>
     <ion-option value="Camera">Camera</ion-option>
   </ion-select> 

@@ -1,12 +1,11 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController,Select  } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { SellerService, Seller } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
 import { Camera,CameraOptions  } from '@ionic-native/camera';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/Rx';
 /**
@@ -28,10 +27,10 @@ export class ProductsPage {
   @ViewChild('promotionStartTime') promotionStartTime;
   @ViewChild('promotionEndTime') promotionEndTime;
   @ViewChild('fileInput') fileInput;
-  @ViewChild('selectPictureType') selectPictureType;
+  @ViewChild("selectPictureType") selectPictureType: Select;
 
   
-    
+ 
   
   
 
@@ -142,20 +141,22 @@ export class ProductsPage {
 
   choosePictureType(product:any)
   {
-    console.log(this.selectPictureType);
-    console.log(this.selectPictureType.nativeElement);
-    this.selectPictureType._elementRef.nativeElement.click();
-    this.productClicked=product;
-    console.log("Product clicked");
+    this.selectPictureType.open();
+   this.productClicked=product;
     console.log(product);
   }
 
   updatePicture(product:any, typeChosen:any) {
 
-    console.log(typeChosen);
-    
+    if (this.selectPictureType.value.length==0)
+    {
+      return;
+    }
+    this.selectPictureType.value=null; 
+   
     if (Camera['installed']()) {
-      let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+
+      let sourceType=this.camera.PictureSourceType.SAVEDPHOTOALBUM;
       if (typeChosen=="Camera")
       sourceType=this.camera.PictureSourceType.CAMERA;
      
@@ -172,6 +173,7 @@ export class ProductsPage {
       takePicture(srcType:number)
       {
        this.upSvc.takePicture(srcType).then((data) => {
+         console.log("PIC TAKEN!");
        this.fileOrBase64String = data;
       this.uploadImage(false);
       }, (err) => {

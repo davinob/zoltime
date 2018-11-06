@@ -1,5 +1,5 @@
 import { Component,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Select } from 'ionic-angular';
 import { SellerService } from '../../providers/seller-service';
 import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
@@ -26,6 +26,7 @@ export class CreateProductPage {
 
   @ViewChild('fileInput') fileInput;
   @ViewChild('categoriesInput') categoriesInput;
+  @ViewChild("selectPictureType") selectPictureType: Select;
 
   public addProductForm:FormGroup;
   
@@ -35,7 +36,7 @@ export class CreateProductPage {
     public alertAndLoadingService: AlertAndLoadingService,
     public addressService: AddressService,
     public sellerService: SellerService,
-    public camera: Camera,
+    private camera: Camera,
     private upSvc: UploadService
     )  {
 
@@ -62,19 +63,25 @@ export class CreateProductPage {
   }
 
   
+  choosePictureType()
+  {
+    this.selectPictureType.open();
+  }
 
   getPicture(typeChosen:any) {
-   
-    let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
-    if (typeChosen=="Camera")
-    sourceType=this.camera.PictureSourceType.CAMERA;
+    console.log(typeChosen);
+    if (this.selectPictureType.value.length==0)
+    {
+      return;
+    }
 
-   
+    this.selectPictureType.value=null;
 
     if (Camera['installed']()) {
-      let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+      let sourceType=this.camera.PictureSourceType.SAVEDPHOTOALBUM;
       if (typeChosen=="Camera")
-      sourceType=this.camera.PictureSourceType.CAMERA;
+        sourceType=this.camera.PictureSourceType.CAMERA;
+     
       this.takePicture(sourceType);
       }
 
@@ -85,14 +92,18 @@ export class CreateProductPage {
 
     }
 
-      takePicture(srcType:number)
+     takePicture(srcType:number)
       {
-       this.upSvc.takePicture(srcType).then((data) => {
-        this.uploadPicture(data,false);
-      }, (err) => {
-        //alert('Unable to take photo');
-      })
-    } 
+       
+      this.upSvc.takePicture(srcType).then((data) => {
+     
+       this.uploadPicture(data,false);
+       }, (err) => {
+         //alert('Unable to take photo');
+       })
+
+      
+      } 
  
 
   picture:Picture;

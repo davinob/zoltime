@@ -433,7 +433,7 @@ public getProductCategoriesChoices():Set<string>
     val=>{
       if (val)
     {
-      console.log(val);
+     // console.log(val);
       val.subCategories.forEach(subCatego=>
       {
       set.add(subCatego);
@@ -443,7 +443,7 @@ public getProductCategoriesChoices():Set<string>
 }
 
   );
-  console.log(set);
+//  console.log(set);
   return set;
 }
 

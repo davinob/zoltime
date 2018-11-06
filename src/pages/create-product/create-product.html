@@ -20,20 +20,17 @@
       <input type="file" accept="image/*" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
      
 
-      <div class="profile-image-wrapper" (click)="getPicture()">
+      <div class="profile-image-wrapper" (click)="choosePictureType()">
         <div class="profile-image-placeholder" *ngIf="!addProductForm.controls.picture.value">
           <ion-icon class="basic" name="add-circle"></ion-icon>
           <div class="whiteBig">
             {{ 'ITEM_CREATE_CHOOSE_IMAGE' | translate }}
-            <ion-select   (ionChange)="getPicture($event)" interface="action-sheet">
-              <ion-option value="Gallery">Gallery</ion-option>
-              <ion-option value="Camera">Camera</ion-option>
-            </ion-select>
-          </div>
-       
-        </div>
+         </div>
+       </div>
         <div class="profile-image" *ngIf="addProductForm.controls.picture.value" [style.backgroundImage]="getProfileImageStyle()">
         </div>
+
+
       </div>
     
     
@@ -85,6 +82,10 @@
 
       </form>
 
-     
+      <ion-select  #selectPictureType [hidden]="true" (ionChange)="getPicture($event)" interface="action-sheet">
+          <ion-option value="Gallery">Gallery</ion-option>
+          <ion-option value="Camera">Camera</ion-option>
+        </ion-select>
 
 </ion-content>
+

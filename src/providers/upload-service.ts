@@ -75,7 +75,7 @@ export class UploadService {
       sourceType:srcType,
       allowEdit: true,
       encodingType: this.camera.EncodingType.JPEG,
-      correctOrientation:true,
+      correctOrientation:false,
       targetWidth: 200,
       targetHeight: 200,
       quality:100

@@ -3,7 +3,7 @@
     <name>ZolTimeSellers</name>
     <description>Zol Time App - Sellers</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">DavidB</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://10.100.102.5:8111" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -77,7 +77,6 @@
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
     <allow-navigation href="http://192.168.1.4:8100" />
-    <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-plugin-googlemaps" spec="^2.1.1">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBmxI971QDou4stkeb_17cwj5zQRlN9KtQ" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyAjWA95pZuVvxzbhj0Q4NTU1shF0LQW1VU" />
@@ -92,6 +91,10 @@
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="To choose photos" />
     </plugin>
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
-    <engine name="windows" spec="~5.0.0" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.1.0" />
+    <allow-navigation href="http://10.100.102.5:8110" sessionid="d0d2a220" />
+    <allow-navigation href="http://10.100.102.5:8111" sessionid="e68419f9" />
+    <allow-navigation href="http://10.100.102.5:8112" sessionid="7aa94d0d" />
+    <engine name="android" spec="~6.3.0" />
+    <engine name="windows" spec="^5.0.0" />
 </widget>
