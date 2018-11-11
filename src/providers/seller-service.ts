@@ -598,12 +598,18 @@ productUpdate[fieldName]=fieldValue;
 console.log("updateCurrentUserDefaultProductField");
 console.log(product);
 
-return new Promise<any>((resolve, reject) => {
+return new Promise<any>((resolve) => {
   let setUserPromise:Promise<void>=this.productsCollectionRef.doc(product.key).update(productUpdate);
+
+  console.log("PIC UPDATING SOON");
   if (fieldName=="picture")
   {
+    console.log("DELETING PICTURE?");
+    console.log(product.picture);
+
     this.uploadService.deletePicture(product.picture);
   }
+
 console.log("PROMISE launched");
 setUserPromise.then( ()=>
 {
@@ -632,7 +638,7 @@ console.log(userUpdate);
 
 
 
-return new Promise<any>((resolve, reject) => {
+return new Promise<any>((resolve) => {
 let setUserPromise:Promise<void>=this.sellersCollectionRef.doc(this.globalService.userID).update(userUpdate);
 console.log("PROMISE launched");
 setUserPromise.then( ()=>

@@ -1,6 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams,LoadingController, 
-  Loading,TextInput } from 'ionic-angular';
+  Loading,TextInput, Select } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 
 import { LoginPage } from '../login/login';
@@ -31,7 +31,7 @@ export class ProfileSettingsPage {
   @ViewChild('fileInput') fileInput;
   @ViewChild('categoryInput') categoryInput;
   @ViewChild('hashgahaInput') hashgahaInput;
-  @ViewChild('selectPictureType') selectPictureType;
+  @ViewChild("selectPictureType") selectPictureType: Select;
   @ViewChild('addressInput') addressInput :TextInput;
   
 
@@ -296,14 +296,19 @@ export class ProfileSettingsPage {
 
   choosePictureType()
   {
-    console.log(this.selectPictureType);
-    console.log(this.selectPictureType.nativeElement);
-    this.selectPictureType._elementRef.nativeElement.click();
+    this.selectPictureType.open();
   }
 
 
   getPicture(typeChosen:any) {
     console.log(typeChosen);
+    if (this.selectPictureType.value.length==0)
+    {
+      return;
+    }
+    
+    this.selectPictureType.value=null;
+
     if (Camera['installed']()) {
       let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
       if (typeChosen=="Camera")

@@ -116,6 +116,8 @@ export class CreateProductPage {
     this.upSvc.pushUpload(currentUpload).then(
       (resultPic:Picture)=>
       {
+        console.log(resultPic);
+        
         if (this.picture!=null)
           this.upSvc.deletePicture(this.picture);
         this.picture=resultPic;      

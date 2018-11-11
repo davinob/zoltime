@@ -117,15 +117,20 @@ export class UploadService {
         reject(new Error("Error uploading the file"));
       },
       () => {
-        let pic:Picture=
+        uploadTask.snapshot.ref.getDownloadURL().then(downloadURL=>
         {
-          url:uploadTask.snapshot.downloadURL,
-          folder:upload.folder,
-          name:upload.name
-        };
+          let pic:Picture=
+          {
+            url:downloadURL,
+            folder:upload.folder,
+            name:upload.name
+          };
+  
+          upload.url = downloadURL;
+          resolve(pic);
 
-        upload.url = uploadTask.snapshot.downloadURL;
-        resolve(pic);
+        });
+        
       }
     );
     setTimeout( () => {
