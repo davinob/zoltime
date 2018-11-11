@@ -14,7 +14,7 @@ import { Camera } from '@ionic-native/camera';
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalService } from '../../providers/global-service';
-
+import * as globalConstants from '../../providers/globalConstants'; 
 
 
 @IonicPage()
@@ -84,6 +84,11 @@ export class TutorialPage {
       
   }
 
+
+  getCategories():any
+  {
+    return globalConstants.categories;
+  }
 
   getCategory()
   {

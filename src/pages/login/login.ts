@@ -7,9 +7,6 @@ import { AuthService } from '../../providers/auth-service';
 import { SellerService } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { EmailValidator } from '../../validators/email';
-import { OrdersTabPage } from '../orders-tab/orders-tab';
-import { LoginTestPage } from '../login-test/login-test';
-import { TutorialPage } from '../tutorial/tutorial';
 import 'rxjs/add/operator/map';
 
 
@@ -53,7 +50,8 @@ export class LoginPage {
             console.log(data);
           if (!data.isOK)
           {
-            this.alertAndLoadingService.showToast({message:"User is not enabled. In order to activate it, please contact us at: zoltimeapp@gmail.com"});
+            console.log("DATA NOT OK");
+            this.alertAndLoadingService.showToast({message:"User is not enabled. In order to activate it, please contact us at: yodaleta@gmail.com"});
           }
           else
           {

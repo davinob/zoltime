@@ -16,17 +16,11 @@ import { AddressService,Address } from '../../providers/address-service';
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { GlobalService } from '../../providers/global-service';
+import * as globalConstants from '../../providers/globalConstants'; 
 
 
 
 
-
-/**
- * Generated class for the ProfileSettingsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-profile-settings',
@@ -81,11 +75,10 @@ export class ProfileSettingsPage {
     
   }
 
-
- 
-
- 
-
+  getCategories():any
+  {
+    return globalConstants.categories;
+  }
 
 
   ionViewDidLoad() {

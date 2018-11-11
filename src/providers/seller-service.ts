@@ -4,18 +4,18 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { AngularFireAuth } from 'angularfire2/auth';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
-import { Subscription } from 'rxjs/Subscription';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-  AngularFirestoreDocument} from 'angularfire2/firestore';
+
+import { timer } from 'rxjs';
+
   import { Address } from './address-service';
   
   import * as firebase from 'firebase/app';
+
+  import * as globalConstants from './../providers/globalConstants'; 
   
 
   import { Subject } from 'rxjs/Subject';
@@ -24,7 +24,7 @@ import {
   import { UploadService,Picture } from './upload-service';
   import { GlobalService } from './global-service';
 
-  import { HttpClient, HttpParams } from '@angular/common/http';
+  import { HttpClient } from '@angular/common/http';
 
 
 export interface Seller {
@@ -89,14 +89,16 @@ export class SellerService {
   
   sellerProductsGroupedByCatego:{};
   
-  
-
+ 
   db=firebase.firestore();
+  fireStoreSettings = {timestampsInSnapshots: true};
+  
   
 
-  constructor(private afs: AngularFirestore,public authService:AuthService,
+  constructor(public authService:AuthService,
     private uploadService:UploadService,private http: HttpClient,
     private globalService:GlobalService) {
+        this.db.settings(this.fireStoreSettings);
         this.sellersCollectionRef = this.db.collection('sellers'); 
       
    }
@@ -422,7 +424,7 @@ public getProductCategoriesChoices():Set<string>
   let set:Set<string>=new Set();
  
 
-  this.globalService.categories.filter(
+  globalConstants.categories.filter(
     categoVal=>
     {
      
@@ -658,7 +660,7 @@ promoMessages:Array<any>=[];
 initPromotionMessages()
 {
   console.log("initPromotionMessages");
-  Observable.timer(0,60000).subscribe(()=>
+  timer(0,60000).subscribe(()=>
   {
     console.log("timer is on");
    

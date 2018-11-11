@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.zol.time.sellers" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>ZolTimeSellers</name>
+<widget id="zol.time.sellers" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>ZTSellers</name>
     <description>Zol Time App - Sellers</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">DavidB</author>
-    <content original-src="index.html" src="http://10.100.102.5:8111" />
+    <author email="yodaleta@gmail.com">Yodaleta</author>
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -95,6 +95,6 @@
     <allow-navigation href="http://10.100.102.5:8110" sessionid="d0d2a220" />
     <allow-navigation href="http://10.100.102.5:8111" sessionid="e68419f9" />
     <allow-navigation href="http://10.100.102.5:8112" sessionid="7aa94d0d" />
-    <engine name="android" spec="~6.3.0" />
-    <engine name="windows" spec="^5.0.0" />
+    <engine name="android" spec="^7.1.1" />
+    <engine name="windows" spec="^6.0.1" />
 </widget>

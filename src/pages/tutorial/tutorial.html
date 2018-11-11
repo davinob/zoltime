@@ -61,7 +61,7 @@
           </ion-item>
 
              <ion-select [hidden]="true" formControlName="category" #categoryInput multiple="false" >
-                 <ion-option *ngFor="let category of globalSvc.categories"
+                 <ion-option *ngFor="let category of getCategories()"
                    (value)="category.name">{{category.name}}</ion-option>
                 </ion-select>
      

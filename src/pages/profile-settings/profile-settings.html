@@ -90,7 +90,7 @@
                    </ion-item>
                   
                       <ion-select [hidden]="true" #categoryInput  multiple="false" (ionChange)='saveInput("category",$event)'>
-                       <ion-option *ngFor="let category of globalSvc.categories"  (value)="category.name">{{category.name}}</ion-option>
+                       <ion-option *ngFor="let category of getCategories()"  (value)="category.name">{{category.name}}</ion-option>
                       </ion-select>
          
           

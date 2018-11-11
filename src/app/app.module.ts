@@ -5,9 +5,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MyApp } from './app.component';
 
 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -25,36 +22,27 @@ import { SellerService } from './../providers/seller-service';
 import { AddressService } from './../providers/address-service';
 import { UploadService } from './../providers/upload-service';
 import { GlobalService } from './../providers/global-service';
-
+import * as fbConfig from './../providers/fbConfig'; 
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-
-export const firebaseConfig = {
-    apiKey: "AIzaSyCjWUCqcYx8lGtAKWI8Q-5H8V1rktUQjJc",
-    authDomain: "zoltime-77973.firebaseapp.com",
-    databaseURL: "https://zoltime-77973.firebaseio.com",
-    projectId: "zoltime-77973",
-    storageBucket: "zoltime-77973.appspot.com",
-    messagingSenderId: "1026370061265"
-  };
+import * as firebase from "firebase";
 
   // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-  
+
+firebase.initializeApp(fbConfig.firebaseConfig);
+
 @NgModule({
   declarations: [
     MyApp
   ],
   imports: [
+    
     BrowserModule,
-    AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule,
-    AngularFireAuthModule,
     HttpModule,
     HttpClientModule,
     IonicStorageModule.forRoot(),

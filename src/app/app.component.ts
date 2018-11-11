@@ -2,12 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform} from 'ionic-angular';
 
 
-import { ProductsPage } from '../pages/products/products';
-import { OrdersTabPage } from '../pages/orders-tab/orders-tab';
-import { TutorialPage } from '../pages/tutorial/tutorial';
-import { LoginPage } from '../pages/login/login';
-import { ProfileSettingsPage } from '../pages/profile-settings/profile-settings';
-
 import { AuthService } from '../providers/auth-service';
 import { SellerService } from '../providers/seller-service';
 
@@ -16,6 +10,8 @@ import 'rxjs/add/operator/first';
 
 import { TranslateService } from '@ngx-translate/core';
 
+import * as firebase from 'firebase/app';
+import * as fbConfig from '../providers/fbConfig';
 
 @Component({
   templateUrl: 'app.html'
@@ -30,10 +26,12 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(public translate: TranslateService,public platform: Platform, public authService: AuthService, 
-    public sellerService: SellerService,
-  private storage: Storage ) {
+    public sellerService: SellerService ) {
+
     
-           authService.getAuthState().subscribe(user=>
+  
+    
+    firebase.auth().onAuthStateChanged(user=>
           {
           if (user)
           {
