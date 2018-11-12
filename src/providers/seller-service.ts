@@ -91,14 +91,12 @@ export class SellerService {
   
  
   db=firebase.firestore();
-  fireStoreSettings = {timestampsInSnapshots: true};
-  
   
 
   constructor(public authService:AuthService,
     private uploadService:UploadService,private http: HttpClient,
     private globalService:GlobalService) {
-        this.db.settings(this.fireStoreSettings);
+  
         this.sellersCollectionRef = this.db.collection('sellers'); 
       
    }
