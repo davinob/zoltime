@@ -47,6 +47,14 @@ export class UpdatePromotionPage {
     )  {
 
       this.promotion=Object.assign({}, navParams.get('promotion'));
+      console.log(this.promotion);
+      if (!(this.promotion.date instanceof Date))
+      {
+        console.log(this.promotion);
+        console.log(this.promotion.date.toDate());
+        this.promotion.date=this.promotion.date.toDate();
+      }
+
       console.log("Promo!!");
       console.log(this.promotion);
 
@@ -169,12 +177,15 @@ export class UpdatePromotionPage {
     
     
     var today=new Date();
+    if (this.promotion.date)
+    {
     if (this.promotion.date.getDate()==today.getDate()&&
         this.promotion.date.getMonth()==today.getMonth()&&
         this.promotion.date.getFullYear()==today.getFullYear())
         {
           this.promotionStartDate._text="Today";
         }
+      }
     console.log("THE DATE");
     console.log(this.promotion.date);
   }

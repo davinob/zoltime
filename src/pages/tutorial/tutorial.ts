@@ -48,7 +48,7 @@ export class TutorialPage {
   addressJSON:Address;
 
 
-  hashgahot:string[]=["Kosher","Lemehadrin","No"];
+  
   
  
   profilePic:Picture;
@@ -63,8 +63,7 @@ export class TutorialPage {
     public addressService: AddressService,
     public sellerService: SellerService,
     public camera: Camera,
-    private upSvc: UploadService,
-   private globalSvc: GlobalService) 
+    private upSvc: UploadService) 
   {
     this.dir = platform.dir();
    
@@ -73,7 +72,7 @@ export class TutorialPage {
         telNo: [''],
         address: ['', Validators.required],
         picture: [''],
-        hashgaha: ['No', Validators.required],
+        hashgaha: ['ללא', Validators.required],
         category: ['', Validators.required]
       });
 
@@ -280,17 +279,39 @@ export class TutorialPage {
 
  
 
+  getHashgahot()
+  {
+    return globalConstants.hashgahot;
+  }
+  
 
   signupUser(){
     if (!this.signupForm.valid){
       console.log("FORM INVALID"+this.signupForm.value);
     } else {
+
+   
+      let hashgahaValue=this.signupForm.value.hashgaha;
+        
+        if (hashgahaValue=="ללא")
+        {
+          hashgahaValue={"כשר":false,"למהדרין":false};
+        }
+        else if (hashgahaValue=="כשר")
+        {
+          hashgahaValue={"כשר":true,"למהדרין":false};
+        }
+        else
+        {
+          hashgahaValue={"כשר":true,"למהדרין":true};
+        }
+
+
         let user=this.sellerService.getCurrentSeller();
         console.log("SIGNUP:"+user);
          this.sellerService.updateCurrentUser(
           this.addressJSON,this.signupForm.value.description,this.signupForm.value.telNo,
-        this.profilePic,this.signupForm.value.hashgaha
-        ,this.signupForm.value.category)
+        this.profilePic,hashgahaValue,this.signupForm.value.category)
         .then(()=> {
           this.startApp();
           console.log(this.signupForm.value.hashgaha);

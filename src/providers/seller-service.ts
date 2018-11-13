@@ -25,6 +25,7 @@ import { timer } from 'rxjs';
   import { GlobalService } from './global-service';
 
   import { HttpClient } from '@angular/common/http';
+import { Timestamp } from 'rxjs/Rx';
 
 
 export interface Seller {
@@ -69,7 +70,7 @@ export interface Promotion{
   promotionStartTime:string,
   promotionEndTime:string,
   days?:{},
-  date?:Date,
+  date?:any,
   key?:string,
   uID?:string,
   isActivated:boolean
@@ -96,6 +97,11 @@ export class SellerService {
   constructor(public authService:AuthService,
     private uploadService:UploadService,private http: HttpClient,
     private globalService:GlobalService) {
+
+     
+      const settings = {timestampsInSnapshots: true};
+      this.db.settings(settings);
+
   
         this.sellersCollectionRef = this.db.collection('sellers'); 
       
@@ -199,14 +205,14 @@ export class SellerService {
   {
     this.currentSeller=data;
     
-    this.currentSeller.textHashgaha="No";
+    this.currentSeller.textHashgaha="ללא";
     if ((this.currentSeller!=null)&&(this.currentSeller.hashgaha!=null))
     {
-      if (this.currentSeller.hashgaha["Kosher"])
-      this.currentSeller.textHashgaha="Kosher";
+      if (this.currentSeller.hashgaha["כשר"])
+      this.currentSeller.textHashgaha="כשר";
 
-      if (this.currentSeller.hashgaha["Lemehadrin"])
-      this.currentSeller.textHashgaha="Lemehadrin";
+      if (this.currentSeller.hashgaha["למהדרין"])
+      this.currentSeller.textHashgaha="למהדרין";
    }
 
   }
@@ -849,8 +855,13 @@ calculatePromoStartEndDates(promo:Promotion, checkForNext:boolean):any
   }
   else
   {
-    startDate=new Date(promo.date);
-    endDate=new Date(promo.date);
+    let promoDate=promo.date
+    if (!(promo.date instanceof Date))
+    {
+      promoDate=promoDate.toDate();
+    }
+    startDate=new Date(promoDate);
+    endDate=new Date(promoDate);
   }
     
    

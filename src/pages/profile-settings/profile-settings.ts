@@ -39,7 +39,7 @@ export class ProfileSettingsPage {
 
   allInputsShows:any={};
 
-  hashgahot:string[]=["Kosher","Lemehadrin","No"];
+  
   searchAddressInput=false;
 
   nameSaved:string;
@@ -156,6 +156,11 @@ export class ProfileSettingsPage {
     
 
   }
+
+  getHashgahot()
+  {
+    return globalConstants.hashgahot;
+  }
   
   saveInput(name:string,inputValue:any)
   {
@@ -173,17 +178,17 @@ export class ProfileSettingsPage {
     if (name=="hashgaha")
     {
       
-      if (inputValue=="No")
+      if (inputValue=="ללא")
       {
-        inputValue={"Kosher":false,"Lemehadrin":false};
+        inputValue={"כשר":false,"למהדרין":false};
       }
-      else if (inputValue=="Kosher")
+      else if (inputValue=="כשר")
       {
-        inputValue={"Kosher":true,"Lemehadrin":false};
+        inputValue={"כשר":true,"למהדרין":false};
       }
       else
       {
-        inputValue={"Kosher":true,"Lemehadrin":true};
+        inputValue={"כשר":true,"למהדרין":true};
       }
     }
     

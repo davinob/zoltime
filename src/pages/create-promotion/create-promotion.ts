@@ -149,12 +149,14 @@ export class CreatePromotionPage {
     
     
     var today=new Date();
+  
     if (this.promotion.date.getDate()==today.getDate()&&
         this.promotion.date.getMonth()==today.getMonth()&&
         this.promotion.date.getFullYear()==today.getFullYear())
         {
           this.promotionStartDate._text="Today";
         }
+   
     console.log("THE DATE");
     console.log(this.promotion.date);
   }

@@ -39,7 +39,6 @@ export class ProductsPage {
     , public formBuilder: FormBuilder,
     public camera: Camera,
     private upSvc: UploadService,
-    private elRef:ElementRef,
     public toastCtrl: ToastController ) {
   }
 

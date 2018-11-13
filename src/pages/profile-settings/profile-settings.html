@@ -101,7 +101,7 @@
                    </ion-item>
                    <ion-item [hidden]="true">
                       <ion-select #hashgahaInput  multiple="false" (ionChange)='saveInput("hashgaha",$event)'>
-                       <ion-option *ngFor="let hashga of hashgahot"  (value)="hashga">{{hashga}}</ion-option>
+                       <ion-option *ngFor="let hashga of getHashgahot()"  (value)="hashga">{{hashga}}</ion-option>
                       </ion-select>
                    </ion-item>
           

@@ -48,7 +48,7 @@
           </ion-item>
        
               <ion-select [hidden]="true" formControlName="hashgaha" #hashgahaInput multiple="false" >
-                  <ion-option *ngFor="let hashga of hashgahot"
+                  <ion-option *ngFor="let hashga of getHashgahot()"
                     (value)="hashga">{{hashga}}</ion-option>
                  </ion-select>
  
