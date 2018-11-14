@@ -24,7 +24,7 @@
                     
                     <ion-col align-self-center>
                         <div class="profile-info"  (click)="choosePictureType()">
-                            <img class="profile-image" src='{{user.picture.url}}'/>
+                          <div class="picPic" [style.backgroundImage]="getURL(user.picture.url)"></div>
                             <button class="profilebutton" (click)="choosePictureType()">
                                 <ion-icon name="create"></ion-icon>
                             </button>

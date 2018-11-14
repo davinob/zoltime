@@ -329,6 +329,11 @@ export class ProfileSettingsPage {
 
     }
 
+    getURL(url:string)
+    {
+      return 'url(' + url + ')';
+    }
+
     takePicture(srcType:number)
     {
      this.upSvc.takePicture(srcType).then((data) => {

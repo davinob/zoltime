@@ -93,8 +93,9 @@
                                   <ion-grid>
                                       <ion-row >
                                           <ion-col col-4 >
-                                              <img class="profile-image" src="{{product.picture.url}}" cache="true"/>
-                                          </ion-col>
+                                              <div class="picPic" [style.backgroundImage]="getURL(product.picture.url)"></div>
+                      
+                                            </ion-col>
                                       
                                               <ion-col col-5>
                                                   <ion-row >
@@ -119,7 +120,7 @@
                    </ion-list> 
       
         <button ion-button block [disabled]="!isPromotionReadyToGo()" type="submit">
-          {{ 'Update Products details' | translate }}
+         Update Products details
           </button>
         
 

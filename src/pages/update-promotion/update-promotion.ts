@@ -115,6 +115,14 @@ export class UpdatePromotionPage {
   }
 
 
+
+
+  getURL(url:string)
+  {
+    return 'url(' + url + ')';
+  }
+
+  
   choosePromotionDay(dayNum:number)
   {
     this.promotion.days[dayNum]=!this.promotion.days[dayNum];

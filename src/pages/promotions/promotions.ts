@@ -1,6 +1,6 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController  } from 'ionic-angular';
-import { TranslateModule } from '@ngx-translate/core';
+ 
 import { SellerService, Seller,Promotion,Product } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
@@ -49,6 +49,10 @@ export class PromotionsPage {
   }
 
   
+  getURL(url:string)
+  {
+    return 'url(' + url + ')';
+  }
 
  
 

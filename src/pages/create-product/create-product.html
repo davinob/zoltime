@@ -27,7 +27,7 @@
             Choose image
          </div>
        </div>
-        <div class="profile-image" *ngIf="addProductForm.controls.picture.value" [style.backgroundImage]="getProfileImageStyle()">
+        <div class="picPic" *ngIf="addProductForm.controls.picture.value" [style.backgroundImage]="getProfileImageStyle()">
         </div>
 
 
@@ -73,7 +73,7 @@
         
     
     <button ion-button block [disabled]="!addProductForm.valid" type="submit">
-        {{ 'Create A New Product' | translate }}
+         Create A New Product
         </button>
       
       

@@ -1,7 +1,7 @@
 import { Component,ViewChild } from '@angular/core';
 import { IonicPage, MenuController, NavController, Platform } from 'ionic-angular';
 
-import { TranslateService } from '@ngx-translate/core';
+ 
 
 
 import { AuthService } from '../../providers/auth-service';
@@ -56,7 +56,7 @@ export class TutorialPage {
 
 
   constructor(public navCtrl: NavController, 
-    public menu: MenuController, translate: TranslateService, 
+    public menu: MenuController, 
     public platform: Platform,
     public formBuilder: FormBuilder,
     public alertAndLoadingService: AlertAndLoadingService,
@@ -79,7 +79,7 @@ export class TutorialPage {
       this.profilePic={
         folder:"",
         name:"",
-        url:"/assets/icon/store.png"};
+        url:"assets/icon/store.png"};
       
   }
 

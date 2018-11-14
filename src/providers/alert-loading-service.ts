@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 import {AlertController,LoadingController, Loading } from 'ionic-angular';
 import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
-import { TranslateService } from '@ngx-translate/core';
+ 
 import { Subject } from 'rxjs/Subject';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 
@@ -20,7 +20,7 @@ export class AlertAndLoadingService {
   
     public loading:Loading;
    
-  constructor(public translateService: TranslateService,public alertCtrl: AlertController,
+  constructor(public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,public toastCtrl:ToastController
      ) {  }
   
@@ -47,10 +47,7 @@ export class AlertAndLoadingService {
  
   showAlert(error:any)
   {
-    this.translateService.get(error.message).subscribe(
-      value => {
-        // value is our translated string
-        error.message=value;
+ 
         if (this.loading!=null)
         {
           this.loading.dismiss().then( () => {
@@ -61,8 +58,7 @@ export class AlertAndLoadingService {
       {
         this.presentAlert(error);
       }
-    }
-    )
+ 
   }
   
   presentAlert(error:any)
@@ -83,10 +79,7 @@ export class AlertAndLoadingService {
 
   showToast(error:any)
   {
-    this.translateService.get(error.message).subscribe(
-      value => {
-        // value is our translated string
-        error.message=value;
+   
         if (this.loading!=null)
         {
           this.loading.dismiss().then( () => {
@@ -97,8 +90,7 @@ export class AlertAndLoadingService {
       {
         this.presentToast(error);
       }
-    }
-    )
+  
   }
   
   presentToast(error:any)
@@ -118,15 +110,7 @@ export class AlertAndLoadingService {
   {
     return new Promise<any>((resolve, reject) => {
 
-    let sus1=this.translateService.get(message).take(1).subscribe(
-      (value) => {
-        message=value
-        let sus2= this.translateService.get(choice1).subscribe(
-            value => {
-            choice1=value;
-            let sus3=this.translateService.get(choice2).subscribe(
-                 value => {
-                 choice2=value;
+  
         if (this.loading!=null)
         {
           this.loading.dismiss().then( () => {
@@ -137,9 +121,7 @@ export class AlertAndLoadingService {
       {
         resolve(this.presentChoice(message,choice1,choice2));
       }
-            });
-        });
-    });
+     
 
   });
 

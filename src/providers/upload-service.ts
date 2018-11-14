@@ -73,7 +73,7 @@ export class UploadService {
       destinationType: this.camera.DestinationType.DATA_URL,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType:srcType,
-      allowEdit: true,
+      allowEdit: false,
       encodingType: this.camera.EncodingType.JPEG,
       correctOrientation:false,
       targetWidth: 200,

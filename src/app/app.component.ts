@@ -8,7 +8,6 @@ import { SellerService } from '../providers/seller-service';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/first';
 
-import { TranslateService } from '@ngx-translate/core';
 
 import * as firebase from 'firebase/app';
 import * as fbConfig from '../providers/fbConfig';
@@ -25,7 +24,7 @@ export class MyApp {
   
   pages: Array<{title: string, component: any}>;
 
-  constructor(public translate: TranslateService,public platform: Platform, public authService: AuthService, 
+  constructor(public platform: Platform, public authService: AuthService, 
     public sellerService: SellerService ) {
 
     
@@ -75,24 +74,11 @@ export class MyApp {
     
     this.activePage=this.pages[0];
 
-    this.initTranslate();
+  
 
     this.initializeApp();
 
   }
-
-  initTranslate() {
-    // Set the default language for translation strings, and the current language.
-    this.translate.setDefaultLang('he');
-
-//    if (this.translate.getBrowserLang() !== undefined) {
-  //    this.translate.use(this.translate.getBrowserLang());
-    //} else {
-      //this.translate.use('he'); // Set your language here
-    //}
-
-  }
-
 
 
   

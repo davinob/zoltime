@@ -50,6 +50,10 @@ export class CreatePromotionSuitePage {
   }
 
 
+  getURL(url:string)
+  {
+    return 'url(' + url + ')';
+  }
 
   checkAndCalculateDiscount(product:Product)
   {

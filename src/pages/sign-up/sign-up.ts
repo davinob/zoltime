@@ -39,36 +39,24 @@ export class SignUpPage {
     
   }
 
-  signupUser(){
+  async signupUser(){
     if (!this.signupForm.valid){
       console.log("FORM INVALID"+this.signupForm.value);
     } else {
-      this.authService.signupUser(this.signupForm.value.email, this.signupForm.value.password)
-      .then(user => {
-        console.log("LOGOUT:"+user);
-        this.authService.logoutUser().then(()=>
-        {
-        console.log("SIGNUP:"+user);
-        
-         this.sellerService.createUser(
-          user.uid, user.email, this.signupForm.value.name)
-        .then(()=> {
-          this.nav.setRoot(LoginPage);
-          console.log("Document successfully written!");
-          })
-          .catch((error)=> {
-            this.alertAndLoadingService.showToast(error);
-          });
-        });
-      }).catch((error) => {
-        this.alertAndLoadingService.showToast(error);
-       
-      });
+      this.alertAndLoadingService.showLoading();
+      let user= await this.authService.signupUser(this.signupForm.value.email, this.signupForm.value.password);
+      
+      await this.sellerService.createUser(user.uid, user.email, this.signupForm.value.name);
+
+       await  this.authService.logoutUser();
+        this.nav.setRoot(LoginPage);
+     
+      }
 
    
-      this.alertAndLoadingService.showLoading();
+      
     }
-  }
+  
   
  
 

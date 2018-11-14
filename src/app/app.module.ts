@@ -24,15 +24,9 @@ import { UploadService } from './../providers/upload-service';
 import { GlobalService } from './../providers/global-service';
 import * as fbConfig from './../providers/fbConfig'; 
 
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import * as firebase from "firebase";
 
-  // The translate loader needs to know where to load i18n files
-// in Ionic's static asset pipeline.
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+
 
 firebase.initializeApp(fbConfig.firebaseConfig);
 
@@ -46,13 +40,6 @@ firebase.initializeApp(fbConfig.firebaseConfig);
     HttpModule,
     HttpClientModule,
     IonicStorageModule.forRoot(),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
     IonicModule.forRoot(MyApp)
     
     

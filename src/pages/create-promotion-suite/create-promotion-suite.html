@@ -23,7 +23,8 @@
                   <ion-grid class="product" >
                       <ion-row >
                           <ion-col col-4 >
-                              <img class="profile-image" src="{{product.picture.url}}" cache="true"/>
+                           <div class="picPic" [style.backgroundImage]="getURL(product.picture.url)"></div>
+                              
                           </ion-col>
                       
                               <ion-col col-5>
@@ -69,7 +70,7 @@
           
       
       <button ion-button block [disabled]="!isPromotionReadyToGo()">
-          {{ 'Create Promotion' | translate }}
+         Create Promotion
           </button>
         </form>
    

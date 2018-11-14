@@ -1,6 +1,6 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController,Select  } from 'ionic-angular';
-import { TranslateModule } from '@ngx-translate/core';
+ 
 import { SellerService, Seller } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
@@ -168,6 +168,12 @@ export class ProductsPage {
       }
 
     }
+
+    getURL(url:string)
+    {
+      return 'url(' + url + ')';
+    }
+   
 
       takePicture(srcType:number)
       {

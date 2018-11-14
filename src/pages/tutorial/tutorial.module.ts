@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TutorialPage } from './tutorial';
-import { TranslateModule } from '@ngx-translate/core';
+ 
 import { DirectivesModule } from '../../directives/directives.module';
 
 
@@ -11,7 +11,7 @@ import { DirectivesModule } from '../../directives/directives.module';
   ],
   imports: [
     IonicPageModule.forChild(TutorialPage),
-    TranslateModule.forChild(),
+     ,
     DirectivesModule
     
   ],

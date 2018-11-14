@@ -350,7 +350,7 @@ userUpdate.picture=picture;
 else
 userUpdate.picture=
 {
-url:"/assets/icon/favicon.ico"
+url:"assets/icon/favicon.ico"
 };
 
 console.log("upadting user on UID"+this.globalService.userID);
@@ -397,7 +397,7 @@ public addProductToCurrentUser(
   else
   product.picture=
   {
-    url:"/assets/icon/food.png",
+    url:"assets/icon/food.png",
   };
 
 console.log("adding product on UID"+this.globalService.userID);

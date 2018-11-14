@@ -28,7 +28,12 @@ export class AuthService {
   
 
   signupUser(newEmail: string, newPassword: string): Promise<any> {
-  return firebase.auth().createUserWithEmailAndPassword(newEmail, newPassword);
+  return firebase.auth().createUserWithEmailAndPassword(newEmail, newPassword).then(fulfilled=>{
+    console.log("ACCOUNT CREATED");
+    console.log(fulfilled);
+    return fulfilled.user;
+
+  });
   }
 
 

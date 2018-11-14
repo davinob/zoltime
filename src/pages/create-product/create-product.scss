@@ -48,6 +48,7 @@ visibility: hidden
   }
   .profile-image-wrapper {
     text-align: center;
+  }
     
     .profile-image {
       width: 96px;
@@ -66,13 +67,13 @@ visibility: hidden
       /*border-radius: 50%;*/
 
       font-size: 12px;
+   
+  }
 
-      ion-icon {
-        font-size: 44px;
-        margin-bottom: -10px;
-        margin-top: 10px;
-      }
-    }
+  ion-icon {
+    font-size: 44px;
+    margin-bottom: -10px;
+    margin-top: 10px;
   }
 
       .red

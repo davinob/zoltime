@@ -60,6 +60,11 @@ export class UpdatePromotionSuitePage {
 
 
 
+  getURL(url:string)
+  {
+    return 'url(' + url + ')';
+  }
+
   checkAndCalculateDiscount(product:Product)
   {
     let originalPriceVal=product.originalPrice;

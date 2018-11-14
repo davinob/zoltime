@@ -16,6 +16,15 @@
 // automatically applied to the <body> element in the app.
 
 
+.picPic {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  
 .spinner-container {
     width: 100%;
     text-align: center;

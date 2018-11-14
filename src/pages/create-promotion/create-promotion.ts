@@ -168,6 +168,11 @@ export class CreatePromotionPage {
     
   }
 
+  getURL(url:string)
+  {
+    return 'url(' + url + ')';
+  }
+
   isDateChosen():boolean
   {
   
