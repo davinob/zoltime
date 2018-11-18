@@ -43,6 +43,7 @@ export interface Seller {
   promotions?:any;
   profileCompleted?:boolean;
   key:string;
+  days?:Array<any>
 }
 
 
@@ -107,6 +108,18 @@ export class SellerService {
       
    }
   
+
+
+   inititateSellerDays():Array<any>
+   {
+     let arr=new Array();
+     for(let i=0;i<7;i++)
+     {
+      arr.push({startTime:"08:00",endTime:"20:00"});
+     }
+     return arr;
+   }
+
    public initCurrentUser(userID:string):Observable<any>
   {
     console.log("init with userID:"+userID);
@@ -164,6 +177,10 @@ export class SellerService {
 
             console.log("CURRENT PRODUCTS");
             console.log(this.currentSeller.products);
+            if ((!this.currentSeller.days)||(this.currentSeller.days.length!=7))
+            {
+              this.currentSeller.days=this.inititateSellerDays();
+            }
          
 
             this.productsCollectionRef.onSnapshot(snapshot =>
@@ -309,7 +326,8 @@ export class SellerService {
       email: email,
       restaurantName:restaurantName,
       enabled:false,
-      key:userUID
+      key:userUID,
+      days:this.inititateSellerDays()
     };
    console.log("creating user on UID"+userUID);
     
@@ -332,7 +350,7 @@ export class SellerService {
 
 
 public updateCurrentUser(address:Address,description:string,telNo:string,
-  picture:Picture,hashgaha:string,category:string):Promise<any>
+  picture:Picture,hashgaha:string,category:string,days:Array<any>):Promise<any>
 {
 
 let userUpdate:any={
@@ -342,6 +360,7 @@ telNo:telNo,
 hashgaha:hashgaha,
 category:category,
 profileCompleted:true,
+days:days
 
 };
 

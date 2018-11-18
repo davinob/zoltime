@@ -1,16 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform} from 'ionic-angular';
+import { Nav} from 'ionic-angular';
 
 
 import { AuthService } from '../providers/auth-service';
 import { SellerService } from '../providers/seller-service';
 
-import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/first';
 
 
 import * as firebase from 'firebase/app';
-import * as fbConfig from '../providers/fbConfig';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -24,7 +23,7 @@ export class MyApp {
   
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public authService: AuthService, 
+  constructor(public authService: AuthService, 
     public sellerService: SellerService ) {
 
     
@@ -32,14 +31,24 @@ export class MyApp {
     
     firebase.auth().onAuthStateChanged(user=>
           {
-          if (user)
+       
+         
+         if (user)
           {
           console.log("USER IS CONNECTED");
           this.userConnected=true;
-           if (this.initTime)
+        
+        
+
+
+        
+       
+          if (this.initTime)
          {
            console.log("REDIRECTING TO SIGNED PAGE")
-             this.sellerService.initCurrentUser(user.uid).subscribe(data=>
+        
+       
+           this.sellerService.initCurrentUser(user.uid).subscribe(data=>
           {
             console.log("DATAAA");
             console.log(data);
@@ -49,10 +58,21 @@ export class MyApp {
           }
           else
           {
-            this.nav.setRoot(data.page);
+
+            console.log(data);
+            console.log(data.page);
+              if (data.page=="ProductsPage")
+                this.nav.setRoot('ProductsPage');
+             else
+                this.nav.setRoot('TutorialPage');
+      
+              }
           }
-          });
-          }
+          
+          );
+         
+     
+        }
         }
         else
         {
@@ -62,6 +82,9 @@ export class MyApp {
           console.log("Changed to root page");
         }
         this.initTime=false;
+
+      
+
         });
     
    
@@ -73,25 +96,17 @@ export class MyApp {
     ];
     
     this.activePage=this.pages[0];
-
+/*
   
 
-    this.initializeApp();
-
-  }
-
-
-  
-  initializeApp() {
     
-      this.platform.ready().then( () => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      console.log("Platform is ready");
-       });
-  
-  
+  */
+ 
+
   }
+
+
+
 
   openPage(page) {
     // Reset the content nav to have just this page

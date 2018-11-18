@@ -39,18 +39,38 @@ export class SignUpPage {
     
   }
 
+  isFormValid()
+  {
+  this.signupForm.updateValueAndValidity();
+    return this.signupForm.valid;
+  }
+
   async signupUser(){
     if (!this.signupForm.valid){
       console.log("FORM INVALID"+this.signupForm.value);
     } else {
       this.alertAndLoadingService.showLoading();
-      let user= await this.authService.signupUser(this.signupForm.value.email, this.signupForm.value.password);
       
+      try
+      {
+        let user= await this.authService.signupUser(this.signupForm.value.email, this.signupForm.value.password);
+     
       await this.sellerService.createUser(user.uid, user.email, this.signupForm.value.name);
 
        await  this.authService.logoutUser();
-        this.nav.setRoot(LoginPage);
+       
+       this.alertAndLoadingService.dismissLoading();
+       this.nav.setRoot(LoginPage);
      
+
+      }
+      catch(error)
+      {
+        this.alertAndLoadingService.showToast(error);
+        return null;
+      }
+
+   
       }
 
    

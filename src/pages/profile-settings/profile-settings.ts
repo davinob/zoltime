@@ -1,5 +1,5 @@
-import { Component,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController, 
+import { Component,ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, 
   Loading,TextInput, Select } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 
@@ -33,6 +33,10 @@ export class ProfileSettingsPage {
   @ViewChild('hashgahaInput') hashgahaInput;
   @ViewChild("selectPictureType") selectPictureType: Select;
   @ViewChild('addressInput') addressInput :TextInput;
+
+  @ViewChild('startTimes') startTimes:ElementRef;
+  @ViewChild('endTimes') endTimes:ElementRef ;
+
   
 
   public loading:Loading;
@@ -65,6 +69,10 @@ export class ProfileSettingsPage {
 
     });
 
+    console.log("SELLLER INFO");
+    console.log(this.sellerService.getCurrentSeller());
+    console.log(this.sellerService.getCurrentSeller().days);
+
     if (this.sellerService.getCurrentSeller())
     {
       this.nameSaved=this.sellerService.getCurrentSeller().restaurantName;
@@ -73,6 +81,30 @@ export class ProfileSettingsPage {
     }
       
     
+  }
+
+
+  days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Shabbat"];
+
+
+
+
+  showStartTime(id)
+  {
+    let collec:HTMLCollection=this.startTimes.nativeElement.children;
+    (<HTMLElement>(collec.item(id))).click();
+  }
+
+  showEndTime(id)
+  {
+    let collec:HTMLCollection=this.endTimes.nativeElement.children;
+    (<HTMLElement>(collec.item(id))).click();
+  }
+
+
+  updateSellerTime()
+  {
+
   }
 
   getCategories():any

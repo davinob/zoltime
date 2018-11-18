@@ -1,4 +1,4 @@
-import { Component,ViewChild } from '@angular/core';
+import { Component,ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, MenuController, NavController, Platform } from 'ionic-angular';
 
  
@@ -35,6 +35,9 @@ export class TutorialPage {
   @ViewChild('categoryInput') categoryInput;
 
   @ViewChild('hashgahaInput') hashgahaInput;
+
+  @ViewChild('startTimes') startTimes:ElementRef;
+  @ViewChild('endTimes') endTimes:ElementRef ;
   
   public signupForm:FormGroup;
 
@@ -103,6 +106,26 @@ export class TutorialPage {
       animate: true,
       direction: 'forward'
     });
+  }
+
+
+  days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Shabbat"];
+
+  daysToSave=this.sellerService.inititateSellerDays();
+
+
+
+
+  showStartTime(id)
+  {
+    let collec:HTMLCollection=this.startTimes.nativeElement.children;
+    (<HTMLElement>(collec.item(id))).click();
+  }
+
+  showEndTime(id)
+  {
+    let collec:HTMLCollection=this.endTimes.nativeElement.children;
+    (<HTMLElement>(collec.item(id))).click();
   }
 
   onSlideChangeStart(slider) {
@@ -311,7 +334,7 @@ export class TutorialPage {
         console.log("SIGNUP:"+user);
          this.sellerService.updateCurrentUser(
           this.addressJSON,this.signupForm.value.description,this.signupForm.value.telNo,
-        this.profilePic,hashgahaValue,this.signupForm.value.category)
+        this.profilePic,hashgahaValue,this.signupForm.value.category,this.daysToSave)
         .then(()=> {
           this.startApp();
           console.log(this.signupForm.value.hashgaha);

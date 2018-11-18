@@ -1,11 +1,13 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController,Select  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController,Select,Content  } from 'ionic-angular';
  
 import { SellerService, Seller } from '../../providers/seller-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
-import { Camera,CameraOptions  } from '@ionic-native/camera';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Camera  } from '@ionic-native/camera';
+import { FormBuilder } from '@angular/forms';
+
+
 
 import 'rxjs/Rx';
 /**
@@ -30,7 +32,7 @@ export class ProductsPage {
   @ViewChild("selectPictureType") selectPictureType: Select;
 
   
- 
+  @ViewChild(Content) content: Content;
   
   
 
@@ -44,31 +46,28 @@ export class ProductsPage {
 
   
   
-  
-  
+  toShow=true;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProductsPage');
-  }
+  names:Array<string>=["AGHNDHNM"];
 
-
-
-
-  updateUserField(fieldName:string,field:any)
+  modifyToSHow()
   {
-   // this.alertAndLoadingService.showLoading();
+    console.log("MODIFY CLICK");
+     this.toShow=!this.toShow;
+    this.names.push("ALLLO");
+    console.log(this.names);
+    console.log(this.toShow);
+  }
+  
 
-    this.sellerService.updateCurrentUserField(fieldName,field).then
-    (
-      (successEvent)=>
-      {
-     //   this.alertAndLoadingService.dismissLoading();
-      }
-    )
-    .catch(error=>
+  ionViewDidEnter()
+  {
+
+    if (this.content)
     {
-   //   this.alertAndLoadingService.showToast({message:"Plese check your network connection is active."});
-    });
+      this.content.resize();
+    }
+
   }
 
 

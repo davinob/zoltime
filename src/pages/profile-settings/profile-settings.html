@@ -16,7 +16,7 @@
   </ion-header>
   
   
-  <ion-content *ngIf="sellerService.getCurrentSeller() as user " padding class='global'>
+  <ion-content *ngIf="sellerService.getCurrentSeller() as seller " padding class='global'>
 
       
             <ion-grid>
@@ -24,7 +24,7 @@
                     
                     <ion-col align-self-center>
                         <div class="profile-info"  (click)="choosePictureType()">
-                          <div class="picPic" [style.backgroundImage]="getURL(user.picture.url)"></div>
+                          <div class="picPic" [style.backgroundImage]="getURL(seller.picture.url)"></div>
                             <button class="profilebutton" (click)="choosePictureType()">
                                 <ion-icon name="create"></ion-icon>
                             </button>
@@ -39,12 +39,12 @@
       
               <ion-item >
                   <ion-label color="primary" stacked>Name</ion-label>
-                  <ion-input  [(ngModel)]="user.restaurantName" (ionFocus)='editInput("restaurantName",true)' placeholder="Restaurant Name"></ion-input>
+                  <ion-input  [(ngModel)]="seller.restaurantName" (ionFocus)='editInput("restaurantName",true)' placeholder="Restaurant Name"></ion-input>
             
                   <button *ngIf="allInputsShows.restaurantName" ion-button icon-only item-end clear (click)='editInput("restaurantName",false)'>
                    <ion-icon *ngIf="allInputsShows.restaurantName" class="red" name="redo"></ion-icon>
                 </button>
-                <button *ngIf="allInputsShows.restaurantName" ion-button icon-only item-end clear (click)='saveInput("restaurantName",user.restaurantName)' [disabled]="user.restaurantName==''">
+                <button *ngIf="allInputsShows.restaurantName" ion-button icon-only item-end clear (click)='saveInput("restaurantName",seller.restaurantName)' [disabled]="seller.restaurantName==''">
                     <ion-icon *ngIf="allInputsShows.restaurantName" class="green" name="checkmark"></ion-icon>
               </button>
                 </ion-item>
@@ -64,7 +64,7 @@
                           type="text" [(ngModel)]="searchAddress"  placeholder="Address" (ionFocus)='showAddresses(true)' (ionBlur)="showAddresses(false)"></ion-input>
                      <button *ngIf="searchAddressInput" ion-button icon-only item-end clear (click)=' editInput("address",false); '>  <ion-icon class="red" name="redo"></ion-icon>
                          </button>
-                         <button *ngIf="searchAddressInput" ion-button icon-only item-end clear (click)=' saveInput("address",user.address);' [disabled]="!addressSelected">
+                         <button *ngIf="searchAddressInput" ion-button icon-only item-end clear (click)=' saveInput("address",seller.address);' [disabled]="!addressSelected">
                              <ion-icon class="green" name="checkmark"></ion-icon>
                        </button>
         
@@ -86,7 +86,7 @@
          
                 <ion-item (click)='editInput("category",true)'>
                      <h4 class="h4"> Category</h4>
-                     <h3>{{user.category}}</h3>
+                     <h3>{{seller.category}}</h3>
                    </ion-item>
                   
                       <ion-select [hidden]="true" #categoryInput  multiple="false" (ionChange)='saveInput("category",$event)'>
@@ -97,7 +97,7 @@
                 <ion-item (click)='editInput("hashgaha",true)'>
                     
                      <h4 class="h4"> Hashgaha</h4>
-                     <h3>{{user.textHashgaha}}</h3>
+                     <h3>{{seller.textHashgaha}}</h3>
                    </ion-item>
                    <ion-item [hidden]="true">
                       <ion-select #hashgahaInput  multiple="false" (ionChange)='saveInput("hashgaha",$event)'>
@@ -109,13 +109,13 @@
       
                      <ion-item >
                         <ion-label color="primary" stacked>Description</ion-label>
-                        <ion-textarea autosize  type="text" [(ngModel)]="user.description" (ionFocus)='editInput("description",true)' placeholder="Description">
+                        <ion-textarea autosize  type="text" [(ngModel)]="seller.description" (ionFocus)='editInput("description",true)' placeholder="Description">
                         </ion-textarea>
                   
                         <button *ngIf="allInputsShows.description" ion-button icon-only item-end clear (click)='editInput("description",false)'>
                          <ion-icon *ngIf="allInputsShows.description" class="red" name="redo"></ion-icon>
                       </button>
-                      <button *ngIf="allInputsShows.description" ion-button icon-only item-end clear (click)='saveInput("description",user.description)' [disabled]="user.description==''">
+                      <button *ngIf="allInputsShows.description" ion-button icon-only item-end clear (click)='saveInput("description",seller.description)' [disabled]="seller.description==''">
                           <ion-icon *ngIf="allInputsShows.description" class="green" name="checkmark"></ion-icon>
                     </button>
                       </ion-item>
@@ -123,15 +123,50 @@
                  
                       <ion-item >
                           <ion-label color="primary" stacked>Telephone Number</ion-label>
-                          <ion-input [(ngModel)]="user.telNo" (ionFocus)='editInput("telNo",true)' placeholder="Telephone Number"></ion-input>
+                          <ion-input [(ngModel)]="seller.telNo" (ionFocus)='editInput("telNo",true)' placeholder="Telephone Number"></ion-input>
                     
                           <button *ngIf="allInputsShows.telNo" ion-button icon-only item-end clear (click)='editInput("telNo",false)'>
                            <ion-icon *ngIf="allInputsShows.telNo" class="red" name="redo"></ion-icon>
                         </button>
-                        <button *ngIf="allInputsShows.telNo" ion-button icon-only item-end clear (click)='saveInput("telNo",user.telNo)' [disabled]="user.telNo==''">
+                        <button *ngIf="allInputsShows.telNo" ion-button icon-only item-end clear (click)='saveInput("telNo",seller.telNo)' [disabled]="seller.telNo==''">
                             <ion-icon *ngIf="allInputsShows.telNo" class="green" name="checkmark"></ion-icon>
                       </button>
                         </ion-item>
+                  
+                    
+                          <ion-label color="primary" stacked>Open hours</ion-label>
+                         <div #startTimes   [hidden]="true">
+                            <ion-datetime  *ngFor="let day of days,let ind=index" (ionChange)='saveInput("days",seller.days)' [attr.id]="'startTime' +  ind"  [hidden]="true" item-end 
+                            minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="seller.days[ind].startTime"></ion-datetime>
+                          </div>
+                          <div #endTimes   [hidden]="true">
+                               <ion-datetime  *ngFor="let day of days,let ind=index"  (ionChange)='saveInput("days",seller.days)' [attr.id]="'startTime' + ind" [hidden]="true" item-end 
+                              minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="seller.days[ind].endTime"></ion-datetime>
+                          </div>
+
+                          <div *ngFor="let day of days,let ind=index">
+
+                              <ion-grid >
+                                  <ion-row >
+                                      <ion-col>
+                                        <span class="dayLabel">{{day}}</span>
+                                      </ion-col>
+                                      <ion-col (click)='showStartTime(ind)' align-self-center>
+                                          <span class="hourLabel">{{seller.days[ind].startTime}}</span>
+                                       
+                                       </ion-col>
+                                       <ion-col (click)='showEndTime(ind)' align-self-center>
+                                          <span class="hourLabel">{{seller.days[ind].endTime}}</span>
+                                       
+                                       </ion-col>
+                                    
+                                  </ion-row>
+                               </ion-grid>
+                             
+     
+
+                          </div>
+                   
                   
 
      

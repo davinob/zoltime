@@ -1,53 +1,88 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+
 import {AlertController,LoadingController, Loading } from 'ionic-angular';
-import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
  
-import { Subject } from 'rxjs/Subject';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 
 
-/*
-  Generated class for the AlertProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class AlertAndLoadingService {
   
-    public loading:Loading;
+    public loading:Loading=null;
+
+    
    
   constructor(public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController,public toastCtrl:ToastController
+    private loadingCtrl: LoadingController,private toastCtrl:ToastController
      ) {  }
   
 
    
     
    
-    
+    wasDismissed:boolean=false;
  
 
 
-  showLoading()
+  async showLoading()
   {
+    try{
+    if (this.loading)
+    return;
+
     this.loading = this.loadingCtrl.create({
-      dismissOnPageChange: true      
+      spinner:"dots",
+      dismissOnPageChange: false
     });
+    this.wasDismissed=false;
+
+    this.loading.onDidDismiss(() => {
+      console.log('Dismissed loading');
+      this.wasDismissed=true;
+    });
+
     this.loading.present();
+    console.log("LOADING LOADED?");
+   
+    setTimeout(()=>{
+      if (this.loading && !this.wasDismissed)
+      {
+      this.loading.dismiss();
+      this.loading=null; 
+      }
+    },20000);
+
+  }
+  catch(error)
+  {
+    console.log(error);
+  }
   }
   
-  dismissLoading()
+  async dismissLoading()
   {
-    this.loading.dismiss();
+    try
+    {
+       
+        console.log("DISMISS LOADING");
+         
+          if (this.loading && !this.wasDismissed)
+          {
+          this.loading.dismiss();
+          this.loading=null;
+        
+        }
+    }
+  catch(error)
+  {
+    console.log(error);
+  }
+
   }
  
   showAlert(error:any)
   {
- 
+    
         if (this.loading!=null)
         {
           this.loading.dismiss().then( () => {
@@ -58,7 +93,7 @@ export class AlertAndLoadingService {
       {
         this.presentAlert(error);
       }
- 
+    
   }
   
   presentAlert(error:any)
@@ -79,8 +114,7 @@ export class AlertAndLoadingService {
 
   showToast(error:any)
   {
-   
-        if (this.loading!=null)
+    if (this.loading)
         {
           this.loading.dismiss().then( () => {
               this.presentToast(error);
@@ -90,11 +124,19 @@ export class AlertAndLoadingService {
       {
         this.presentToast(error);
       }
-  
+
+  }
+
+  showToastNoDismiss(error:any)
+  {
+        this.presentToast(error);
+ 
   }
   
   presentToast(error:any)
   {
+    console.log("TOAST:");
+    console.log(error);
     var errorMessage: string = error.message;
     let toast = this.toastCtrl.create({
       message: errorMessage,
@@ -102,6 +144,7 @@ export class AlertAndLoadingService {
       position: 'bottom'
     });
     toast.present();
+   
   }
 
  
@@ -110,7 +153,7 @@ export class AlertAndLoadingService {
   {
     return new Promise<any>((resolve, reject) => {
 
-  
+    
         if (this.loading!=null)
         {
           this.loading.dismiss().then( () => {
@@ -121,8 +164,7 @@ export class AlertAndLoadingService {
       {
         resolve(this.presentChoice(message,choice1,choice2));
       }
-     
-
+   
   });
 
  

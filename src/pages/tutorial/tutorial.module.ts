@@ -11,7 +11,6 @@ import { DirectivesModule } from '../../directives/directives.module';
   ],
   imports: [
     IonicPageModule.forChild(TutorialPage),
-     ,
     DirectivesModule
     
   ],

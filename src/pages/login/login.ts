@@ -55,7 +55,11 @@ export class LoginPage {
           }
           else
           {
-             this.navCtrl.setRoot(data.page);
+            this.alertAndLoadingService.dismissLoading();
+            if (data.page=="ProductsPage")
+             this.navCtrl.setRoot('ProductsPage');
+             else
+            this.navCtrl.setRoot('TutorialPage');
           }
 
           });
@@ -77,9 +81,7 @@ export class LoginPage {
     this.navCtrl.push('SignUpPage');
   }
   
-   createLoginTest(){
-    this.navCtrl.push('LoginTestPage');
-  }
+  
 
 
   test()

@@ -66,6 +66,33 @@
                 </ion-select>
      
 
+                <ion-label color="primary" stacked>Open hours</ion-label>
+              
+
+                 <div *ngFor="let day of days,let ind=index">
+
+                     <ion-grid >
+                         <ion-row >
+                             <ion-col>
+                               <span class="dayLabel">{{day}}</span>
+                             </ion-col>
+                             <ion-col (click)='showStartTime(ind)' align-self-center>
+                                 <span class="hourLabel">{{daysToSave[ind].startTime}}</span>
+                              
+                              </ion-col>
+                              <ion-col (click)='showEndTime(ind)' align-self-center>
+                                 <span class="hourLabel">{{daysToSave[ind].endTime}}</span>
+                              
+                              </ion-col>
+                           
+                         </ion-row>
+                      </ion-grid>
+                    
+
+
+                 </div>
+
+
 
      <ion-item>
         <ion-label color="primary" stacked>Address</ion-label> 
@@ -89,6 +116,15 @@
    
   </form>
  
+  <div #startTimes   [hidden]="true">
+        <ion-datetime  *ngFor="let day of days,let ind=index"  [attr.id]="'startTime' +  ind"  [hidden]="true" item-end 
+        minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="daysToSave[ind].startTime"></ion-datetime>
+      </div>
+      <div #endTimes   [hidden]="true">
+           <ion-datetime  *ngFor="let day of days,let ind=index" [attr.id]="'startTime' + ind" [hidden]="true" item-end 
+          minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="daysToSave[ind].endTime"></ion-datetime>
+      </div>
+      
 
   <ion-select #selectPictureType [hidden]="true" (ionChange)="getPicture($event)" interface="action-sheet">
     <ion-option value="Gallery">Gallery</ion-option>
