@@ -73,6 +73,8 @@ export class ProductsPage {
 
   ionViewDidEnter()
   {
+    
+   
 
     if (this.content)
     {
@@ -85,13 +87,18 @@ export class ProductsPage {
     if (this.sellerService.doneLookingForProductsCompleteValue)
     {
       this.sellerProductsGroupedByCategoArr=this.sellerService.getSellerProductsCategories();
+      this.alertAndLoadingService.dismissLoading();
     }
+    else
+      this.alertAndLoadingService.showLoading();
 
     if (!this.lookingForSellerSubscribed)
     {
       console.log("lookingForSellerSubscribed");
      this.sellerService.doneLookingForProducts.subscribe(()=>
       { 
+        
+
         console.log("lookingForSellerSubscribed SUBSCRIBE");
         this.lookingForSellerSubscribed=true;
         if (!this.pageIsShown)
@@ -99,6 +106,9 @@ export class ProductsPage {
         console.log("lookingForSellerSubscribed SUBSCRIBE");
         this.sellerProductsGroupedByCategoArr=this.sellerService.getSellerProductsCategories();
         console.log(this.sellerProductsGroupedByCategoArr);
+       this.alertAndLoadingService.dismissLoading();
+     
+
 
       });
 
@@ -120,7 +130,7 @@ sellerProductsGroupedByCategoArr:Array<any>;
   hasProducts()
   {
    
-    return this.sellerProductsGroupedByCategoArr;
+    return this.sellerProductsGroupedByCategoArr && this.sellerProductsGroupedByCategoArr.length>0;
   }
 
 

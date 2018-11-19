@@ -207,6 +207,8 @@ export class SellerService {
                     this.currentSeller.promotions.push(promotion.data());
                   });
                   console.log(this.currentSeller.promotions);
+                  this.doneLookingForProducts.next(true);
+                  this.doneLookingForProductsCompleteValue=true;
                   
                 });
 

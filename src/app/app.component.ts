@@ -37,12 +37,7 @@ export class MyApp {
           {
           console.log("USER IS CONNECTED");
           this.userConnected=true;
-        
-        
-
-
-        
-       
+               
           if (this.initTime)
          {
            console.log("REDIRECTING TO SIGNED PAGE")
@@ -52,18 +47,19 @@ export class MyApp {
           {
             console.log("DATAAA");
             console.log(data);
-          if (!data.isOK)
+          if (!data.isOK && ((!this.nav.getActive()) || this.nav.getActive().name!="LoginPage"))
           {
             this.nav.setRoot('LoginPage');
           }
           else
           {
-
             console.log(data);
             console.log(data.page);
-              if (data.page=="ProductsPage")
+            console.log(this.nav.getActive());
+              if (data.page=="ProductsPage" && ((!this.nav.getActive()) || this.nav.getActive().name!="ProductsPage"))
                 this.nav.setRoot("ProductsPage");
-             else
+
+              if (data.page=="TutorialPage" && ((!this.nav.getActive()) || this.nav.getActive().name!="TutorialPage"))
                 this.nav.setRoot("TutorialPage");
       
               }

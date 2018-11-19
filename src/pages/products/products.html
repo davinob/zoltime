@@ -14,12 +14,11 @@
 
 <ion-content  class="global" padding >
  
-
     <div [ngClass]="products_enabled">
               <button ion-button (click)="addProduct()">
                   Add product
                 </button>
-               <ion-list [hidden]="!getSellerProductsCategories()">
+               <ion-list *ngIf="hasProducts()">
                   <div *ngFor="let category of getSellerProductsCategories()" text-wrap>
                       <div class="categoTitle">{{category}}</div>
                  
