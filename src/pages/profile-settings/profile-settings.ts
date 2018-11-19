@@ -305,7 +305,7 @@ export class ProfileSettingsPage {
     this.addressSelected=true;
     
     
-    this.addressService.getPosition(address.place_id).first().subscribe((addressJSON)=>
+    this.addressService.getPosition(address).first().subscribe((addressJSON)=>
     {
         console.log(addressJSON);
         this.addressJSON=addressJSON.value;

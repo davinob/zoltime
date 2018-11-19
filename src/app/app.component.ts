@@ -62,9 +62,9 @@ export class MyApp {
             console.log(data);
             console.log(data.page);
               if (data.page=="ProductsPage")
-                this.nav.setRoot('ProductsPage');
+                this.nav.setRoot("ProductsPage");
              else
-                this.nav.setRoot('TutorialPage');
+                this.nav.setRoot("TutorialPage");
       
               }
           }
@@ -78,7 +78,7 @@ export class MyApp {
         {
           this.userConnected=false;
           console.log("USER IS NOT CONNECTED");
-          this.nav.setRoot('LoginPage');
+          this.nav.setRoot("LoginPage");
           console.log("Changed to root page");
         }
         this.initTime=false;
@@ -90,19 +90,12 @@ export class MyApp {
    
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'My Products', component: 'ProductsPage' },
-      { title: 'My Promotions', component: 'PromotionsPage' },
-      { title: 'Profile Settings', component: 'ProfileSettingsPage' }
+      { title: 'MY PRODUCTS', component: 'ProductsPage' },
+      { title: 'MY PROMOTIONS', component: 'PromotionsPage' },
+      { title: 'PROFILE SETTINGS', component: 'ProfileSettingsPage' }
     ];
     
     this.activePage=this.pages[0];
-/*
-  
-
-    
-  */
- 
-
   }
 
 

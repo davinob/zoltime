@@ -42,6 +42,9 @@ export class ProductsPage {
     public camera: Camera,
     private upSvc: UploadService,
     public toastCtrl: ToastController ) {
+
+      console.log("IN THE CONST");
+      this.lookingForSellerSubscribed=false;
   }
 
   
@@ -60,6 +63,14 @@ export class ProductsPage {
   }
   
 
+  pageIsShown:boolean;
+  lookingForSellerSubscribed:boolean=false;
+
+  ionViewDidLeave()
+  {
+    this.pageIsShown=false;
+  }
+
   ionViewDidEnter()
   {
 
@@ -68,7 +79,50 @@ export class ProductsPage {
       this.content.resize();
     }
 
+    this.pageIsShown=true;
+
+
+    if (this.sellerService.doneLookingForProductsCompleteValue)
+    {
+      this.sellerProductsGroupedByCategoArr=this.sellerService.getSellerProductsCategories();
+    }
+
+    if (!this.lookingForSellerSubscribed)
+    {
+      console.log("lookingForSellerSubscribed");
+     this.sellerService.doneLookingForProducts.subscribe(()=>
+      { 
+        console.log("lookingForSellerSubscribed SUBSCRIBE");
+        this.lookingForSellerSubscribed=true;
+        if (!this.pageIsShown)
+        return;
+        console.log("lookingForSellerSubscribed SUBSCRIBE");
+        this.sellerProductsGroupedByCategoArr=this.sellerService.getSellerProductsCategories();
+        console.log(this.sellerProductsGroupedByCategoArr);
+
+      });
+
   }
+}
+
+
+
+getSellerProductsCategories()
+{
+
+  return this.sellerProductsGroupedByCategoArr;
+}
+
+
+sellerProductsGroupedByCategoArr:Array<any>;
+
+
+  hasProducts()
+  {
+   
+    return this.sellerProductsGroupedByCategoArr;
+  }
+
 
 
 

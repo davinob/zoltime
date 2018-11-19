@@ -87,7 +87,7 @@ export class SellerService {
   userStatus:Subject<any>=new Subject<any>();
    
   
-  
+  doneLookingForProductsCompleteValue:boolean=false;
   
   sellerProductsGroupedByCatego:{};
   
@@ -108,7 +108,7 @@ export class SellerService {
       
    }
   
-
+   doneLookingForProducts:Subject<boolean>=new Subject();
 
    inititateSellerDays():Array<any>
    {
@@ -193,6 +193,9 @@ export class SellerService {
                 });
                 console.log(this.currentSeller.products);
                 this.sellerProductsGroupedByCatego=this.caculateProductsGroupedByCategory();
+                console.log("DONE LOOKING FOR PRODS");
+                this.doneLookingForProducts.next(true);
+                this.doneLookingForProductsCompleteValue=true;
               });
     
               this.promotionsCollectionRef.onSnapshot(snapshot =>
@@ -257,8 +260,10 @@ export class SellerService {
     return this.currentSeller.products;
   }
 
+ 
   public getSellerProductsCategories():Array<any>
   {
+    console.log(this.sellerProductsGroupedByCatego);
     if (!this.sellerProductsGroupedByCatego)
       return new Array();
 

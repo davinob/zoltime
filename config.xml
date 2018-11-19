@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="zol.time.sellers" version="0.1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="zol.time.sellers" version="0.1.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ZTSellers</name>
     <description>Zol Time App - Sellers</description>
     <author email="yodaleta@gmail.com">Yodaleta</author>
@@ -99,6 +99,10 @@
     <allow-navigation href="http://192.168.1.24:8102" sessionid="f4c9a6ac" />
     <allow-navigation href="http://192.168.1.24:8103" sessionid="48346f95" />
     <allow-navigation href="http://192.168.1.24:8104" sessionid="f54d0e03" />
+    <allow-navigation href="http://10.100.102.5:8109" sessionid="5af36efa" />
+    <allow-navigation href="http://10.100.102.5:8100" sessionid="0bbf4c30" />
+    <allow-navigation href="http://10.100.102.5:8101" sessionid="fba035a2" />
+    <allow-navigation href="http://10.100.102.5:8105" sessionid="ea64711c" />
     <engine name="android" spec="^7.1.1" />
     <engine name="windows" spec="^6.0.1" />
 </widget>

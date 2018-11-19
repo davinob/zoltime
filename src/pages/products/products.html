@@ -5,7 +5,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>My Products</ion-title>
+    <ion-title>MY PRODUCTS</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -19,8 +19,8 @@
               <button ion-button (click)="addProduct()">
                   Add product
                 </button>
-               <ion-list [hidden]="!sellerService.getSellerProductsCategories()">
-                  <div *ngFor="let category of sellerService.getSellerProductsCategories()" text-wrap>
+               <ion-list [hidden]="!getSellerProductsCategories()">
+                  <div *ngFor="let category of getSellerProductsCategories()" text-wrap>
                       <div class="categoTitle">{{category}}</div>
                  
                   <ion-list [hidden]="!sellerService.getCategoryProducts(category)">

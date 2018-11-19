@@ -10,7 +10,7 @@
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-title>ProfileSettings</ion-title>
+      <ion-title>PROFILE SETTINGS</ion-title>
     </ion-navbar>
   
   </ion-header>
@@ -133,7 +133,7 @@
                       </button>
                         </ion-item>
                   
-                    
+                        <div class="openHours">
                           <ion-label color="primary" stacked>Open hours</ion-label>
                          <div #startTimes   [hidden]="true">
                             <ion-datetime  *ngFor="let day of days,let ind=index" (ionChange)='saveInput("days",seller.days)' [attr.id]="'startTime' +  ind"  [hidden]="true" item-end 
@@ -166,7 +166,7 @@
      
 
                           </div>
-                   
+                        </div>
                   
 
      
