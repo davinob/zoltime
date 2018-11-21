@@ -1,7 +1,7 @@
 export const  categories=
    [
     {
-      name: "מאפיה",
+      name: "מאפייה",
       description:"מאפיה",
       icon: "bread.svg",
       subCategories: ["זולטעים","לחם", "עוגה", "בורקס", "סלט", "כריך","שתייה"]
