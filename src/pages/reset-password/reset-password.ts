@@ -40,11 +40,11 @@ export class ResetPasswordPage {
       this.authData.resetPassword(this.resetPasswordForm.value.email)
       .then((user) => {
         let alert = this.alertCtrl.create({
-          message: "We just sent you a reset link to your email",
+          message: "הרגע נשלח אליך אימייל.",
           buttons: [
             {
-              text: "Ok",
-              role: 'cancel',
+              text: "אישור",
+              role: 'ביטול',
               handler: () => {
                 this.nav.pop();
               }
@@ -58,8 +58,8 @@ export class ResetPasswordPage {
           message: errorMessage,
           buttons: [
             {
-              text: "Ok",
-              role: 'cancel'
+              text: "אישור",
+              role: 'ביטול'
             }
           ]
         });

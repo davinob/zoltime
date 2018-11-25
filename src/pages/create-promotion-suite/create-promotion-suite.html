@@ -7,7 +7,7 @@
 <ion-header>
   
     <ion-navbar>
-      <ion-title>Update Products</ion-title>
+      <ion-title>יצירת מבצע</ion-title>
     </ion-navbar>
   
   </ion-header>
@@ -43,22 +43,22 @@
                       <ion-row >
                         <ion-col>
                             <ion-item text-wrap>
-                      <ion-label stacked>Quantity</ion-label>
-                      <ion-input   [ngModelOptions]="{standalone:true}" [(ngModel)]="product.quantity" type="number"  placeholder="Default Quantity" value='10'></ion-input>
+                      <ion-label stacked>כמות</ion-label>
+                      <ion-input   [ngModelOptions]="{standalone:true}" [(ngModel)]="product.quantity" type="number"  placeholder="כמות" value='10'></ion-input>
                     </ion-item>
                         </ion-col>
                      </ion-row >
                       <ion-row >
                       <ion-col>
                             <ion-item text-wrap>
-                        <ion-label stacked>Discount (%)</ion-label>
-                     <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.discount" (ionBlur)="checkAndCalculateReducedPrice(product)" type="number"  placeholder="Discount"></ion-input>
+                        <ion-label stacked>הנחה (%)</ion-label>
+                     <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.discount" (ionBlur)="checkAndCalculateReducedPrice(product)" type="number"  placeholder="הנחה"></ion-input>
                     </ion-item>
                     </ion-col>
                     <ion-col>
                             <ion-item text-wrap>
-                      <ion-label stacked>New Price (₪)</ion-label>
-                      <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.reducedPrice" (ionBlur)="checkAndCalculateDiscount(product)" type="number"  placeholder="New" ></ion-input>
+                      <ion-label stacked>מחיר אחרי הנחה (₪)</ion-label>
+                      <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.reducedPrice" (ionBlur)="checkAndCalculateDiscount(product)" type="number"  placeholder="מחיר אחרי הנחה" ></ion-input>
                     </ion-item>
                   </ion-col>
                 </ion-row >
@@ -70,7 +70,7 @@
           
       
       <button ion-button block [disabled]="!isPromotionReadyToGo()">
-         Create Promotion
+         יצירת המבצע
           </button>
         </form>
    

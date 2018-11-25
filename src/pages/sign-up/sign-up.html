@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>
-      Create an Account
+   יצירת חשבון
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -11,25 +11,25 @@
   <form [formGroup]="signupForm" (submit)="signupUser()">
 
     <ion-item>
-      <ion-label stacked>Email</ion-label>
-      <ion-input formControlName="email" type="email" placeholder="Your email address"
+      <ion-label stacked>אימייל</ion-label>
+      <ion-input formControlName="email" type="email" placeholder="אימייל"
         [class.invalid]="!signupForm.controls.email.valid && signupForm.controls.email.dirty"></ion-input>
     </ion-item>
   
 
     <ion-item>
-      <ion-label stacked>Password</ion-label>
-      <ion-input formControlName="password" type="password"  placeholder="Your password"
+      <ion-label stacked>סיסמא</ion-label>
+      <ion-input formControlName="password" type="password"  placeholder="סיסמא"
         [class.invalid]="!signupForm.controls.password.valid && signupForm.controls.password.dirty"></ion-input>
     </ion-item>
       
      <ion-item>
-      <ion-label stacked>Restaurant Name</ion-label>
-      <ion-input formControlName="name" type="text"  placeholder="Restaurant Name"></ion-input>
+      <ion-label stacked>שם המסעדה</ion-label>
+      <ion-input formControlName="name" type="text"  placeholder="שם המסעדה"></ion-input>
     </ion-item>
    
     <button ion-button block [disabled]="!signupForm.valid " type="submit">
-    Create an Account
+      יצירת חשבון
     </button>
 
   </form>

@@ -10,7 +10,7 @@
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-title>MY PROMOTIONS</ion-title>
+      <ion-title>המבצעים שלי</ion-title>
     </ion-navbar>
   
   </ion-header>
@@ -20,7 +20,7 @@
   
       
                 <button ion-button (click)="addPromotion()">
-                    Add promotion
+                    יצירת מבצע
                   </button>
            
                   <ion-list  *ngIf="sellerService.getSellerPromotions() as promotions ">

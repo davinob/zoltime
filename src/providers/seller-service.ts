@@ -731,7 +731,7 @@ calculatePromotionMessage(promo:Promotion):boolean
         
         if (timeDiffInSec<0)
         {
-          this.promoMessages[promo.key]= {message:"Promotion is expired",isExpired:true};
+          this.promoMessages[promo.key]= {message:"המבצע הסתיים",isExpired:true};
           return true;
         }
           
@@ -743,31 +743,32 @@ calculatePromotionMessage(promo:Promotion):boolean
         return false;
       }
 
-    
+      var optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
       let promoMessage={message:"",isExpired:false};
       if (promotionHasStarted)
       {
-        promoMessage.message+="Current promotion ends ";
+        promoMessage.message+="המבצע הנוכחי מסתיים  ";
         if ((endDate.getDate()==nowDate.getDate())
           &&(endDate.getMonth()==nowDate.getMonth())
           &&(endDate.getFullYear()==nowDate.getFullYear()))
-          promoMessage.message+="today";
+          promoMessage.message+="היום";
         else
-        promoMessage.message+=endDate.toDateString();
+        promoMessage.message+=endDate.toLocaleDateString("he-IL",optionsDate);
 
-        promoMessage.message+=" at "+this.formT(endDate.getHours())+":"+this.formT(endDate.getMinutes());
+        promoMessage.message+=" ב"+this.formT(endDate.getHours())+":"+this.formT(endDate.getMinutes());
       }
       else
       {
-        promoMessage.message+="Next promotion starts ";
+        promoMessage.message+="המבצע הבא מתחיל  ";
         if ((startDate.getDate()==nowDate.getDate())
         &&(startDate.getMonth()==nowDate.getMonth())
         &&(startDate.getFullYear()==nowDate.getFullYear()))
-          promoMessage.message+="today";
+          promoMessage.message+="היום";
         else
-        promoMessage.message+=startDate.toDateString();
+        promoMessage.message+=startDate.toLocaleDateString("he-IL",optionsDate);
 
-        promoMessage.message+=" at "+this.formT(startDate.getHours())+":"+this.formT(startDate.getMinutes());
+        promoMessage.message+=" ב"+this.formT(startDate.getHours())+":"+this.formT(startDate.getMinutes());
       }
 
     

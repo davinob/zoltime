@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Create A New Product</ion-title>
+    <ion-title>יצירת מוצר חדש</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -24,7 +24,7 @@
         <div class="profile-image-placeholder" *ngIf="!addProductForm.controls.picture.value">
           <ion-icon class="basic" name="add-circle"></ion-icon>
           <div class="whiteBig">
-            Choose image
+            בחירת תמונה
          </div>
        </div>
         <div class="picPic" *ngIf="addProductForm.controls.picture.value" [style.backgroundImage]="getProfileImageStyle()">
@@ -36,8 +36,8 @@
     
     <ion-item>
         
-      <ion-label stacked>Name</ion-label>
-      <ion-input formControlName="name"  type="text"  placeholder="Name"></ion-input>
+      <ion-label stacked>שם</ion-label>
+      <ion-input formControlName="name"  type="text"  placeholder="שם"></ion-input>
     </ion-item>
 
 
@@ -46,7 +46,7 @@
     <div class="input-wrapper">
        <ion-item (click)="showCategoriesChoiceSelect()">
          
-            <div class="categoriesInputLabel" stacked>Category</div>
+            <div class="categoriesInputLabel" stacked>סוג</div>
           <div class="categoriesInput">{{addProductForm.value.category}}</div>
         </ion-item>
          </div>
@@ -62,19 +62,19 @@
 
       <ion-item>
         
-      <ion-label stacked>General Description</ion-label>
-      <ion-input formControlName="description"  type="text"  placeholder="General Description"></ion-input>
+      <ion-label stacked>תיאור כללי</ion-label>
+      <ion-input formControlName="description"  type="text"  placeholder="תיאור כללי"></ion-input>
     </ion-item>
 
         <ion-item>
-        <ion-label stacked>Original Price (₪)</ion-label>
-        <ion-input formControlName="originalPrice"  type="number"  placeholder="Original Price"></ion-input>
+        <ion-label stacked>מחיר (₪)</ion-label>
+        <ion-input formControlName="originalPrice"  type="number"  placeholder="מחיר"></ion-input>
       </ion-item>
         
     
     <button ion-button block [disabled]="!addProductForm.valid" type="submit">
-         Create A New Product
-        </button>
+         יצירת המוצר 
+                </button>
       
       
       
@@ -83,8 +83,8 @@
       </form>
 
       <ion-select  #selectPictureType [hidden]="true" (ionChange)="getPicture($event)" interface="action-sheet">
-          <ion-option value="Gallery">Gallery</ion-option>
-          <ion-option value="Camera">Camera</ion-option>
+          <ion-option value="גלריה">גלריה</ion-option>
+          <ion-option value="מצלמה">מצלמה</ion-option>
         </ion-select>
 
 </ion-content>

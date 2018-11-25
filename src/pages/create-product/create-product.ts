@@ -79,7 +79,7 @@ export class CreateProductPage {
 
     if (Camera['installed']()) {
       let sourceType=this.camera.PictureSourceType.SAVEDPHOTOALBUM;
-      if (typeChosen=="Camera")
+      if (typeChosen=="מצלמה")
         sourceType=this.camera.PictureSourceType.CAMERA;
      
       this.takePicture(sourceType);
@@ -147,7 +147,7 @@ export class CreateProductPage {
         
         }
         else
-        this.alertAndLoadingService.showToast({message:"Please choose an image"});
+        this.alertAndLoadingService.showToast({message:"נא לבחור תמונה"});
      }
     
   }

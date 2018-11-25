@@ -155,7 +155,7 @@ sellerProductsGroupedByCategoArr:Array<any>;
   removeInput(product:any)
   {
     this.alertAndLoadingService.
-    presentConfirm("Are you sure you want to remove this product?").then(
+    presentConfirm("למחוק את המוצר, בטוח?").then(
       (response)=>
       {
         if (response)
@@ -219,7 +219,7 @@ sellerProductsGroupedByCategoArr:Array<any>;
     if (Camera['installed']()) {
 
       let sourceType=this.camera.PictureSourceType.SAVEDPHOTOALBUM;
-      if (typeChosen=="Camera")
+      if (typeChosen=="מצלמה")
       sourceType=this.camera.PictureSourceType.CAMERA;
      
       this.takePicture(sourceType);

@@ -25,6 +25,11 @@
     background-position: center;
     margin: auto;
   }
+
+  .text-input
+  {
+      direction:rtl;
+  }
   
 .spinner-container {
     width: 100%;
@@ -34,6 +39,7 @@
 
 .global{
     background: linear-gradient(to bottom, #1c2c8c, #34B3E6); /* Standard syntax */
+    direction: rtl
 }      
 
 .menuList{
@@ -149,7 +155,7 @@ color:white
 .blankTextSimpleButton
 {
 color:white;
-font-size: small;
+font-size: 17px;
 font-weight: 400;
 }
 

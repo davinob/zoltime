@@ -74,7 +74,7 @@ export class UpdatePromotionSuitePage {
         let discountVal=Math.round(((originalPriceVal-reducedPriceVal)/originalPriceVal)*100*100)/100;
         if (discountVal<25)
         {
-          this.alertAndLoadingService.showToast({message:"Reduction should be more than 25%"});
+          this.alertAndLoadingService.showToast({message:"ההנחה צריכה להיות יותר מ%25"});
           product.discount=100;
           product.reducedPrice=0;
 
@@ -95,7 +95,7 @@ export class UpdatePromotionSuitePage {
       {
         if (discountVal<25)
         {
-          this.alertAndLoadingService.showToast({message:"Reduction should be more than 25%"});
+          this.alertAndLoadingService.showToast({message:"ההנחה צריכה להיות יותר מ%25"});
           product.discount=100;
           product.reducedPrice=0;
          }

@@ -103,8 +103,8 @@ export class AlertAndLoadingService {
       message: errorMessage,
       buttons: [
         {
-          text: "Ok",
-          role: 'cancel'
+          text: "אישור",
+          role: 'ביטול'
         }
       ]
     });
@@ -207,7 +207,7 @@ export class AlertAndLoadingService {
         message: message,
         buttons: [
           {
-            text: 'Cancel',
+            text: 'ביטול',
             role: 'cancel',
             handler: () => {
               console.log('Cancel clicked');
@@ -215,7 +215,7 @@ export class AlertAndLoadingService {
             }
           },
           {
-            text: 'OK',
+            text: 'אישור',
             handler: () => {
              resolve(true);
             }

@@ -7,7 +7,7 @@
 <ion-header>
   
     <ion-navbar>
-      <ion-title>Create A New Promotion</ion-title>
+      <ion-title>יצירת מבצע חדש</ion-title>
     </ion-navbar>
   
   </ion-header>
@@ -31,15 +31,15 @@
       
       <ion-item>
           
-        <ion-label stacked>Name</ion-label>
-        <ion-input formControlName="name"  type="text"  placeholder="Name"></ion-input>
+        <ion-label stacked>שם</ion-label>
+        <ion-input formControlName="name"  type="text"  placeholder="שם"></ion-input>
       </ion-item>
 
-      <div class="labelPromotions">Promotion date</div>
+      <div class="labelPromotions">תאריך המבצע</div>
       <div class="datePromotions">
       <ion-item>
-          <ion-label [hidden]="!isOneTimePromotion()">One Time Promotion</ion-label>
-          <ion-label [hidden]="isOneTimePromotion()">Recurrent Promotion</ion-label>
+          <ion-label [hidden]="!isOneTimePromotion()">מבצע חד פעמי</ion-label>
+          <ion-label [hidden]="isOneTimePromotion()">מבצע חוזר</ion-label>
           <ion-toggle formControlName="dateOneTime"></ion-toggle>
       </ion-item>
         
@@ -49,30 +49,30 @@
               </ion-item>
         </div>
          <div class="recurrentTimePromotion" [hidden]="isOneTimePromotion()"  >
-                      <div [ngClass]="isPromotionDayEnabled(7)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(7)"><span>S</span></div>
-                      <div [ngClass]="isPromotionDayEnabled(1)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(1)"><span>M</span></div>
-                      <div [ngClass]="isPromotionDayEnabled(2)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(2)"><span>T</span></div>
-                      <div [ngClass]="isPromotionDayEnabled(3)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(3)"><span>W</span></div>
-                      <div [ngClass]="isPromotionDayEnabled(4)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(4)"><span>T</span></div>
-                      <div [ngClass]="isPromotionDayEnabled(5)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(5)"><span>F</span></div>
-                      <div [ngClass]="isPromotionDayEnabled(6)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(6)"><span>S</span></div>
+                      <div [ngClass]="isPromotionDayEnabled(7)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(7)"><span>א'</span></div>
+                      <div [ngClass]="isPromotionDayEnabled(1)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(1)"><span>ב'</span></div>
+                      <div [ngClass]="isPromotionDayEnabled(2)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(2)"><span>ג'</span></div>
+                      <div [ngClass]="isPromotionDayEnabled(3)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(3)"><span>ד'</span></div>
+                      <div [ngClass]="isPromotionDayEnabled(4)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(4)"><span>ה'</span></div>
+                      <div [ngClass]="isPromotionDayEnabled(5)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(5)"><span>ו'</span></div>
+                      <div [ngClass]="isPromotionDayEnabled(6)? 'day_enabled' :'day_disabled'" (click)="choosePromotionDay(6)"><span>ש'</span></div>
             </div>
       </div>
 
 
 
-      <div class="labelPromotions">Promotion time</div>
+      <div class="labelPromotions">שעות המבצע</div>
       
       <div class="promotions" >
           <ion-grid >
                 <ion-row >
                     <ion-col (click)='showPromotionStartTime()' align-self-center>
-                        <span > Promotion Start:</span>
+                        <span > תחילת המבצע : </span>
                         <span>{{promotion.promotionStartTime}}</span>
                      
                      </ion-col>
                      <ion-col (click)='showPromotionEndTime()' align-self-center>
-                        <span > Promotion End:</span>
+                        <span > סוף המבצע : </span>
                         <span>{{promotion.promotionEndTime}}</span>
                      
                      </ion-col>
@@ -84,7 +84,7 @@
     
 
       
-      <div class="labelPromotions">Promotion products</div>
+      <div class="labelPromotions">מוצרי המבצע</div>
 
       <ion-list  *ngIf="allProducts as products ">
                         <ion-card (click)="endisableProduct(product)" *ngFor="let product of products"  [ngClass]="isProductEnabled(product)? 'product_enabled' :'product_disabled' " >
@@ -115,7 +115,7 @@
                    </ion-list> 
       
         <button ion-button block [disabled]="!isPromotionReadyToGo()" type="submit">
-          Update Products details
+          המשך ליצירת המבצע
           </button>
         
 

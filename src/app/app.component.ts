@@ -86,9 +86,9 @@ export class MyApp {
    
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'MY PRODUCTS', component: 'ProductsPage' },
-      { title: 'MY PROMOTIONS', component: 'PromotionsPage' },
-      { title: 'PROFILE SETTINGS', component: 'ProfileSettingsPage' }
+      { title: 'המוצרים שלי', component: 'ProductsPage' },
+      { title: 'המבצעים שלי', component: 'PromotionsPage' },
+      { title: 'פרטים כלליים', component: 'ProfileSettingsPage' }
     ];
     
     this.activePage=this.pages[0];

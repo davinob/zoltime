@@ -10,7 +10,7 @@
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-title>PROFILE SETTINGS</ion-title>
+      <ion-title>פרטים כלליים</ion-title>
     </ion-navbar>
   
   </ion-header>
@@ -38,8 +38,8 @@
   <input type="file" accept="image/*" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
       
               <ion-item >
-                  <ion-label color="primary" stacked>Name</ion-label>
-                  <ion-input  [(ngModel)]="seller.restaurantName" (ionFocus)='editInput("restaurantName",true)' placeholder="Restaurant Name"></ion-input>
+                  <ion-label color="primary" stacked>שם</ion-label>
+                  <ion-input  [(ngModel)]="seller.restaurantName" (ionFocus)='editInput("restaurantName",true)' placeholder="שם המסעדה"></ion-input>
             
                   <button *ngIf="allInputsShows.restaurantName" ion-button icon-only item-end clear (click)='editInput("restaurantName",false)'>
                    <ion-icon *ngIf="allInputsShows.restaurantName" class="red" name="redo"></ion-icon>
@@ -54,14 +54,14 @@
            
                 
                      <ion-item [hidden]="searchAddressInput">
-                        <ion-label color="primary" stacked>Address</ion-label>
+                        <ion-label color="primary" stacked>כתובת</ion-label>
                         <ion-input   formControlName="addressSaved"
-                          type="text" placeholder="Address" (ionFocus)='editInput("address",true)' ></ion-input>
+                          type="text" placeholder="כתובת" (ionFocus)='editInput("address",true)' ></ion-input>
                      </ion-item> 
                      <ion-item [hidden]="!searchAddressInput">
-                        <ion-label color="primary" stacked>Address</ion-label>
+                        <ion-label color="primary" stacked>כתובת</ion-label>
                          <ion-input   #addressInput formControlName="address"
-                          type="text" [(ngModel)]="searchAddress"  placeholder="Address" (ionFocus)='showAddresses(true)' (ionBlur)="showAddresses(false)"></ion-input>
+                          type="text" [(ngModel)]="searchAddress"  placeholder="כתובת" (ionFocus)='showAddresses(true)' (ionBlur)="showAddresses(false)"></ion-input>
                      <button *ngIf="searchAddressInput" ion-button icon-only item-end clear (click)=' editInput("address",false); '>  <ion-icon class="red" name="redo"></ion-icon>
                          </button>
                          <button *ngIf="searchAddressInput" ion-button icon-only item-end clear (click)=' saveInput("address",seller.address);' [disabled]="!addressSelected">
@@ -85,7 +85,7 @@
 
          
                 <ion-item (click)='editInput("category",true)'>
-                     <h4 class="h4"> Category</h4>
+                     <span class="h4"> סוג</span>
                      <h3>{{seller.category}}</h3>
                    </ion-item>
                   
@@ -96,7 +96,7 @@
           
                 <ion-item (click)='editInput("hashgaha",true)'>
                     
-                     <h4 class="h4"> Hashgaha</h4>
+                  <span class="h4">כשרות</span>
                      <h3>{{seller.textHashgaha}}</h3>
                    </ion-item>
                    <ion-item [hidden]="true">
@@ -108,8 +108,8 @@
 
       
                      <ion-item >
-                        <ion-label color="primary" stacked>Description</ion-label>
-                        <ion-textarea autosize  type="text" [(ngModel)]="seller.description" (ionFocus)='editInput("description",true)' placeholder="Description">
+                        <ion-label color="primary" stacked>אודות המסעדה</ion-label>
+                        <ion-textarea autosize  type="text" [(ngModel)]="seller.description" (ionFocus)='editInput("description",true)' placeholder="אודות המסעדה">
                         </ion-textarea>
                   
                         <button *ngIf="allInputsShows.description" ion-button icon-only item-end clear (click)='editInput("description",false)'>
@@ -122,8 +122,8 @@
 
                  
                       <ion-item >
-                          <ion-label color="primary" stacked>Telephone Number</ion-label>
-                          <ion-input [(ngModel)]="seller.telNo" (ionFocus)='editInput("telNo",true)' placeholder="Telephone Number"></ion-input>
+                          <ion-label color="primary" stacked>מספר טלפון</ion-label>
+                          <ion-input [(ngModel)]="seller.telNo" (ionFocus)='editInput("telNo",true)' placeholder="מספר טלפון"></ion-input>
                     
                           <button *ngIf="allInputsShows.telNo" ion-button icon-only item-end clear (click)='editInput("telNo",false)'>
                            <ion-icon *ngIf="allInputsShows.telNo" class="red" name="redo"></ion-icon>
@@ -134,7 +134,7 @@
                         </ion-item>
                   
                         <div class="openHours">
-                          <ion-label color="primary" stacked>Open hours</ion-label>
+                          <ion-label color="primary" stacked>שעות פתיחה</ion-label>
                          <div #startTimes   [hidden]="true">
                             <ion-datetime  *ngFor="let day of days,let ind=index" (ionChange)='saveInput("days",seller.days)' [attr.id]="'startTime' +  ind"  [hidden]="true" item-end 
                             minuteValues="00,05,10,15,20,25,30,35,40,45,50,55" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="seller.days[ind].startTime"></ion-datetime>
@@ -171,8 +171,8 @@
 
      
                      <ion-select #selectPictureType [hidden]="true" (ionChange)="getPicture($event)" interface="action-sheet">
-                      <ion-option value="Gallery">Gallery</ion-option>
-                      <ion-option value="Camera">Camera</ion-option>
+                      <ion-option value="גלריה">גלריה</ion-option>
+                      <ion-option value="מצלמה">מצלמה</ion-option>
                     </ion-select> 
     
         

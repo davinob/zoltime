@@ -28,14 +28,14 @@
   
 
       <ion-item>
-          <ion-label color="primary" stacked>Description</ion-label>
-          <ion-textarea formControlName="description" autosize  type="text" placeholder="Description">
+          <ion-label color="primary" stacked>אודות המסעדה</ion-label>
+          <ion-textarea formControlName="description" autosize  type="text" placeholder="אודות המסעדה">
           </ion-textarea>   
         </ion-item>
 
         <ion-item>
-            <ion-label color="primary" stacked>Telephone Number</ion-label>
-            <ion-input formControlName="telNo" placeholder="Telephone Number"></ion-input>
+            <ion-label color="primary" stacked>מספר טלפון</ion-label>
+            <ion-input formControlName="telNo" placeholder="מספר טלפון"></ion-input>
          </ion-item>
 
     
@@ -43,7 +43,7 @@
     
     
         <ion-item (click)="showHashgahaChoiceSelect()">
-            <h4 class="h4"> Hashgaha</h4>
+            <span class="h4">כשרות</span>
             <h3>{{signupForm.value.hashgaha}}</h3>
           </ion-item>
        
@@ -56,7 +56,7 @@
         
     
         <ion-item (click)="showCategoriesChoiceSelect()">
-            <h4 class="h4"> Category</h4>
+            <span class="h4">  סוג</span>
             <h3>{{getCategory()}}</h3>
           </ion-item>
 
@@ -66,7 +66,7 @@
                 </ion-select>
      
 
-                <ion-label color="primary" stacked>Open hours</ion-label>
+                <ion-label color="primary" stacked>שעות פתיחה</ion-label>
               
 
                  <div *ngFor="let day of days,let ind=index">
@@ -95,8 +95,8 @@
 
 
      <ion-item>
-        <ion-label color="primary" stacked>Address</ion-label> 
-      <ion-input #address formControlName="address" [(ngModel)]="searchAddress" (ionFocus)="showAddresses(true)" (ionBlur)="showAddresses(false)"  placeholder="Address">
+        <ion-label color="primary" stacked>כתובת</ion-label> 
+      <ion-input #address formControlName="address" [(ngModel)]="searchAddress" (ionFocus)="showAddresses(true)" (ionBlur)="showAddresses(false)"  placeholder="כתובת">
       </ion-input>
       </ion-item>
      <div *ngIf="searching" class="spinner-container">
@@ -109,7 +109,7 @@
     </ion-list>
 
      <button ion-button block [disabled]="!signupForm.valid" (click)="signupUser()">
-        UPDATE MY PROFILE
+        עדכן
         </button>
     
     
@@ -127,8 +127,8 @@
       
 
   <ion-select #selectPictureType [hidden]="true" (ionChange)="getPicture($event)" interface="action-sheet">
-    <ion-option value="Gallery">Gallery</ion-option>
-    <ion-option value="Camera">Camera</ion-option>
+    <ion-option value="גלריה">גלריה</ion-option>
+    <ion-option value="מצלמה">מצלמה</ion-option>
   </ion-select> 
 
 </ion-content>

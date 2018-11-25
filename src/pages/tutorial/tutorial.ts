@@ -95,7 +95,7 @@ export class TutorialPage {
   getCategory()
   {
     if (!this.signupForm.value.category)
-    return "Please select your restaurant category...";
+    return "נא לבחור סוג המסעדה...";
     else
     return this.signupForm.value.category
   }
@@ -109,7 +109,8 @@ export class TutorialPage {
   }
 
 
-  days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Shabbat"];
+  days=["א'","ב'","ג'","ד'","ה'","ו'","ש'"];
+
 
   daysToSave=this.sellerService.inititateSellerDays();
 
@@ -223,7 +224,7 @@ export class TutorialPage {
     console.log(typeChosen);
     if (Camera['installed']()) {
       let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
-      if (typeChosen=="Camera")
+      if (typeChosen=="מצלמה")
       sourceType=this.camera.PictureSourceType.CAMERA;
      
       this.takePicture(sourceType);
@@ -280,7 +281,7 @@ export class TutorialPage {
           this.uploadPicture(event.target.files[0],true);
         }
         else
-        this.alertAndLoadingService.showToast({message:"Please choose an image"});
+        this.alertAndLoadingService.showToast({message:"נא לבחור תמונה"});
      }
     
   }

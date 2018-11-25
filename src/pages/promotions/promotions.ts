@@ -27,18 +27,6 @@ export class PromotionsPage {
 
 
 
-  toShow=true;
-
-  names:Array<string>=["AGHNDHNM"];
-
-  modifyToSHow()
-  {
-    console.log("MODIFY CLICK");
-     this.toShow=!this.toShow;
-    this.names.push("ALLLO");
-    console.log(this.names);
-    console.log(this.toShow);
-  }
 
   allInputsShows:any={};
   sellerProducts:Array<Product>;
@@ -106,7 +94,7 @@ export class PromotionsPage {
   {
  
     this.alertAndLoadingService.
-    presentConfirm("Are you sure you want to remove this promotion?").then(
+    presentConfirm("למחוק את המבצע, בטוח?").then(
       (response)=>
       {
         if (response)

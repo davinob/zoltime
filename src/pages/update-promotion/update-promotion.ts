@@ -77,11 +77,12 @@ export class UpdatePromotionPage {
 
   
   ionViewDidLoad() {
+    var optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     console.log('ionViewDidLoad UpdatePromotionPage');
    this.promotionStartDate.value.day=this.promotion.date.getDate();
    this.promotionStartDate.value.month=this.promotion.date.getMonth()+1;
    this.promotionStartDate.value.year=this.promotion.date.getFullYear();
-   this.promotionStartDate._text=this.promotion.date.toDateString();
+   this.promotionStartDate._text=this.promotion.date.toLocaleDateString("he-IL",optionsDate);
 
    this.setDate();
    

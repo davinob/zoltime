@@ -84,7 +84,7 @@ export class ProfileSettingsPage {
   }
 
 
-  days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Shabbat"];
+  days=["א'","ב'","ג'","ד'","ה'","ו'","ש'"];
 
 
 
@@ -348,7 +348,7 @@ export class ProfileSettingsPage {
 
     if (Camera['installed']()) {
       let sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
-      if (typeChosen=="Camera")
+      if (typeChosen=="מצלמה")
       sourceType=this.camera.PictureSourceType.CAMERA;
      
       this.takePicture(sourceType);
@@ -408,7 +408,7 @@ export class ProfileSettingsPage {
           this.uploadPicture(event.target.files[0],true);
         }
         else
-        this.alertAndLoadingService.showToast({message:"Please choose an image"});
+        this.alertAndLoadingService.showToast({message:"נא לבחור תמונה"});
      }
     
   }

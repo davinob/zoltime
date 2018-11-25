@@ -51,8 +51,8 @@ export class LoginPage {
           if (!data.isOK)
           {
             console.log("DATA NOT OK");
-            this.alertAndLoadingService.showToast({message:"User is not enabled. In order to activate it, please contact us at: yodaleta@gmail.com"});
-          }
+            this.alertAndLoadingService.showToast({message:"כניסת המשתמש לא אושרה עדיין. נא ליצור קשר איתנו במייל: YODALETA@GMAIL.COM."});
+           }
           else
           {
             this.alertAndLoadingService.dismissLoading();
@@ -82,12 +82,5 @@ export class LoginPage {
   }
   
   
-
-
-  test()
-  {
-    this.alertAndLoadingService.showAlert({message:"BAD ERROR"});
-  }
-
 
 }

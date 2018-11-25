@@ -70,7 +70,7 @@ export class CreatePromotionPage {
   
   ionViewDidLoad() {
     console.log('ionViewDidLoad CreatePromotionPage');
-    this.promotionStartDate._text="Today";
+    this.promotionStartDate._text="היום";
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -154,9 +154,9 @@ export class CreatePromotionPage {
         this.promotion.date.getMonth()==today.getMonth()&&
         this.promotion.date.getFullYear()==today.getFullYear())
         {
-          this.promotionStartDate._text="Today";
+          this.promotionStartDate._text="היום";
         }
-   
+  
     console.log("THE DATE");
     console.log(this.promotion.date);
   }
