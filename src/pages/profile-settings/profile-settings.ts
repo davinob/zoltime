@@ -17,6 +17,8 @@ import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { GlobalService } from '../../providers/global-service';
 import * as globalConstants from '../../providers/globalConstants'; 
+import { interval } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 
 
@@ -135,8 +137,8 @@ export class ProfileSettingsPage {
         {
           this.addressSelected=false;
           this.searchAddressInput=true;
-          Observable
-        .interval(200).first()
+          
+        interval(200).pipe(first())
         .subscribe(x=>
         {
         this.addressInput.setFocus();

@@ -94,18 +94,12 @@
                       </ion-select>
          
           
-                <ion-item (click)='editInput("hashgaha",true)'>
+                <ion-item (click)='alertAndLoadingService.showToast({message:"נא ליצור איתנו קשר אם מעוניינים לשנות את רמת הכשרות."});'>
                     
                   <span class="h4">כשרות</span>
                      <h3>{{seller.textHashgaha}}</h3>
                    </ion-item>
-                   <ion-item [hidden]="true">
-                      <ion-select #hashgahaInput  multiple="false" (ionChange)='saveInput("hashgaha",$event)'>
-                       <ion-option *ngFor="let hashga of getHashgahot()"  (value)="hashga">{{hashga}}</ion-option>
-                      </ion-select>
-                   </ion-item>
-          
-
+                 
       
                      <ion-item >
                         <ion-label color="primary" stacked>אודות המסעדה</ion-label>

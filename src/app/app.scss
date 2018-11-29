@@ -131,6 +131,12 @@ background: linear-gradient(to bottom, #1c2c8c, #34B3E6); /* Standard syntax */
 
 }
 
+
+.toast-md
+{
+direction:rtl;
+}
+
 .alert-md .alert-message
 {
 color:white;
@@ -144,7 +150,8 @@ color:white
 
 .alert-md .alert-radio-label
 {
-color:white 
+color:white ;
+direction: rtl;
 }
 
 .alert-md .alert-checkbox-label

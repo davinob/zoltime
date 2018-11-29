@@ -7,7 +7,7 @@
 <ion-header>
   
     <ion-navbar>
-      <ion-title>Update Promotion</ion-title>
+      <ion-title>עדכון מבצע</ion-title>
     </ion-navbar>
   
   </ion-header>
@@ -42,7 +42,7 @@
                       <ion-row >
                         <ion-col>
                             <ion-item text-wrap>
-                      <ion-label stacked>Quantity</ion-label>
+                      <ion-label stacked>כמות</ion-label>
                       <ion-input   [ngModelOptions]="{standalone:true}" [(ngModel)]="product.quantity" type="number"  placeholder="Default Quantity"></ion-input>
                     </ion-item>
                         </ion-col>
@@ -50,13 +50,13 @@
                       <ion-row >
                       <ion-col>
                             <ion-item text-wrap>
-                        <ion-label stacked>Discount (%)</ion-label>
+                        <ion-label stacked>הנחה (%)</ion-label>
                      <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.discount" (ionBlur)="checkAndCalculateReducedPrice(product)" type="number"  placeholder="Discount"></ion-input>
                     </ion-item>
                     </ion-col>
                     <ion-col>
                             <ion-item text-wrap>
-                      <ion-label stacked>New Price (₪)</ion-label>
+                      <ion-label stacked>מחיר אחרי הנחה (₪)</ion-label>
                       <ion-input  [ngModelOptions]="{standalone:true}" [(ngModel)]="product.reducedPrice" (ionBlur)="checkAndCalculateDiscount(product)" type="number"  placeholder="New"></ion-input>
                     </ion-item>
                   </ion-col>
@@ -69,7 +69,7 @@
           
       
       <button ion-button block [disabled]="!isPromotionReadyToGo()">
-          Update Promotion
+          עדכן מבצע
           </button>
         </form>
    

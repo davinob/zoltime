@@ -48,10 +48,10 @@
                                           <ion-row >
                                               <ion-col  [hidden]="sellerService.isPromotionExpired(promotion)" align-self-center>
                                                <button [hidden]="shouldShowPromotion(promotion)" class="publishPromo" ion-button (click)="startPromo(promotion)">
-                                                Start
+                                                התחל
                                                </button>
                                                <button [hidden]="!shouldShowPromotion(promotion)" class="stopPromo"  ion-button (click)="stopPromo(promotion)">
-                                                 Stop
+                                                 עצור
                                               </button>
                                       </ion-col>
                                    

@@ -7,7 +7,7 @@
 <ion-header>
   
     <ion-navbar>
-      <ion-title>Update  Promotion</ion-title>
+      <ion-title>עדכון מבצע</ion-title>
     </ion-navbar>
   
   </ion-header>
@@ -31,15 +31,15 @@
       
       <ion-item>
           
-        <ion-label stacked>Name</ion-label>
+        <ion-label stacked>שם</ion-label>
         <ion-input formControlName="name"  type="text"  placeholder="Name"></ion-input>
       </ion-item>
 
-      <div class="labelPromotions">Promotion date</div>
+      <div class="labelPromotions">תאריך המבצע</div>
       <div class="datePromotions">
       <ion-item>
-          <ion-label [hidden]="!isOneTimePromotion()">One Time Promotion</ion-label>
-          <ion-label [hidden]="isOneTimePromotion()">Recurrent Promotion</ion-label>
+          <ion-label [hidden]="!isOneTimePromotion()">מבצע חד פעמי</ion-label>
+          <ion-label [hidden]="isOneTimePromotion()">מבצע חוזר</ion-label>
           <ion-toggle formControlName="dateOneTime"></ion-toggle>
       </ion-item>
         
@@ -61,18 +61,18 @@
 
 
 
-      <div class="labelPromotions">Promotion time</div>
+      <div class="labelPromotions">שעות המבצע</div>
       
       <div class="promotions" >
           <ion-grid >
                 <ion-row >
                     <ion-col (click)='showPromotionStartTime()' align-self-center>
-                        <span > Promotion Start:</span>
+                        <span > תחילת המבצע : </span>
                         <span>{{promotion.promotionStartTime}}</span>
                      
                      </ion-col>
                      <ion-col (click)='showPromotionEndTime()' align-self-center>
-                        <span > Promotion End:</span>
+                        <span > סוף המבצע :</span>
                         <span>{{promotion.promotionEndTime}}</span>
                      
                      </ion-col>
@@ -84,7 +84,7 @@
     
 
       
-      <div class="labelPromotions">Promotion products</div>
+      <div class="labelPromotions">מוצרי המבצע</div>
 
       <ion-list  *ngIf="allProducts as products ">
                         <ion-card (click)="endisableProduct(product)" *ngFor="let product of products"  [ngClass]="isProductEnabled(product)? 'product_enabled' :'product_disabled' " >
@@ -120,7 +120,7 @@
                    </ion-list> 
       
         <button ion-button block [disabled]="!isPromotionReadyToGo()" type="submit">
-         Update Products details
+          המשך לעדכון המבצע
           </button>
         
 
