@@ -1,8 +1,7 @@
 
 
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
-import { Http } from '@angular/http';
+
 import 'rxjs/add/operator/map';
 
 import { Observable } from 'rxjs/Observable';
@@ -15,17 +14,16 @@ import { timer } from 'rxjs';
   
   import * as firebase from 'firebase/app';
 
-  import * as globalConstants from './../providers/globalConstants'; 
-  
-
+ 
   import { Subject } from 'rxjs/Subject';
 
   import { AuthService } from './auth-service';
   import { UploadService,Picture } from './upload-service';
   import { GlobalService } from './global-service';
 
-  import { HttpClient } from '@angular/common/http';
-import { Timestamp } from 'rxjs/Rx';
+
+
+import * as globalConstants from './../providers/globalConstants'; 
 
 
 export interface Seller {
@@ -96,7 +94,7 @@ export class SellerService {
   
 
   constructor(public authService:AuthService,
-    private uploadService:UploadService,private http: HttpClient,
+    private uploadService:UploadService,
     private globalService:GlobalService) {
 
      
@@ -426,6 +424,8 @@ public addProductToCurrentUser(
     url:"assets/icon/food.png",
   };
 
+  
+
 console.log("adding product on UID"+this.globalService.userID);
 console.log(product); 
 
@@ -447,7 +447,6 @@ reject(new Error("Error inserting the data"));
 });
 
 }
-
 
 public getProductCategoriesChoices():Set<string>
 {

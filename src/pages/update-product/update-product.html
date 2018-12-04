@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Update Product</ion-title>
+    <ion-title>עדכן מוצר</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -19,8 +19,8 @@
     <form [formGroup]="updateProductForm" (submit)="updateProduct()">
     <ion-item>
         
-      <ion-label stacked>Name</ion-label>
-      <ion-input formControlName="name"   type="text"  placeholder="Name"></ion-input>
+      <ion-label stacked>שם</ion-label>
+      <ion-input formControlName="name"   type="text"  placeholder="שם"></ion-input>
     </ion-item>
 
 
@@ -28,7 +28,7 @@
     <div class="input-wrapper">
         <ion-item (click)="showCategoriesChoiceSelect()">
           
-             <div class="categoriesInputLabel" stacked>Category</div>
+             <div class="categoriesInputLabel" stacked>סוג</div>
            <div class="categoriesInput">{{updateProductForm.value.category}}</div>
          </ion-item>
           </div>
@@ -43,20 +43,20 @@
 
     <ion-item>
         
-      <ion-label stacked>General Description</ion-label>
-      <ion-input formControlName="description"  type="text"  placeholder="General Description"></ion-input>
+      <ion-label stacked>תיאור כללי</ion-label>
+      <ion-input formControlName="description"  type="text"  placeholder="תיאור כללי"></ion-input>
     </ion-item>
    
     <ion-item>
         
-      <ion-label stacked>Original Price</ion-label>
-      <ion-input formControlName="originalPrice"  type="number"  placeholder="Original Price"></ion-input>
+      <ion-label stacked>מחיר</ion-label>
+      <ion-input formControlName="originalPrice"  type="number"  placeholder="מחיר"></ion-input>
     </ion-item>
 
   
         
     <button ion-button block [disabled]="!updateProductForm.valid" type="submit">
-        Update Product
+        עדכן מוצר
         </button>
       </form>
      
