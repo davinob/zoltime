@@ -16,7 +16,7 @@
  
     <div [ngClass]="products_enabled">
               <button ion-button (click)="addProduct()">
-                  יצירת מוצר 
+                הוסף מוצר 
                 </button>
                <ion-list *ngIf="hasProducts()">
                   <div *ngFor="let category of getSellerProductsCategories()" text-wrap>
