@@ -116,6 +116,7 @@ export class UpdatePromotionSuitePage {
   updatePromotion(){
     if (!this.isPromotionReadyToGo()){
       console.log("FORM INVALID");
+      this.alertAndLoadingService.showToast({message:"פרטים לא נכונים"});
     } else {
      
       console.log("SELECTED PRODUCTS TO BE ADDED:");

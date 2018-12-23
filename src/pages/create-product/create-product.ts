@@ -126,7 +126,7 @@ export class CreateProductPage {
       }
     ).catch(error=>
       {
-      this.alertAndLoadingService.showToast(error);
+      this.alertAndLoadingService.showToast({message:error});
       })
   }
   
@@ -170,6 +170,7 @@ export class CreateProductPage {
   addProduct(){
     if (!this.addProductForm.valid){
       console.log("FORM INVALID"+this.addProductForm.value);
+      this.alertAndLoadingService.showToast({message:"פרטים לא נכונים"});
     } else {
         let user=this.sellerService.getCurrentSeller();
         console.log("SIGNUP:"+user);

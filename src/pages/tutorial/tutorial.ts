@@ -152,7 +152,7 @@ export class TutorialPage {
 
 
 
-  setFilteredItems() {
+  async setFilteredItems() {
     console.log("FILTERING ADDRESSES");
   if ((this.searchAddress==null)||(this.searchAddress.length<2)||(this.shouldShowAddresses==false))
   { 
@@ -161,11 +161,10 @@ export class TutorialPage {
   }
       this.searching=true;
       this.addressSelected=false;
-      this.addressService.filterItems(this.searchAddress).first().subscribe((listOfAddresses)=>
-      {
-         this.searching=false;
-         this.addresses=listOfAddresses.value;
-      });
+      this.addresses=await this.addressService.filterItems(this.searchAddress);
+        this.searching=false;
+    
+   
 
   }
 
@@ -180,12 +179,18 @@ export class TutorialPage {
     this.searchAddress=address.description;
     this.addressSelected=true;
     
-    
+    try
+    {
     this.addressService.getPosition(address).first().subscribe((addressJSON)=>
     {
         console.log(addressJSON);
         this.addressJSON=addressJSON.value;
     });
+    }
+    catch(error)
+    {
+      this.alertAndLoadingService.showToast({message:error});
+    }
     
     this.addressJustSet=true;  
    this.addressInput.setFocus();
@@ -264,7 +269,7 @@ export class TutorialPage {
       }
     ).catch(error=>
       {
-       this.alertAndLoadingService.showToast(error);
+       this.alertAndLoadingService.showToast({message:error});
       })
   }
 
@@ -309,9 +314,10 @@ export class TutorialPage {
   }
   
 
-  signupUser(){
+  async signupUser(){
     if (!this.signupForm.valid){
       console.log("FORM INVALID"+this.signupForm.value);
+      this.alertAndLoadingService.showToast({message:"פרטים לא נכונים"});
     } else {
 
    
@@ -330,21 +336,29 @@ export class TutorialPage {
           hashgahaValue={"כשר":true,"למהדרין":true};
         }
 
+        this.alertAndLoadingService.showLoading();
 
-        let user=this.sellerService.getCurrentSeller();
-        console.log("SIGNUP:"+user);
-         this.sellerService.updateCurrentUser(
+        try{
+          let user=this.sellerService.getCurrentSeller();
+          console.log("SIGNUP:"+user);
+        await this.sellerService.updateCurrentUser(
           this.addressJSON,this.signupForm.value.description,this.signupForm.value.telNo,
-        this.profilePic,hashgahaValue,this.signupForm.value.category,this.daysToSave)
-        .then(()=> {
+        this.profilePic,hashgahaValue,this.signupForm.value.category,this.daysToSave);
+        }
+        catch(error)
+        {
+          this.alertAndLoadingService.dismissLoading();
+          this.alertAndLoadingService.showToast({message:error});
+        }
+       
           this.startApp();
           console.log(this.signupForm.value.hashgaha);
           console.log("Document successfully written!");
-          })
+        
         
 
    
-      this.alertAndLoadingService.showLoading();
+     
     }
   }
 

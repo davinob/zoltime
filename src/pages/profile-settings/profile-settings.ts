@@ -270,7 +270,7 @@ export class ProfileSettingsPage {
 
   lastStringTyped:string="";
 
-  setFilteredItems() {
+  async setFilteredItems() {
     console.log("FILTERING ADDRESSES");
     console.log(this.lastStringTyped);
     console.log(this.searchAddress);
@@ -285,12 +285,9 @@ export class ProfileSettingsPage {
     this.lastStringTyped=this.searchAddress;
       this.searching=true;
       this.addressSelected=false;
-      this.addressService.filterItems(this.searchAddress).first().subscribe((listOfAddresses)=>
-      {
-         this.searching=false;
-         this.addresses=listOfAddresses.value;
-      });
-
+      this.addresses= await this.addressService.filterItems(this.searchAddress);
+      this.searching=false;
+     
   }
 
 
@@ -306,12 +303,19 @@ export class ProfileSettingsPage {
     this.lastStringTyped=this.searchAddress;
     this.addressSelected=true;
     
-    
+    try
+    {
     this.addressService.getPosition(address).first().subscribe((addressJSON)=>
     {
         console.log(addressJSON);
         this.addressJSON=addressJSON.value;
     });
+
+  }
+  catch(error)
+  {
+    this.alertAndLoadingService.showToast({message:error});
+  }
     
    this.addressInput.setFocus();
     
@@ -393,7 +397,7 @@ export class ProfileSettingsPage {
       }
     ).catch(error=>
       {
-       this.alertAndLoadingService.showToast(error);
+       this.alertAndLoadingService.showToast({message:error});
       })
   }
 

@@ -204,6 +204,7 @@ export class CreatePromotionPage {
   prePromotion(){
     if (!this.addPromotionForm.valid){
       console.log("FORM INVALID"+this.addPromotionForm.value);
+      this.alertAndLoadingService.showToast({message:"פרטים לא נכונים"});
     } else {
       this.promotion.name=this.addPromotionForm.value.name;
       this.promotion.isOneTime=this.isOneTimePromotion();

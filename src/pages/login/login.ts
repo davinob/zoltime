@@ -65,7 +65,7 @@ export class LoginPage {
           });
         }).catch((error) => {
         this.authService.logoutUser();
-        this.alertAndLoadingService.showToast(error);
+        this.alertAndLoadingService.showToast({message:error});
         
       });
 

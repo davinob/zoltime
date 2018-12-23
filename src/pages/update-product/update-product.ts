@@ -61,6 +61,7 @@ export class UpdateProductPage {
   updateProduct(){
     if (!this.updateProductForm.valid){
       console.log("FORM INVALID"+this.updateProductForm.value);
+      this.alertAndLoadingService.showToast({message:"פרטים לא נכונים"});
     } else {
         let user=this.sellerService.getCurrentSeller();
         console.log("SIGNUP:"+user);
@@ -74,7 +75,7 @@ export class UpdateProductPage {
           }
         ).catch (error=>
         {
-       //   this.alertAndLoadingService.showToast(error);
+       //   this.alertAndLoadingService.showToast({message:error});
         });
         
 

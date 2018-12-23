@@ -268,7 +268,7 @@ sellerProductsGroupedByCategoArr:Array<any>;
               }
           ).catch(error=>
            {
-            this.alertAndLoadingService.showToast(error);
+            this.alertAndLoadingService.showToast({message:error});
            })
         
      }

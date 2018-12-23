@@ -135,7 +135,7 @@ export class UploadService {
     );
     setTimeout( () => {
       reject(new Error("Error uploading the file"));
-      }, 10000); 
+      }, 200000); 
     });
   }
   

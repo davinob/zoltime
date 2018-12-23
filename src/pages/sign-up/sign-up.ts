@@ -48,6 +48,7 @@ export class SignUpPage {
   async signupUser(){
     if (!this.signupForm.valid){
       console.log("FORM INVALID"+this.signupForm.value);
+      this.alertAndLoadingService.showToast({message:"פרטים לא נכונים"});
     } else {
       this.alertAndLoadingService.showLoading();
       
@@ -66,7 +67,7 @@ export class SignUpPage {
       }
       catch(error)
       {
-        this.alertAndLoadingService.showToast(error);
+        this.alertAndLoadingService.showToast({message:error});
         return null;
       }
 
