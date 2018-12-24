@@ -249,7 +249,7 @@ export class ProfileSettingsPage {
 
  
   searchAddress: string="";
-  addresses: any;
+  addresses: Array<any> = [];
   shouldShowAddresses:boolean;
   searching:boolean=false;
   addressSelected:boolean=false;
@@ -294,45 +294,35 @@ export class ProfileSettingsPage {
 
   
   
-  
-  selectAddress(address:any)
+
+  async selectAddress(address:any)
   {
     console.log("SELECT ADDRESS" + address.description);
-    this.addresses=null;
-    this.searchAddress=address.description;
-    this.lastStringTyped=this.searchAddress;
-    this.addressSelected=true;
+    this.addresses=new Array();
     
-    try
+    try{
+      
+      let addressJSON=await this.addressService.getPosition(address);
+      this.searchAddress=address.description;
+       this.addressSelected=true;
+      console.log(addressJSON);
+      this.addressJSON=addressJSON;
+      this.lastStringTyped=this.searchAddress;
+    }
+    catch(error)
     {
-    this.addressService.getPosition(address).first().subscribe((addressJSON)=>
-    {
-        console.log(addressJSON);
-        this.addressJSON=addressJSON.value;
-    });
-
-  }
-  catch(error)
-  {
-    this.alertAndLoadingService.showToast({message:error});
-  }
+      this.alertAndLoadingService.showToast({message:error});
+      this.addressJSON=null;
+      this.searchAddress=null;
+      this.addressSelected=false;
+    }
+   
     
-   this.addressInput.setFocus();
-    
+    this.addressInput.setFocus();
   }
   
  
 
-
- logoutApp()
-  {
-     this.authData.logoutUser().then( authData => {
-     
-     this.navCtrl.setRoot(LoginPage);
-     });
-     
-     this.alertAndLoadingService.showLoading();
-  }
 
 
   profilePic:Picture;

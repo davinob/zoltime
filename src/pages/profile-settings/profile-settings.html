@@ -70,7 +70,7 @@
         
                      </ion-item>             
 
-                     <div *ngIf="searching" class="spinner-container">
+                     <div [hidden]="!searching" class="spinner-container">
                         <ion-spinner></ion-spinner>
                     </div>
                     <ion-list>

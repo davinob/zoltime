@@ -9,6 +9,7 @@ import 'rxjs/add/operator/first';
 
 
 import * as firebase from 'firebase/app';
+import { LoginPage } from '../pages/login/login';
 
 
 @Component({
@@ -16,17 +17,23 @@ import * as firebase from 'firebase/app';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-
+  rootPage:any = LoginPage;
   activePage: any;
   initTime:boolean=true;
   userConnected=false;
   
   pages: Array<{title: string, component: any}>;
 
+
+
   constructor(public authService: AuthService, 
     public sellerService: SellerService ) {
-
-    
+      
+      this.initApp();
+    }
+  
+    async initApp(){
+  
   
     
     firebase.auth().onAuthStateChanged(user=>
@@ -49,7 +56,8 @@ export class MyApp {
             console.log(data);
           if (!data.isOK && ((!this.nav.getActive()) || this.nav.getActive().name!="LoginPage"))
           {
-            this.nav.setRoot('LoginPage');
+            this.nav.setRoot(LoginPage);
+     
           }
           else
           {
@@ -74,7 +82,11 @@ export class MyApp {
         {
           this.userConnected=false;
           console.log("USER IS NOT CONNECTED");
-          this.nav.setRoot("LoginPage");
+         
+           if ((!this.nav.getActive()) || this.nav.getActive().name!="LoginPage")
+            this.nav.setRoot(LoginPage);
+      
+
           console.log("Changed to root page");
         }
         this.initTime=false;

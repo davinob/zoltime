@@ -2,9 +2,12 @@
 
 </ion-header>
 
-<ion-content class="global" no-bounce>
+<ion-content class="global">
 
-    
+    <div *ngIf="searching" class="spinner-container">
+        <ion-spinner></ion-spinner>
+    </div>
+  
     <form [formGroup]="signupForm" (submit)="signupUser()">
 
 
@@ -38,15 +41,14 @@
           <ion-input #address formControlName="address" [(ngModel)]="searchAddress" (ionFocus)="showAddresses(true)" (ionBlur)="showAddresses(false)"  placeholder="כתובת">
           </ion-input>
           </ion-item>
-         <div *ngIf="searching" class="spinner-container">
-            <ion-spinner></ion-spinner>
-        </div>
-        <ion-list>
-          <ion-item *ngFor="let address of addresses" (click)="selectAddress(address)">
+    
+       <ion-list #myList>
+          <ion-item class="addressItem" *ngFor="let address of addresses" (click)="selectAddress(address)">
             {{address.description}}
           </ion-item>
+   
         </ion-list>
-
+      
         <ion-item>
             <ion-label color="primary" stacked>מספר טלפון</ion-label>
             <ion-input formControlName="telNo" placeholder="מספר טלפון"></ion-input>

@@ -1,5 +1,5 @@
 import { Component,ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, MenuController, NavController, Platform } from 'ionic-angular';
+import { IonicPage, MenuController, NavController, Platform,Content } from 'ionic-angular';
 
  
 
@@ -15,6 +15,7 @@ import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalService } from '../../providers/global-service';
 import * as globalConstants from '../../providers/globalConstants'; 
+import { Observable } from 'rxjs';
 
 
 @IonicPage()
@@ -38,16 +39,17 @@ export class TutorialPage {
 
   @ViewChild('startTimes') startTimes:ElementRef;
   @ViewChild('endTimes') endTimes:ElementRef ;
+  @ViewChild(Content) content: Content;
+
+  
   
   public signupForm:FormGroup;
 
-  searchAddress: string = '';
-  addresses: any;
-  
+  searchAddress: string="";
+  addresses: Array<any> = [];
   shouldShowAddresses:boolean;
   searching:boolean=false;
   addressSelected:boolean=false;
-  
   addressJSON:Address;
 
 
@@ -136,6 +138,7 @@ export class TutorialPage {
   ionViewDidEnter() {
     // the root left menu should be disabled on the tutorial page
     this.menu.enable(false);
+   
   }
 
   ionViewWillLeave() {
@@ -144,69 +147,75 @@ export class TutorialPage {
   }
 
   ionViewDidLoad() {
-    
      this.signupForm.controls.address.valueChanges.debounceTime(400).subscribe(search => {
-           this.setFilteredItems();
+  
+      this.setFilteredItems();
+          
+
        });
    }
 
 
 
-  async setFilteredItems() {
-    console.log("FILTERING ADDRESSES");
-  if ((this.searchAddress==null)||(this.searchAddress.length<2)||(this.shouldShowAddresses==false))
-  { 
-    this.addresses=null;
-    return;
-  }
-      this.searching=true;
-      this.addressSelected=false;
-      this.addresses=await this.addressService.filterItems(this.searchAddress);
-        this.searching=false;
-    
-   
-
-  }
-
-
-
-  addressJustSet:boolean=false;
   
-  selectAddress(address:any)
-  {
-    console.log("SELECT ADDRESS" + address.description);
-    this.addresses=null;
-    this.searchAddress=address.description;
-    this.addressSelected=true;
+   lastStringTyped:string="";
+
+   async setFilteredItems() {
+     console.log("FILTERING ADDRESSES");
+     console.log(this.lastStringTyped);
+     console.log(this.searchAddress);
+     if ((this.searchAddress==null)||(this.searchAddress.length<2)
+     ||(this.lastStringTyped==this.searchAddress)||(!this.shouldShowAddresses))
+     {
+       if ((this.searchAddress==null)||(this.searchAddress.length<2))
+         this.addressSelected=false;
+       this.addresses=new Array();
+       return;
+     }
+     this.lastStringTyped=this.searchAddress;
+     this.searching=true;
+       this.addressSelected=false;
+       let theAdresses=await this.addressService.filterItems(this.searchAddress);
+       
+       this.addresses=theAdresses;
+       this.searching=false;
+      
+   }
+
+
+
+   async selectAddress(address:any)
+   {
+     console.log("SELECT ADDRESS" + address.description);
+     this.addresses=new Array();
+     
+     try{
+       
+       let addressJSON=await this.addressService.getPosition(address);
+       this.searchAddress=address.description;
+        this.addressSelected=true;
+       console.log(addressJSON);
+       this.addressJSON=addressJSON;
+       this.lastStringTyped=this.searchAddress;
+     }
+     catch(error)
+     {
+       this.alertAndLoadingService.showToast({message:error});
+       this.addressJSON=null;
+       this.searchAddress=null;
+       this.addressSelected=false;
+     }
     
-    try
-    {
-    this.addressService.getPosition(address).first().subscribe((addressJSON)=>
-    {
-        console.log(addressJSON);
-        this.addressJSON=addressJSON.value;
-    });
-    }
-    catch(error)
-    {
-      this.alertAndLoadingService.showToast({message:error});
-    }
-    
-    this.addressJustSet=true;  
-   this.addressInput.setFocus();
-    
-  }
+     
+     this.addressInput.setFocus();
+   }
   
  
   
+      
   showAddresses(toShow:boolean)
   {
-    if (this.addressJustSet)
-    {
-      this.addressJustSet=false;
-      return;
-    }
-    console.log("SHOW ADRESS: "+toShow);
+  
    this.shouldShowAddresses=toShow;  
    if (!toShow)
    {
@@ -215,7 +224,6 @@ export class TutorialPage {
     this.searchAddress=null;
    }
   }
-
 
   choosePictureType()
   {

@@ -25,6 +25,7 @@ import { GlobalService } from './../providers/global-service';
 import * as fbConfig from './../providers/fbConfig'; 
 
 import * as firebase from "firebase";
+import { LoginPage } from '../pages/login/login';
 
 
 
@@ -32,7 +33,8 @@ firebase.initializeApp(fbConfig.firebaseConfig);
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    LoginPage
   ],
   imports: [
     
@@ -43,11 +45,11 @@ firebase.initializeApp(fbConfig.firebaseConfig);
     IonicModule.forRoot(MyApp)
     
     
-    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    LoginPage
   ],
   providers: [
     StatusBar,
