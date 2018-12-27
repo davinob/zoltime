@@ -37,8 +37,12 @@ export class UpdateProductPage {
       this.myProduct=navParams.get('product');
       this.updateProductForm = formBuilder.group({
         name: [this.myProduct.name, Validators.required],
+        nameFr: [this.myProduct.nameFr, Validators.required],
+        nameEn: [this.myProduct.nameEn, Validators.required],
         category: [this.myProduct.category, Validators.required],
         description: [this.myProduct.description, Validators.required],
+        descriptionFr: [this.myProduct.descriptionFr, Validators.required],
+        descriptionEn: [this.myProduct.descriptionEn, Validators.required],
         originalPrice: [this.myProduct.originalPrice, Validators.required]
       });
 
@@ -67,7 +71,8 @@ export class UpdateProductPage {
         console.log("SIGNUP:"+user);
         
          this.sellerService.updateDefaultProductToCurrentUser(this.myProduct,
-          this.updateProductForm.value.name,this.updateProductForm.value.description,
+          this.updateProductForm.value.name,this.updateProductForm.value.nameFr,this.updateProductForm.value.nameEn,
+          this.updateProductForm.value.description,this.updateProductForm.value.descriptionFr,this.updateProductForm.value.descriptionEn,
           this.updateProductForm.value.originalPrice,this.updateProductForm.value.category)
         .then(()=> {
           console.log("Document successfully written!");

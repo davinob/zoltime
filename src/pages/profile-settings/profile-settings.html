@@ -114,6 +114,32 @@
                     </button>
                       </ion-item>
 
+                      <ion-item >
+                        <ion-label color="primary" stacked>אודות המסעדה בצרפתית</ion-label>
+                        <ion-textarea autosize  type="text" [(ngModel)]="seller.descriptionFr" (ionFocus)='editInput("descriptionFr",true)' placeholder="אודות המסעדה">
+                        </ion-textarea>
+                  
+                        <button *ngIf="allInputsShows.descriptionFr" ion-button icon-only item-end clear (click)='editInput("descriptionFr",false)'>
+                         <ion-icon *ngIf="allInputsShows.descriptionFr" class="red" name="redo"></ion-icon>
+                      </button>
+                      <button *ngIf="allInputsShows.descriptionFr" ion-button icon-only item-end clear (click)='saveInput("descriptionFr",seller.descriptionFr)' [disabled]="seller.descriptionFr==''">
+                          <ion-icon *ngIf="allInputsShows.descriptionFr" class="green" name="checkmark"></ion-icon>
+                    </button>
+                      </ion-item>
+
+                      <ion-item >
+                        <ion-label color="primary" stacked>אודות המסעדה באנגלית</ion-label>
+                        <ion-textarea autosize  type="text" [(ngModel)]="seller.descriptionEn" (ionFocus)='editInput("descriptionEn",true)' placeholder="אודות המסעדה">
+                        </ion-textarea>
+                  
+                        <button *ngIf="allInputsShows.descriptionEn" ion-button icon-only item-end clear (click)='editInput("descriptionEn",false)'>
+                         <ion-icon *ngIf="allInputsShows.descriptionEn" class="red" name="redo"></ion-icon>
+                      </button>
+                      <button *ngIf="allInputsShows.descriptionEn" ion-button icon-only item-end clear (click)='saveInput("descriptionEn",seller.descriptionEn)' [disabled]="seller.descriptionEn==''">
+                          <ion-icon *ngIf="allInputsShows.descriptionEn" class="green" name="checkmark"></ion-icon>
+                    </button>
+                      </ion-item>
+
                  
                       <ion-item >
                           <ion-label color="primary" stacked>מספר טלפון</ion-label>

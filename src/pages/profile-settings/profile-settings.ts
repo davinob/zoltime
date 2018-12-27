@@ -51,6 +51,8 @@ export class ProfileSettingsPage {
   nameSaved:string;
   telNoSaved:string;
   descriptionSaved:string;
+  descriptionFrSaved:string;
+  descriptionEnSaved:string;
   
   
   public updateForm:FormGroup;
@@ -80,6 +82,8 @@ export class ProfileSettingsPage {
       this.nameSaved=this.sellerService.getCurrentSeller().restaurantName;
       this.telNoSaved=this.sellerService.getCurrentSeller().telNo;
       this.descriptionSaved=this.sellerService.getCurrentSeller().description;
+      this.descriptionFrSaved=this.sellerService.getCurrentSeller().descriptionFr;
+      this.descriptionEnSaved=this.sellerService.getCurrentSeller().descriptionEn;
     }
       
     
@@ -172,6 +176,29 @@ export class ProfileSettingsPage {
        this.descriptionSaved=this.sellerService.getCurrentSeller().description;
      }
         break;
+        case "descriptionFr":
+        if (!bool)
+        {
+        this.sellerService.getCurrentSeller().descriptionFr=this.descriptionFrSaved;
+       
+       }
+       else
+       {
+         this.descriptionFrSaved=this.sellerService.getCurrentSeller().descriptionFr;
+       }
+          break;
+
+          case "descriptionEn":
+          if (!bool)
+          {
+          this.sellerService.getCurrentSeller().descriptionEn=this.descriptionEnSaved;
+         
+         }
+         else
+         {
+           this.descriptionEnSaved=this.sellerService.getCurrentSeller().descriptionEn;
+         }
+            break;
         case "telNo":
         if (!bool)
         {

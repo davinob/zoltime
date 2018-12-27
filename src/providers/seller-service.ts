@@ -31,6 +31,8 @@ export interface Seller {
   restaurantName:string;
   address?:Address;
   description?:string;
+  descriptionFr?:string;
+  descriptionEn?:string;
   telNo?:string;
   picture?:Picture;
   hashgaha?:string;
@@ -48,7 +50,11 @@ export interface Seller {
 
 export interface Product{
   name: string,
+  nameFr?: string,
+  nameEn?: string,
   description: string,
+  descriptionFr?: string,
+  descriptionEn?: string,
   category: string,
   quantity?: number,
   currentQuantity?:number,
@@ -535,12 +541,16 @@ reject(new Error("Error inserting the data"));
 
 
 public updateDefaultProductToCurrentUser(myProduct:Product,
-  name:string,description:string,
+  name:string,nameFr:string,nameEn:string,description:string,descriptionFr:string,descriptionEn:string,
   originalPrice:number, category:string):Promise<any>
 {
   let product:Product={
   name: name,
+  nameFr: nameFr,
+  nameEn: nameEn,
   description: description,
+  descriptionFr: descriptionFr,
+  descriptionEn: descriptionEn,
   originalPrice: originalPrice,
   category:category,
   key:myProduct.key,
