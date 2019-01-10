@@ -60,27 +60,15 @@
     
         <ion-item (click)="showHashgahaChoiceSelect()">
             <span class="h4">כשרות</span>
-            <h3>{{signupForm.value.hashgaha}}</h3>
+            <h3>{{chosenHashgaha}}</h3>
           </ion-item>
        
-              <ion-select [hidden]="true" formControlName="hashgaha" #hashgahaInput multiple="false" >
-                  <ion-option *ngFor="let hashga of getHashgahot()"
-                    (value)="hashga">{{hashga}}</ion-option>
-                 </ion-select>
- 
-      
         
     
         <ion-item (click)="showCategoriesChoiceSelect()">
             <span class="h4">  סוג</span>
             <h3>{{getCategory()}}</h3>
           </ion-item>
-
-             <ion-select [hidden]="true" formControlName="category" #categoryInput multiple="false" >
-                 <ion-option *ngFor="let category of getCategories()"
-                   (value)="category.name">{{category.name}}</ion-option>
-                </ion-select>
-     
 
                 <ion-label color="primary" stacked>שעות פתיחה</ion-label>
               
@@ -112,7 +100,7 @@
 
   
 
-     <button ion-button block [disabled]="!signupForm.valid" (click)="signupUser()">
+     <button ion-button block [disabled]="!signupForm.valid || !chosenCategory" (click)="signupUser()">
         עדכן
         </button>
     

@@ -1,9 +1,8 @@
-import { Component,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { SellerService } from '../../providers/seller-service';
-import { AddressService,Address } from '../../providers/address-service';
 import { AlertAndLoadingService } from '../../providers/alert-loading-service';
-import { Camera } from '@ionic-native/camera';
+
 import {ProductsPage} from '../products/products';
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -25,13 +24,14 @@ export class UpdateProductPage {
   
   public updateProductForm:FormGroup;
   myProduct:any;
+  categorySelected;
 
-  @ViewChild('categoriesInput') categoriesInput;
-  
+ 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder,
     public alertAndLoadingService: AlertAndLoadingService,
     public sellerService: SellerService,
+    public modalCtrl:ModalController
    )  {
 
       this.myProduct=navParams.get('product');
@@ -39,12 +39,13 @@ export class UpdateProductPage {
         name: [this.myProduct.name, Validators.required],
         nameFr: [this.myProduct.nameFr, Validators.required],
         nameEn: [this.myProduct.nameEn, Validators.required],
-        category: [this.myProduct.category, Validators.required],
         description: [this.myProduct.description, Validators.required],
         descriptionFr: [this.myProduct.descriptionFr, Validators.required],
         descriptionEn: [this.myProduct.descriptionEn, Validators.required],
         originalPrice: [this.myProduct.originalPrice, Validators.required]
       });
+
+      this.categorySelected=this.myProduct.category;
 
       
   }
@@ -56,7 +57,14 @@ export class UpdateProductPage {
 
   showCategoriesChoiceSelect()
   {
-    this.categoriesInput._elementRef.nativeElement.click();
+    let modalPage=this.modalCtrl.create('ModalSelectPage',{dataList:this.sellerService.getProductCategoriesChoices()});
+    modalPage.present();
+    modalPage.onDidDismiss(data=>
+      {
+        console.log("MODAL DISMMISS");
+        console.log(data);
+        this.categorySelected=data.chosen;
+      });
   }
 
 
@@ -73,7 +81,7 @@ export class UpdateProductPage {
          this.sellerService.updateDefaultProductToCurrentUser(this.myProduct,
           this.updateProductForm.value.name,this.updateProductForm.value.nameFr,this.updateProductForm.value.nameEn,
           this.updateProductForm.value.description,this.updateProductForm.value.descriptionFr,this.updateProductForm.value.descriptionEn,
-          this.updateProductForm.value.originalPrice,this.updateProductForm.value.category)
+          this.updateProductForm.value.originalPrice,this.categorySelected)
         .then(()=> {
           console.log("Document successfully written!");
        

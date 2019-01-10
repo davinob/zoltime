@@ -89,10 +89,7 @@
                      <h3>{{seller.category}}</h3>
                    </ion-item>
                   
-                      <ion-select [hidden]="true" #categoryInput  multiple="false" (ionChange)='saveInput("category",$event)'>
-                       <ion-option *ngFor="let category of getCategories()"  (value)="category.name">{{category.name}}</ion-option>
-                      </ion-select>
-         
+             
           
                 <ion-item (click)='alertAndLoadingService.showToast({message:"נא ליצור איתנו קשר אם מעוניינים לשנות את רמת הכשרות."});'>
                     

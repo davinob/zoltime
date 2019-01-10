@@ -47,17 +47,10 @@
        <ion-item (click)="showCategoriesChoiceSelect()">
          
             <div class="categoriesInputLabel" stacked>סוג</div>
-          <div class="categoriesInput">{{addProductForm.value.category}}</div>
+          <div class="categoriesInput">{{categorySelected}}</div>
         </ion-item>
          </div>
        
-
-         <ion-item [hidden]="true">
-            <ion-select formControlName="category" #categoriesInput multiple="false" >
-                <ion-option *ngFor="let category of sellerService.getProductCategoriesChoices()"
-                  (value)="category">{{category}}</ion-option>
-               </ion-select>
-        </ion-item>
 
 
       <ion-item>
@@ -72,7 +65,7 @@
       </ion-item>
         
     
-    <button ion-button block [disabled]="!addProductForm.valid" type="submit">
+    <button ion-button block [disabled]="!addProductForm.valid || !categorySelected" type="submit">
       הוסף מוצר 
                 </button>
       

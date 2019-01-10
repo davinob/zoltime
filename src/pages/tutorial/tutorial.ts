@@ -1,5 +1,5 @@
 import { Component,ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, MenuController, NavController, Platform,Content } from 'ionic-angular';
+import { IonicPage, MenuController, NavController, Platform,Content, ModalController } from 'ionic-angular';
 
  
 
@@ -13,9 +13,9 @@ import { Camera } from '@ionic-native/camera';
 
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GlobalService } from '../../providers/global-service';
+
 import * as globalConstants from '../../providers/globalConstants'; 
-import { Observable } from 'rxjs';
+
 
 
 @IonicPage()
@@ -33,16 +33,15 @@ export class TutorialPage {
   @ViewChild('fileInput') fileInput;
   @ViewChild('selectPictureType') selectPictureType;
 
-  @ViewChild('categoryInput') categoryInput;
-
-  @ViewChild('hashgahaInput') hashgahaInput;
-
   @ViewChild('startTimes') startTimes:ElementRef;
   @ViewChild('endTimes') endTimes:ElementRef ;
   @ViewChild(Content) content: Content;
 
   
-  
+  chosenCategory;
+  chosenHashgaha="ללא";
+
+
   public signupForm:FormGroup;
 
   searchAddress: string="";
@@ -68,7 +67,8 @@ export class TutorialPage {
     public addressService: AddressService,
     public sellerService: SellerService,
     public camera: Camera,
-    private upSvc: UploadService) 
+    private upSvc: UploadService,
+    public modalCtrl:ModalController) 
   {
     this.dir = platform.dir();
    
@@ -76,9 +76,8 @@ export class TutorialPage {
         description: [''],
         telNo: [''],
         address: ['', Validators.required],
-        picture: [''],
-        hashgaha: ['ללא', Validators.required],
-        category: ['', Validators.required]
+        picture: ['']      
+       
       });
 
       this.profilePic={
@@ -89,17 +88,28 @@ export class TutorialPage {
   }
 
 
+
+  
+ 
+
   getCategories():any
   {
     return globalConstants.categories;
   }
 
+  
+  getCategoriesNames():any
+  {
+
+    return globalConstants.categories.map(data=>data.name);
+  }
+
   getCategory()
   {
-    if (!this.signupForm.value.category)
+    if (!this.chosenCategory)
     return "נא לבחור סוג המסעדה...";
     else
-    return this.signupForm.value.category
+    return this.chosenCategory;
   }
 
 
@@ -304,14 +314,29 @@ export class TutorialPage {
   }
 
 
+ 
   showCategoriesChoiceSelect()
   {
-    this.categoryInput._elementRef.nativeElement.click();
+    let modalPage=this.modalCtrl.create('ModalSelectPage',{dataList:this.getCategoriesNames()});
+    modalPage.present();
+    modalPage.onDidDismiss(data=>
+      {
+        console.log("MODAL DISMMISS");
+        console.log(data);
+        this.chosenCategory=data.chosen;
+      });
   }
 
   showHashgahaChoiceSelect()
   {
-    this.hashgahaInput._elementRef.nativeElement.click();
+    let modalPage=this.modalCtrl.create('ModalSelectPage',{dataList:this.getHashgahot()});
+    modalPage.present();
+    modalPage.onDidDismiss(data=>
+      {
+        console.log("MODAL DISMMISS");
+        console.log(data);
+        this.chosenHashgaha=data.chosen;
+      });
   }
 
  
@@ -329,13 +354,13 @@ export class TutorialPage {
     } else {
 
    
-      let hashgahaValue=this.signupForm.value.hashgaha;
+      let hashgahaValue;
         
-        if (hashgahaValue=="ללא")
+        if (this.chosenHashgaha=="ללא")
         {
           hashgahaValue={"כשר":false,"למהדרין":false};
         }
-        else if (hashgahaValue=="כשר")
+        else if (this.chosenHashgaha=="כשר")
         {
           hashgahaValue={"כשר":true,"למהדרין":false};
         }
@@ -351,7 +376,7 @@ export class TutorialPage {
           console.log("SIGNUP:"+user);
         await this.sellerService.updateCurrentUser(
           this.addressJSON,this.signupForm.value.description,this.signupForm.value.telNo,
-        this.profilePic,hashgahaValue,this.signupForm.value.category,this.daysToSave);
+        this.profilePic,hashgahaValue,this.chosenCategory,this.daysToSave);
         }
         catch(error)
         {

@@ -1,6 +1,6 @@
 import { Component,ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, 
-  Loading,TextInput, Select } from 'ionic-angular';
+  Loading,TextInput, Select, ModalController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 
 import { LoginPage } from '../login/login';
@@ -31,8 +31,7 @@ import { first } from 'rxjs/operators';
 export class ProfileSettingsPage {
 
   @ViewChild('fileInput') fileInput;
-  @ViewChild('categoryInput') categoryInput;
-  @ViewChild('hashgahaInput') hashgahaInput;
+
   @ViewChild("selectPictureType") selectPictureType: Select;
   @ViewChild('addressInput') addressInput :TextInput;
 
@@ -64,7 +63,8 @@ export class ProfileSettingsPage {
   public camera: Camera,
   private upSvc: UploadService,
   public formBuilder: FormBuilder,
-  public globalSvc:GlobalService) {
+  public globalSvc:GlobalService,
+  public modalCtrl:ModalController) {
     
     this.updateForm = formBuilder.group({
       addressSaved: [this.sellerService.getCurrentSellerAddress()],
@@ -119,6 +119,12 @@ export class ProfileSettingsPage {
   }
 
 
+  getCategoriesNames():any
+  {
+
+    return globalConstants.categories.map(data=>data.name);
+  }
+
   ionViewDidLoad() {
     this.updateForm.controls.address.valueChanges.debounceTime(400).subscribe(search => {
       this.setFilteredItems();
@@ -126,16 +132,30 @@ export class ProfileSettingsPage {
  
   }
 
+
+
+  showCategoriesChoiceSelect()
+  {
+    let modalPage=this.modalCtrl.create('ModalSelectPage',{dataList:this.getCategoriesNames()});
+    modalPage.present();
+    modalPage.onDidDismiss(data=>
+      {
+        console.log("MODAL DISMMISS");
+        console.log(data);
+        this.saveInput("category",data.chosen);
+      });
+  }
+
+
+
   editInput(input:string,bool:boolean)
   {
     this.allInputsShows[input]=bool;
     switch (input) {
       case "category":
-      this.categoryInput._elementRef.nativeElement.click();
+      if (bool)
+      this.showCategoriesChoiceSelect();
         break;
-       case "hashgaha":
-      this.hashgahaInput._elementRef.nativeElement.click();
-      break;
       case "address":
       if (bool)
         {

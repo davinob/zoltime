@@ -1,5 +1,5 @@
 import { Component,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Select } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Select, ModalController } from 'ionic-angular';
 import { SellerService } from '../../providers/seller-service';
 import { AddressService,Address } from '../../providers/address-service';
 import { UploadService,Upload,Picture } from '../../providers/upload-service';
@@ -8,6 +8,7 @@ import { Camera } from '@ionic-native/camera';
 import {ProductsPage} from '../products/products';
 import 'rxjs/add/operator/debounceTime';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 
 
 /**
@@ -25,10 +26,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CreateProductPage {
 
   @ViewChild('fileInput') fileInput;
-  @ViewChild('categoriesInput') categoriesInput;
   @ViewChild("selectPictureType") selectPictureType: Select;
 
   public addProductForm:FormGroup;
+
+  categorySelected;
   
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -37,13 +39,13 @@ export class CreateProductPage {
     public addressService: AddressService,
     public sellerService: SellerService,
     private camera: Camera,
-    private upSvc: UploadService
+    private upSvc: UploadService,
+    public modalCtrl:ModalController
     )  {
 
 
       this.addProductForm = formBuilder.group({
         name: ['', Validators.required],
-        category: ['', Validators.required],
         description: ['', Validators.required],
         originalPrice: ['', Validators.required],
         picture: ['']
@@ -59,7 +61,14 @@ export class CreateProductPage {
 
   showCategoriesChoiceSelect()
   {
-    this.categoriesInput._elementRef.nativeElement.click();
+    let modalPage=this.modalCtrl.create('ModalSelectPage',{dataList:this.sellerService.getProductCategoriesChoices()});
+    modalPage.present();
+    modalPage.onDidDismiss(data=>
+      {
+        console.log("MODAL DISMMISS");
+        console.log(data);
+        this.categorySelected=data.chosen;
+      });
   }
 
   
@@ -178,7 +187,7 @@ export class CreateProductPage {
          this.sellerService.addProductToCurrentUser(
           this.addProductForm.value.name,this.addProductForm.value.description,
          this.addProductForm.value.originalPrice,
-          this.picture,this.addProductForm.value.category)
+          this.picture,this.categorySelected)
         .then(()=> {
           console.log("Document successfully written!");
         
